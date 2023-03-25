@@ -1,0 +1,248 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.inner-wrapper {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+  height: 450px;
+  padding: 40px;
+  width: 450px;
+}
+.main-wrapper{
+  display: flex;
+    margin: 40px;
+    padding: 0px;
+    height: 300px;
+}
+.payment-section {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+  height: 300px;
+  margin-left: 30px;
+  width: 715px;
+}
+.payment-section p{
+  font-family: sans-serif;
+  font-weight: 400px;
+  padding:20px;
+}
+
+.outer-wrapper {
+  display: flex;
+    left: 37%;
+    position: relative;
+    width: 100%;
+}
+.box-wrapper {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+  height: 200px;
+  width: 340px;
+}
+.inner-box {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+  height: 200px;
+  margin-left: 20px;
+  width: 340px;
+}
+.slider-parent{
+  height: 60px;
+  padding-left:5px;
+  width: 700px;
+}
+.slider-child span i:nth-child(1) {
+  margin-right:10px;
+}
+.slider-child{
+  margin-left:40px;
+}
+#manage-slide {
+  border: 2px solid #cad0ca30;
+    border-radius: 5px;
+    float: right;
+    width: 200px;
+    height: 40px
+}
+.first-amount {
+  border-left: 2px solid #cad0ca30;
+  display: inline-block;
+    height: 36px;
+    margin-left: 50px;
+    padding-left: 40px;
+   
+}
+.number{
+  color: #040f147a;
+  display: flex;
+  float: right;
+  height: 50px;
+  width: 0px;
+}
+.minus {
+  font-size: 35px;
+  margin-top: -10px;
+  margin-left: 20px;
+}
+
+.plus{
+  font-weight: 700;
+    margin-left: 28px;
+    margin-top: 8px;
+}
+
+.number .fa-inr {
+  color: blue;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-left: 35px;
+}
+
+.amount-tool {
+  background: rgb(29, 33, 69);
+    border-radius: 5px;
+    height: 35px;
+    margin: 0 auto;
+    text-align: center;
+    width: 130px;
+}
+.tooltip-section{
+  margin-top:20px;
+}
+.amount-tool .fa-inr {
+  color: white;
+  font-size: 11px;
+  padding-top: 10px;
+}
+.amount-tool .arrow {
+  color: rgb(29, 33, 69);
+    display: block;
+    font-size: 12px;
+    margin-top: 1px;
+}
+.grade1{
+  background-image: linear-gradient(to right, #2196F3, #0edb40f7);
+  border-radius: 7px;
+  height: 5px;
+  padding: 0;
+  width: 50%;
+  margin-top: -4px;
+}
+.grade-section{
+  margin-top: 20px;
+}
+.grade2 {
+  border-radius: 50%;
+    background-color: #2ea34bf7;
+    height: 15px;
+    margin: 0 auto;
+    margin-top: -10px;
+    width: 10px;
+    width: 15px;
+}
+.light-grade{
+  border-top: 4px solid #a69c9c36;
+   
+}
+
+  .grade3 {
+    border-radius: 50%;
+    background-color: white;
+    height: 0px;
+    margin: 0 auto;
+    margin-top: -12px;
+    padding: 4px;
+    width: 0px;
+    width: 0px;
+}
+.amount-interest {
+  color: #0f090961;
+    font-family: serif;
+    margin: -30px;
+    padding-left: 10px;
+}
+
+.amount-bottom {
+  background: #48848e0d;
+  height: px;
+  margin-top: 40px;
+  margin-left: -5px;
+  padding: 38px;
+  width: 103%;
+}
+.amount-interest .fa-inr {
+  color: blue;
+}
+.save-inr {
+  color: blue;
+  font-size: 18px;
+  padding: 0px;
+}
+.common-payment {
+  display: flex;
+  float: right;
+  font-size: 12px;
+  left: 3%;
+  position: relative;
+  padding-right: 10px;
+  top: -50px;
+}
+.month-payment {
+  background-color: white;
+  border-radius: 8px;
+  height: 40px;
+  width: 160px;
+}
+.total-payment {
+  background-color: white;
+  border-radius: 8px;
+  height: 40px;
+  margin-left: 20px;
+  width: 160px;
+}
+.month-add {
+  font-size: 15px;
+  margin-left: -10px;
+  display: block;
+  margin-top: -38%;
+}
+.form-validation{
+  background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+    height: 400px;
+    padding: 40px;
+    width: 450px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.main-nav{
+  background-color: lightgray;
+  padding:20px;
+}
+nav a{
+  margin-right: 20px;
+  text-decoration:none;
+  font-size: 20px;
+}
+/*nav a.active{
+  font-weight: bold;
+  font-size:23px;
+}*/
+.child-nav{
+  margin-top:40px;
+}

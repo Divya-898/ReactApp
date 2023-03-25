@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+var user = {
+ name: 'Jack Misteli',
+ address: '233 Paradise Road',
+ bankingInfo: 'You wish!'
+};
+var user1 = user
+console.log(user1)
+var maliciousAddressValidator = (user1) => {
+ document.write(user1.address = 'Malicious Road');
+ return true
+};
+
+var validAddress = maliciousAddressValidator(user1);
+console.log(user)
+    </script>
+</body>
+</html>
