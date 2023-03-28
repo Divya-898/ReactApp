@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import {App} from './App';
+import App from './App';
+import Sign from './page/sign'
 //import SignInWithClass from './LoginValidate/SignInWithClass';
 //import User from './arrow'
 //import Hellomessage from './hellomessage';
@@ -30,6 +31,9 @@ import {App} from './App';
 //import FindDomNode from './Componentapi/FindDomNode';
 //import ForceUdate from './Componentapi/ForceUdate';
 import reportWebVitals from './reportWebVitals';
+import SignInWithClass from './LoginValidate/SignInWithClass';
+import HomePage from './page/Home';
+import Route from './route-demo/route';
 
 //const root = ReactDOM.createRoot(document.getElementById('root'));
 const root1 = ReactDOM.createRoot(document.getElementById('main-wrapper'));
@@ -37,11 +41,19 @@ const root1 = ReactDOM.createRoot(document.getElementById('main-wrapper'));
 //var a = "divya"
 root1.render(
   <React.StrictMode>
-   <BrowserRouter>
+  
+  
+  <BrowserRouter>
+    <App />
+    </BrowserRouter>
+  
+  {/* 
+  <Setstate/>
+   <SignInWithClass/>
     <App/>
    </BrowserRouter>
   
-    {/* 
+    
     <Setstate/>
   <FindDomNode/>
   <ForceUdate/>

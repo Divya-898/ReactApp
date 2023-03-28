@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
+import {Routes, Route} from 'react-router-dom'
+import CartComponent from './CartComponent';
+import {Redirect} from 'react-router-dom'
 
 export default class SignInWithClass extends Component {
     constructor(props) {
       super(props)
-    
       this.state = {
          email:{name: 'email', value:'', error:''},
          password:{name: 'password', value:'', error:''},
          rememberMe: {name: 'rememberMe', value:false, error:''},
       }
     }
-    
+
   render() {
     const{email, password,rememberMe} = this.state;
     return (
@@ -46,7 +48,10 @@ export default class SignInWithClass extends Component {
               </div>
               <br/>
               <div>
+               
                 <button type="submit">submit</button>
+               
+                
               </div>
             </form>
         </div>
@@ -63,20 +68,32 @@ export default class SignInWithClass extends Component {
   }
 
   validateForm =()=>{
+    var user = [
+      {
+        email:'tiwaridiv2206@gmail.com', id:1,password:"divya@123"
+      }
+    ]
+    console.log(user[0].email)
     const {email,password} =this.state;
     let status = true;
-    if(email.value.length === 0){
+    /*if(email.value.length === 0 || email.value !== user[0].email ){
       status=false;
       this.setState({email:{...email,error:'please enter valid value'}})
-    }else{
+    }*/
+    if(email.value !== user[0].email){
+      status=false;
+      this.setState({email:{...email,error:'please enter valid value'}})
+    }
+    else{
       this.setState({email:{...email,error:''}})
     }
-    if(password.value.length === 0){
+    if(password.value !== user[0].password){
       status=false;
       this.setState({password:{...password,error:'please enter valid value'}})
     }else{
       this.setState({password:{...password,error:''}})
     }
+    
     return status;
     }
    
@@ -85,12 +102,21 @@ export default class SignInWithClass extends Component {
     const validationstatus = this.validateForm();
     if(validationstatus === true){
       const {email,password,rememberMe} =this.state;
+      
+      <Routes>
+      <Route path="/cart" element={<CartComponent />}></Route>
+      </Routes>
       const model = {
         email:email.value,
         password: password.value,
         rememberMe:rememberMe.value
       }
-      console.log(model);
+      console.log(model)
+      
+      
+        
+      
+      
     }
  }
 }
