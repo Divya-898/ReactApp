@@ -1,5 +1,11 @@
+import React from "react";
+import { Router, Route } from "react-router-dom";
 
-import './index.css'
+import { createBrowserHistory } from "history";
+import SignInWithClass from "./LoginValidate/SignInWithClass";
+
+import Wishlist from "./LoginValidate/Wishlist";
+/*mport './index.css'
 import { Route, Link, Routes, Switch ,Outlet} from 'react-router-dom'
 
 import Users from './User1'
@@ -28,5 +34,25 @@ export default function App() {
  
   )
 }
+*/
 
 
+
+class App extends React.Component {  
+  render() {  
+    const history = createBrowserHistory();
+    return (  
+    
+        <Router history = {history}>
+          <Route path='/' >
+            <SignInWithClass/>
+          </Route>
+          <Route path="/wishlist" >
+              <Wishlist/>
+          </Route> 
+          </Router>
+    
+    )  
+  }  
+}  
+export default App;

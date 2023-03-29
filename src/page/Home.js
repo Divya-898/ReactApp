@@ -6,9 +6,7 @@ class HomePage extends Component {
     return (
         <>
       <div>
-       <Link to="/cart">
-        <button>Posts</button>
-      </Link>
+      <h1>wel</h1>
       </div>
         
         

@@ -15,7 +15,9 @@ class Sign extends Component {
         <>
         
          <div>
-      
+         <Link to="/cart">
+        <button>Posts</button>
+      </Link>
     </div>
     <Routes>
     <Route path='/' element={<HomePage/>}/>

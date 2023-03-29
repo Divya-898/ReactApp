@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import {Routes, Route} from 'react-router-dom'
-import CartComponent from './CartComponent';
-import {Redirect} from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
-export default class SignInWithClass extends Component {
+ class SignInWithClass extends Component {
     constructor(props) {
       super(props)
       this.state = {
@@ -11,14 +9,32 @@ export default class SignInWithClass extends Component {
          password:{name: 'password', value:'', error:''},
          rememberMe: {name: 'rememberMe', value:false, error:''},
       }
+     
     }
-
+    onSubmit = (e)=>{
+  
+      e.preventDefault();
+      const validationstatus = this.validateForm();
+      if(validationstatus === true){
+        this.props.history.push('/wishlist');
+        console.log("login successfully")
+        //return this.props.navigation('/CartComponent.js')
+        
+        }
+        
+        
+        
+        
+        
+    
+   }
+    
   render() {
     const{email, password,rememberMe} = this.state;
     return (
-      <div>
+      
         <div className="form-validation">
-            <form onSubmit={this.onSubmit}>
+            <form  onSubmit={this.onSubmit}>
               <h1>Login Form</h1>
               <div>
                 <label>Email</label>
@@ -49,13 +65,13 @@ export default class SignInWithClass extends Component {
               <br/>
               <div>
                
-                <button type="submit">submit</button>
+                <button type="submit" >submit</button>
                
                 
               </div>
             </form>
         </div>
-      </div>
+      
     )
   }
   onChange = (e)=>{
@@ -70,7 +86,7 @@ export default class SignInWithClass extends Component {
   validateForm =()=>{
     var user = [
       {
-        email:'tiwaridiv2206@gmail.com', id:1,password:"divya@123"
+        email:'tiwaridiv2206@gmail.com',password:"divya@123"
       }
     ]
     console.log(user[0].email)
@@ -95,28 +111,9 @@ export default class SignInWithClass extends Component {
     }
     
     return status;
+    
     }
-   
- onSubmit = (e)=>{
-    e.preventDefault();
-    const validationstatus = this.validateForm();
-    if(validationstatus === true){
-      const {email,password,rememberMe} =this.state;
-      
-      <Routes>
-      <Route path="/cart" element={<CartComponent />}></Route>
-      </Routes>
-      const model = {
-        email:email.value,
-        password: password.value,
-        rememberMe:rememberMe.value
-      }
-      console.log(model)
-      
-      
-        
-      
-      
-    }
- }
+    
+ 
 }
+export default withRouter(SignInWithClass);

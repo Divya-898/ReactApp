@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-export default class CartComponent extends Component  {
+export default class CartComponent2 extends Component  {
     render(){
   return (
     <div>
