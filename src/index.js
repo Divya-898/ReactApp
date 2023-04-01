@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { BrowserRouter } from 'react-router-dom';
+import USComponent from './Hooks/USComponent';
+import USWithObject from './Hooks/USWithObject';
+import USWithArray from './Hooks/USWithArray';
+import FunctionEffect from './useEffect/functionEffect';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+  <BrowserRouter>
     <App />
+    </BrowserRouter>
+   {/* <USComponent></USComponent>
+    <USWithObject></USWithObject>
+    <USWithArray></USWithArray>
+    <FunctionEffect/>*/}
   </React.StrictMode>
 );
 
