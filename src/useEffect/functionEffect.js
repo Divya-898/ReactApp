@@ -16,7 +16,7 @@ function FunctionEffect() {
 },[name])
   return (
     <div>
-      <h1>{count}</h1>
+      <h1>{count}</h1>9
       <h1>{name}</h1>
       <button onClick={() => setCount(count+1)}>update state</button>
       <button onClick={() => setName(name='kumar')}>update name</button>

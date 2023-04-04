@@ -14,6 +14,8 @@ import MultipleFunction from './handleWithFunction/MultipleFunction';
 import HookUseRef from './HookUseref/HookUseRef';
 import HookUseRef2 from './HookUseref/HookUseRef2';
 import UseReducerHook from './useReducer/useReducerHook';
+import UseEffectWithprops from './useEffectWithProps/UseEffectWithprops';
+import UseEffect1 from './useEffectWithProps/useEffect1';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -31,7 +33,7 @@ root.render(
    <HookUseRef2/>
    */}
    <UseReducerHook/>
-   
+   <UseEffect1/>
   </React.StrictMode>
 );
 
