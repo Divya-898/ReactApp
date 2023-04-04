@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.form-validation{
+  background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 20%);
+    height: 400px;
+    padding: 40px;
+    width: 450px;
+    margin: 0 auto;
+    margin-top: 40px;
+}

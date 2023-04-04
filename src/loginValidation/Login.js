@@ -14,7 +14,7 @@ function Login() {
     },
    
 ]
-console.log(user[0].password)
+//console.log(user[0].password)
   //const emailRegex =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
  /* const handleName = (e) => {
     let password = e.target.value;
@@ -55,8 +55,11 @@ console.log(user[0].password)
     if (email == user[0].email  && password == user[0].password) {
       //alert("!Form has been submitted...");
       //alert("name=" + name + " email= " + email);
-      navigate("/wishlist");
-
+        localStorage.setItem('getvalue', user[0].email);
+     // console.log(user)
+     const user1 = user[0].email
+      navigate(`/wishlist/${user1}`);
+        
     }
   };
   return (
@@ -79,11 +82,11 @@ console.log(user[0].password)
           )}
           <br />
           <br />
-          <label htmlFor="">Enter Name:</label>
+          <label htmlFor="">Enter password:</label>
           <input type="text" name="name" //onChange={handleName}
            value={password} />
           <br />
-          {nameError ? (<span style={{ color: "red" }}>Name length must be greater than 2 characters</span>) : (" ")}
+          {nameError ? (<span style={{ color: "red" }}>Invalid password</span>) : (" ")}
           <br />
           <br />
           

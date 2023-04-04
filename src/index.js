@@ -8,6 +8,12 @@ import USComponent from './Hooks/USComponent';
 import USWithObject from './Hooks/USWithObject';
 import USWithArray from './Hooks/USWithArray';
 import FunctionEffect from './useEffect/functionEffect';
+import ControlForm from './controlform/ControlForm';
+import MultipleClass from './handleWithClass/MultipleClass';
+import MultipleFunction from './handleWithFunction/MultipleFunction';
+import HookUseRef from './HookUseref/HookUseRef';
+import HookUseRef2 from './HookUseref/HookUseRef2';
+import UseReducerHook from './useReducer/useReducerHook';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -17,7 +23,15 @@ root.render(
    {/* <USComponent></USComponent>
     <USWithObject></USWithObject>
     <USWithArray></USWithArray>
-    <FunctionEffect/>*/}
+    <FunctionEffect/>
+   <ControlForm/>
+   <MultipleClass/>
+   <MultipleFunction/>
+   <HookUseRef/>
+   <HookUseRef2/>
+   */}
+   <UseReducerHook/>
+   
   </React.StrictMode>
 );
 
