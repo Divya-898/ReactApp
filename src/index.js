@@ -16,6 +16,8 @@ import HookUseRef2 from './HookUseref/HookUseRef2';
 import UseReducerHook from './useReducer/useReducerHook';
 import UseEffectWithprops from './useEffectWithProps/UseEffectWithprops';
 import UseEffect1 from './useEffectWithProps/useEffect1';
+import Context from './AnotherUseContext/Context';
+import Home from './route-demo/Home';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -31,9 +33,11 @@ root.render(
    <MultipleFunction/>
    <HookUseRef/>
    <HookUseRef2/>
-   */}
-   <UseReducerHook/>
+    <UseReducerHook/>
    <UseEffect1/>
+   */}
+  
+  
   </React.StrictMode>
 );
 
