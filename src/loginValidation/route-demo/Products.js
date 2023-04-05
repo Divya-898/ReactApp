@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Link, Outlet, useLocation} from 'react-router-dom'
 function Products() {
   const location =useLocation()
@@ -6,6 +6,12 @@ function Products() {
   const handleevent = () =>{
     console.log(location)
   }
+  useEffect(() => {
+  window.addEventListener("mousemove", () => {});
+  return () => {
+    window.removeEventListener("mousemove", () => {})
+  }
+}, []);
   return (
     <>
     <div>

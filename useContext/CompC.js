@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { NameContext } from '../App'
+import { NameContext } from '../src/App'
 
 function CompC() {
    const myName = useContext(NameContext)

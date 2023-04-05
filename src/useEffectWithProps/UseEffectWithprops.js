@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 function UseEffectWithprops(props) {
+  useEffect(()=>{
+    console.log('component Did mount')
+},[])
+
     useEffect(()=>{
-        alert("count is"+props.count+ '' + props.data)
+      console.log(props.data+''+props.count)
     },[props.data])
   return (
     <div>
