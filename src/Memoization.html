@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let sum = 0;
+        const calc=(n)=>{
+            for(i=0;i<=n;i++){
+             sum+=i;
+            }
+            return sum;
+        }
+        let cache={};
+        const memoize = (fun)=>{
+           
+           return function(...args){
+            let n = args[0];
+            console.log(n)
+            if(n in cache){
+                console.log("cache")
+                console.log(cache)
+                return cache[n];
+            }
+            else{
+                console.log("calculting first time")
+                let result=fun(n);
+                cache[n] = result;
+                return result;
+            }
+           }
+        }
+       const efficient = memoize(calc);
+       console.time();
+       console.log(efficient(5))
+        console.timeEnd();
+        console.time();
+       console.log(efficient(5))
+        console.timeEnd();
+        console.time();
+       console.log(efficient(5))
+        console.timeEnd();
+        
+    </script>
+</body>
+</html>

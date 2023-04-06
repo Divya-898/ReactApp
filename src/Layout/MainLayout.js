@@ -17,6 +17,9 @@ export default function MainLayout() {
           <li>
             <Link to="signup"> Sign Up</Link>
           </li>
+          <li>
+            <Link to="products">Products</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />

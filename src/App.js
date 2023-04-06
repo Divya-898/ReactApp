@@ -99,21 +99,30 @@ import Router from './routes1'
 import { useRoutes } from "react-router-dom";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
-
+import Shirts from './loginValidation/route-demo/Shirts';
 import Wishlist from './loginValidation/Wishlist';
 import SignUp from "./Pages/SignUp";
 import AuthLayout from "./Layout/MainLayout";
 import MainLayout from "./Layout/MainLayout";
 import Login from './loginValidation/Login';
+import Products from "./loginValidation/route-demo/Products";
+import Jeans from "./loginValidation/route-demo/Jeans";
 export default function App() {
   
   let element = useRoutes([
     {
-      element: <AuthLayout />,
+      element: <MainLayout />,
       children: [
         { path: "login", element: <Login /> },
         { path: "signup", element: <SignUp /> },
-        {path:'/wishlist/:id', element:<Wishlist/>},
+        {path:'/wishlist/:id', element:<Wishlist/>,},
+        {path:'products', element:<Products/>,
+       children:[
+        {path:'shirts', element:<Shirts/>,},
+        {path:'jeans', element:<Jeans/>,},
+       ]
+      
+      },
         { path: "/", element: <Home /> },
         { path: "about", element: <About /> }
       ]

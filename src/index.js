@@ -18,18 +18,23 @@ import UseEffectWithprops from './useEffectWithProps/UseEffectWithprops';
 import UseEffect1 from './useEffectWithProps/useEffect1';
 import Context from './AnotherUseContext/Context';
 import Home from './loginValidation/route-demo/Home';
-
+import LifeCycleWithHook from './LifeCycle/LifeCycleWithHook';
+import SearchField from './useSubmit/useSubmit';
+import FormData from './FormData/FormData';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
+  {/*<BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
       </div>
     </BrowserRouter>
- 
+ <LifeCycleWithHook/>
+ */}
+ <FormData/>
    {/* <USComponent></USComponent>
+   <SearchField/>
     <USWithObject></USWithObject>
     <USWithArray></USWithArray>
     <FunctionEffect/>
