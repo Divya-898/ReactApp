@@ -24,16 +24,17 @@ import FormData from './FormData/FormData';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  {/*<BrowserRouter>
+  <BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
       </div>
     </BrowserRouter>
  <LifeCycleWithHook/>
- */}
- <FormData/>
+
+<UseEffect1/>
    {/* <USComponent></USComponent>
+    <FormData/>
    <SearchField/>
     <USWithObject></USWithObject>
     <USWithArray></USWithArray>

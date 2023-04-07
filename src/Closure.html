@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+const counter = (function () {
+  let privateCounter = 0;
+  function changeBy(val) {
+    privateCounter += val;
+  }
+
+  return {
+    increment() {
+      changeBy(1);
+    },
+
+    decrement() {
+      changeBy(-1);
+    },
+
+    value() {
+      return privateCounter;
+    },
+  };
+})();
+
+console.log(counter.value()); //0
+
+counter.increment();//1
+counter.increment();//2
+console.log(counter.value());
+
+counter.decrement();
+console.log(counter.value()); //1
+      /*  function makeAdder(x) {
+  return function (y) {
+    console.log(x)// 7
+console.log(y)
+    return x + y;
+    
+  };
+}
+
+//const add5 = makeAdder(5);
+const add10 = makeAdder(10);
+
+console.log(makeAdder(5)(2)); 
+
+console.log(add10(2)); // 12*/
+    </script>
+</body>
+</html>
