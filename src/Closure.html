@@ -9,7 +9,7 @@
 <body>
     <script>
 
-const counter = (function () {
+const counter = function () {
   let privateCounter = 0;
   function changeBy(val) {
     privateCounter += val;
@@ -28,16 +28,17 @@ const counter = (function () {
       return privateCounter;
     },
   };
-})();
+} ;
+var makeCounter = counter();
+console.log(makeCounter)
+console.log(makeCounter.value()); //0
 
-console.log(counter.value()); //0
+makeCounter.increment();//1
+makeCounter.increment();//2
+console.log(makeCounter.value());
 
-counter.increment();//1
-counter.increment();//2
-console.log(counter.value());
-
-counter.decrement();
-console.log(counter.value()); //1
+makeCounter.decrement();
+console.log(makeCounter.value()); //1
       /*  function makeAdder(x) {
   return function (y) {
     console.log(x)// 7

@@ -25,6 +25,9 @@ import LayoutEffect1 from './UseLayoutEffect/LayoutEffect1';
 import Test from './UseLayoutEffect/Test';
 import App1 from './UseLayoutEffect/Test1';
 import EventLayout from './UseLayoutEffect/EvenLayout';
+import UseMemo from './useMemo/UseMemo';
+import AnotherUseMemo from './useMemo/AnotherUseMemo';
+import ParentCallback from './UseCallback/ParentCallback';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -39,11 +42,16 @@ root.render(
 <UseEffect1/>
 <LayoutEffect1/>
 <Test/>
+<EventLayout/>
+<UseMemo/>
+<AnotherUseMemo/>
 */}
 
+<ParentCallback/>
 
 
-<EventLayout/>
+
+
    {/* <USComponent></USComponent>
     <FormData/>
    <SearchField/>
