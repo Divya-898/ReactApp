@@ -20,6 +20,9 @@ export default function MainLayout() {
           <li>
             <Link to="products">Products</Link>
           </li>
+          <li>
+            <Link to="user">LiftingState</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />

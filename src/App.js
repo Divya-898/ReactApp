@@ -107,6 +107,7 @@ import MainLayout from "./Layout/MainLayout";
 import Login from './loginValidation/Login';
 import Products from "./loginValidation/route-demo/Products";
 import Jeans from "./loginValidation/route-demo/Jeans";
+import User1 from "./LiftingState/User1";
 export default function App() {
   
   let element = useRoutes([
@@ -116,6 +117,7 @@ export default function App() {
         { path: "login", element: <Login /> },
         { path: "signup", element: <SignUp /> },
         {path:'/wishlist/:id', element:<Wishlist/>,},
+        {path:'user', element:<User1/>},
         {path:'products', element:<Products/>,
        children:[
         {path:'shirts', element:<Shirts/>,},

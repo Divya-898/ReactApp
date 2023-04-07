@@ -21,10 +21,14 @@ import Home from './loginValidation/route-demo/Home';
 import LifeCycleWithHook from './LifeCycle/LifeCycleWithHook';
 import SearchField from './useSubmit/useSubmit';
 import FormData from './FormData/FormData';
+import LayoutEffect1 from './UseLayoutEffect/LayoutEffect1';
+import Test from './UseLayoutEffect/Test';
+import App1 from './UseLayoutEffect/Test1';
+import EventLayout from './UseLayoutEffect/EvenLayout';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
+  {/*<BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
@@ -33,6 +37,13 @@ root.render(
  <LifeCycleWithHook/>
 
 <UseEffect1/>
+<LayoutEffect1/>
+<Test/>
+*/}
+
+
+
+<EventLayout/>
    {/* <USComponent></USComponent>
     <FormData/>
    <SearchField/>
