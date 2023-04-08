@@ -28,6 +28,9 @@ import EventLayout from './UseLayoutEffect/EvenLayout';
 import UseMemo from './useMemo/UseMemo';
 import AnotherUseMemo from './useMemo/AnotherUseMemo';
 import ParentCallback from './UseCallback/ParentCallback';
+import FakseStore from './FakeStore/FakseStore';
+import FakeLogin from './FakeStore/FakeLogin';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -45,9 +48,10 @@ root.render(
 <EventLayout/>
 <UseMemo/>
 <AnotherUseMemo/>
+<FakseStore/>
 */}
 
-<ParentCallback/>
+<FakeLogin/>
 
 
 
