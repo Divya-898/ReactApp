@@ -31,17 +31,21 @@ import ParentCallback from './UseCallback/ParentCallback';
 import FakseStore from './FakeStore/FakseStore';
 import FakeLogin from './FakeStore/FakeLogin';
 import AfterLogin from './FakeStore/AfterLogin';
+import { App2 } from './useContext/ProsContext';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
+  <App2></App2>
+   
+    {/*
+    <BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
       </div>
     </BrowserRouter>
-    {/*
  <LifeCycleWithHook/>
 
 <UseEffect1/>

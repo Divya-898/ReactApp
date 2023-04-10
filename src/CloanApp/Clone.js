@@ -163,9 +163,9 @@ export default function App() {
     <>
     <MainLayout/>
       <Routes>
-      <Route path='/' element={<AfterLogin Cmp={AfterLogin}/>}/>
-     <Route path='/listofproduct' element={<AfterLogin Cmp={FakseStore}/>}/>
-     <Route path='/LoggedIn' element={<AfterLogin Cmp={FakeLogin}/>}/>
+      <Route path='/' element={<AfterLogin/>}/>
+     <Route path='/listofproduct' element={<FakseStore/>}/>
+     <Route path='/LoggedIn' element={<FakeLogin/>}/>
      
   </Routes>
     </>

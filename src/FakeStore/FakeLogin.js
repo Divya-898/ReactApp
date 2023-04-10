@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom';
 
 function FakeLogin({token,setToken}) {
+   const navigate = useNavigate();
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
     const[error, setError] = useState("");
@@ -20,13 +22,15 @@ function FakeLogin({token,setToken}) {
         }).then(res=>{
             console.log(res.data.token);
             setToken(res.data.token);
+            //navigate('/listofproduct')
             localStorage.setItem("userToken",res.data.token)
+            
         }).catch((err)=>{
            console.log(err.response);
-           setError(err.response.data)
+           //setError(err.response.data)
         })
     }
-  return <div className='login'>
+  return<> <div className='login'>
   <div className='login-input'>
     <div>
       <input value={username} onChange={(e)=>setUsername(e.target.value)} type="text" placeholder='username'/><br/><br/>
@@ -36,6 +40,8 @@ function FakeLogin({token,setToken}) {
     </div>
     </div>
     </div>
+    <Outlet></Outlet>
+    </>
 };
 
 export default FakeLogin

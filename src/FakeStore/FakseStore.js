@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom';
 //import './App.css';
 function FakseStore({setToken}) {
+ const navigate = useNavigate()
     //'https://fakestoreapi.com/products'
     const [fake, setFake] = useState([]);
     const logOutHandler = () =>{
       setToken("");
       localStorage.clear();
+      navigate('/LoggedIn')
     }
     useEffect(()=>{
         fakeStore();
@@ -20,6 +23,7 @@ function FakseStore({setToken}) {
     }
    
   return (
+    <>
     <div>
       <h2>Fake Api Store</h2>
       <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
@@ -44,6 +48,8 @@ function FakseStore({setToken}) {
 
 
     </div>
+    <Outlet/>
+    </>
   )
 }
 

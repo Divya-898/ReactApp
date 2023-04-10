@@ -24,7 +24,13 @@ export default function MainLayout() {
             <Link to="user">LiftingState</Link>
           </li>
           <li>
-            <Link to="signin">FakeLogin</Link>
+            <Link to="/">AfterLogin</Link>
+          </li>
+          <li>
+            <Link to="LoggedIn">FakeLogin</Link>
+          </li>
+          <li>
+            <Link to="listofproduct">List-Of-products</Link>
           </li>
         </ul>
       </nav>
