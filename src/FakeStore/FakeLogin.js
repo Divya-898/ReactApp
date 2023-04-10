@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 
-function FakeLogin() {
+function FakeLogin({token,setToken}) {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
     const[error, setError] = useState("");
-    const loginHandler = ({token,setToken})=>{
+    const loginHandler = ()=>{
+        setError("");
+        setPassword("");
+        setUsername("");
         axios({
             url:'https://fakestoreapi.com/auth/login',
             method:"POST",
@@ -13,11 +16,14 @@ function FakeLogin() {
                 username: username,
                 password: password,
             }
+            
         }).then(res=>{
             console.log(res.data.token);
             setToken(res.data.token);
+            localStorage.setItem("userToken",res.data.token)
         }).catch((err)=>{
-           console.log(err);
+           console.log(err.response);
+           setError(err.response.data)
         })
     }
   return <div className='login'>
@@ -25,8 +31,8 @@ function FakeLogin() {
     <div>
       <input value={username} onChange={(e)=>setUsername(e.target.value)} type="text" placeholder='username'/><br/><br/>
       <input value={password} onChange={(e)=>setPassword(e.target.value)} type='password' placeholder='password'/><br/><br/>
-      <small>This is error placeholder</small><br/><br/>
-      <button>Login</button>
+      {error && <small>{error}</small>}<br/><br/>
+      <button onClick={loginHandler}>Login</button>
     </div>
     </div>
     </div>

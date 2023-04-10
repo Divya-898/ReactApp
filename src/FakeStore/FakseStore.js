@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 //import './App.css';
-function FakseStore() {
+function FakseStore({setToken}) {
     //'https://fakestoreapi.com/products'
     const [fake, setFake] = useState([]);
+    const logOutHandler = () =>{
+      setToken("");
+      localStorage.clear();
+    }
     useEffect(()=>{
         fakeStore();
     },[])
@@ -18,6 +22,7 @@ function FakseStore() {
   return (
     <div>
       <h2>Fake Api Store</h2>
+      <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
       <div className="container">
       {fake.map((value)=>{
         return(
@@ -35,6 +40,7 @@ function FakseStore() {
         
         
       </div>
+
 
 
     </div>

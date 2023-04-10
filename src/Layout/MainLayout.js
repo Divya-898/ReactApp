@@ -23,6 +23,9 @@ export default function MainLayout() {
           <li>
             <Link to="user">LiftingState</Link>
           </li>
+          <li>
+            <Link to="signin">FakeLogin</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />
