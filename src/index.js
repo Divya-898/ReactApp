@@ -38,7 +38,7 @@ import Context from './Context-Api-App/Context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-<BrowserRouter>
+  <BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
@@ -52,7 +52,7 @@ root.render(
  <Context>
  <App/>
  </Context>
-  
+
      <App2></App2>
  <LifeCycleWithHook/>
 

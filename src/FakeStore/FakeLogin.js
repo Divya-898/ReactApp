@@ -1,14 +1,28 @@
 import axios from 'axios';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
 
 function FakeLogin({token,setToken}) {
+    const focusPoint = useRef(null);
+   const lastRef = useRef();
+   
+    
+   useEffect(() =>{
+    //console.log(focusPoint);
+    //console.log(lastRef);
+    
+    focusPoint.current.style.backgroundColor = "pink";
+    lastRef.current.style.backgroundColor = "pink";
+      focusPoint.current.focus();
+    //focusPoint.current.focus();
+   lastRef.current.focus();
+    //console.log(newRef.current.innerHTML)
+   },[focusPoint,lastRef])
     //const { token,setToken }  = useContext(userContext)
-    const firstRef = useRef();
-    const passwordRef = useRef();
+    //const firstRef = useRef
    const navigate = useNavigate();
-   // const[username, setUsername] = useState("");
-    //const[password, setPassword] = useState("");
+    const[username, setUsername] = useState("");
+    const[password, setPassword] = useState("");
     const[error, setError] = useState("");
     const loginHandler = ()=>{
         //setError("");
@@ -18,8 +32,8 @@ function FakeLogin({token,setToken}) {
             url:'https://fakestoreapi.com/auth/login',
             method:"POST",
             data:{
-                firstRef: firstRef,
-                passwordRef: passwordRef,
+                username: username,
+                password: password,
             }
             
         }).then(res=>{
@@ -39,8 +53,8 @@ function FakeLogin({token,setToken}) {
   return<> <div className='login'>
   <div className='login-input'>
     <div>
-      <input ref={firstRef} type="text" placeholder='username'/><br/><br/>
-      <input ref={passwordRef} type='password' placeholder='password'/><br/><br/>
+      <input onChange={(e)=>setUsername(e.target.value)} type="text" placeholder='username' ref={focusPoint}/><br/><br/>
+      <input  onChange={(e)=>setPassword(e.target.value)} type='password' placeholder='password' ref={lastRef}/><br/><br/>
       {error && <small>{error}</small>}<br/><br/>
       <button onClick={loginHandler}>Login</button>
     </div>

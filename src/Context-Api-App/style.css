@@ -1,0 +1,34 @@
+a{
+    text-decoration: none;
+    list-style-type: none;
+}
+ul li{
+    list-style-type: none;
+}
+
+body{
+    background-color: white;;
+}
+.nav{
+    height:50px;
+    width:100%;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.productContainer{
+    display: flex;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.products{
+    width:25%;
+    padding: 10px;
+    margin:10px;
+   display: flex;
+   flex-direction: column;
+   border: 1px solid black;
+}

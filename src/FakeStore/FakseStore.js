@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react'
+import { useOutlet, useNavigate } from 'react-router-dom';
 
 //import './App.css';
 function FakseStore({setToken}) {
@@ -12,9 +12,7 @@ function FakseStore({setToken}) {
       localStorage.clear();
       navigate('/LoggedIn')
     }
-    useEffect(()=>{
-        fakeStore();
-    },[])
+    
     console.log(fake)
     const fakeStore = async()=>{
         const response = await fetch("https://fakestoreapi.com/products");
@@ -23,7 +21,9 @@ function FakseStore({setToken}) {
         //console.log(jsonData)
         setFake(jsonData);
     }
-   
+   useMemo(()=>{
+      return fakeStore();
+  },[])
   return (
     <>
     <div>
@@ -50,7 +50,7 @@ function FakseStore({setToken}) {
 
 
     </div>
-    <Outlet/>
+    <useOutlet/>
     </>
   )
 }
