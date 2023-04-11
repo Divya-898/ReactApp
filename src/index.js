@@ -16,7 +16,7 @@ import HookUseRef2 from './HookUseref/HookUseRef2';
 import UseReducerHook from './useReducer/useReducerHook';
 import UseEffectWithprops from './useEffectWithProps/UseEffectWithprops';
 import UseEffect1 from './useEffectWithProps/useEffect1';
-import Context from './AnotherUseContext/Context';
+//import Context from './AnotherUseContext/Context';
 import Home from './loginValidation/route-demo/Home';
 import LifeCycleWithHook from './LifeCycle/LifeCycleWithHook';
 import SearchField from './useSubmit/useSubmit';
@@ -32,20 +32,28 @@ import FakseStore from './FakeStore/FakseStore';
 import FakeLogin from './FakeStore/FakeLogin';
 import AfterLogin from './FakeStore/AfterLogin';
 import { App2 } from './useContext/ProsContext';
+import Context from './Context-Api-App/Context';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <App2></App2>
-   
-    {/*
-    <BrowserRouter>
+<BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
       </div>
+      
     </BrowserRouter>
+
+     {/*
+    
+     
+ <Context>
+ <App/>
+ </Context>
+  
+     <App2></App2>
  <LifeCycleWithHook/>
 
 <UseEffect1/>

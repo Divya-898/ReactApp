@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
+
 //import './App.css';
 function FakseStore({setToken}) {
+  //const { setToken }  = useContext(userContext)
  const navigate = useNavigate()
     //'https://fakestoreapi.com/products'
     const [fake, setFake] = useState([]);

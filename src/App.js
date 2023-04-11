@@ -149,25 +149,45 @@ export default function App() {
 */
 //import routes from './routes';
 //import { useRoutes,useSelector } from 'react-router-dom';
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, BrowserRouter} from 'react-router-dom'
 
 import FakseStore from './FakeStore/FakseStore';
 import FakeLogin from './FakeStore/FakeLogin';
 import MainLayout from "./Layout/MainLayout";
 import AfterLogin from './FakeStore/AfterLogin';
+import Header from './Context-Api-App/Header';
+import Home from './Context-Api-App/Home';
+import Cart from './Context-Api-App/Cart';
+import { useState } from 'react';
 export default function App() {
-
+//const[cart, setCart]= useState([])
   
 
   return (
     <>
+    <div>
     <MainLayout/>
       <Routes>
-      <Route path='/' element={<AfterLogin Cmp={AfterLogin}/>}/>
+      <Route path='/after/:id' element={<AfterLogin Cmp={AfterLogin}/>}/>
      <Route path='/listofproduct' element={<AfterLogin Cmp={FakseStore}/>}/>
      <Route path='/LoggedIn' element={<AfterLogin Cmp={FakeLogin}/>}/>
      
   </Routes>
+  </div>
     </>
+   /* <div>
+      <BrowserRouter>
+        <Header/>
+        <div className='App'>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/cart' element={<Cart/>}>
+          
+            
+          </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </div>*/
   );
 }

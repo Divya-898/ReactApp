@@ -1,40 +1,46 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
 
 function FakeLogin({token,setToken}) {
+    //const { token,setToken }  = useContext(userContext)
+    const firstRef = useRef();
+    const passwordRef = useRef();
    const navigate = useNavigate();
-    const[username, setUsername] = useState("");
-    const[password, setPassword] = useState("");
+   // const[username, setUsername] = useState("");
+    //const[password, setPassword] = useState("");
     const[error, setError] = useState("");
     const loginHandler = ()=>{
-        setError("");
-        setPassword("");
-        setUsername("");
+        //setError("");
+        //setPassword("");
+        //setUsername("");
         axios({
             url:'https://fakestoreapi.com/auth/login',
             method:"POST",
             data:{
-                username: username,
-                password: password,
+                firstRef: firstRef,
+                passwordRef: passwordRef,
             }
             
         }).then(res=>{
             console.log(res.data.token);
             setToken(res.data.token);
-            //navigate('/listofproduct')
-            localStorage.setItem("userToken",res.data.token)
+            //localStorage.setItem("userToken",res.data.token)
+            const user =res.data.token;
+        navigate(`/after/${user}`)
+            console.log('user',user)
+           // navigate()
             
         }).catch((err)=>{
            console.log(err.response);
-           //setError(err.response.data)
+           setError(err.response.data)
         })
     }
   return<> <div className='login'>
   <div className='login-input'>
     <div>
-      <input value={username} onChange={(e)=>setUsername(e.target.value)} type="text" placeholder='username'/><br/><br/>
-      <input value={password} onChange={(e)=>setPassword(e.target.value)} type='password' placeholder='password'/><br/><br/>
+      <input ref={firstRef} type="text" placeholder='username'/><br/><br/>
+      <input ref={passwordRef} type='password' placeholder='password'/><br/><br/>
       {error && <small>{error}</small>}<br/><br/>
       <button onClick={loginHandler}>Login</button>
     </div>

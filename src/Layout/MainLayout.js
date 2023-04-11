@@ -6,7 +6,7 @@ export default function MainLayout() {
       <nav className="nav-bar">
         <ul>
           <li>
-            <Link to="home"> Home</Link>
+            <Link to="/"> Home</Link>
           </li>
           <li>
             <Link to="about"> About</Link>
@@ -24,7 +24,7 @@ export default function MainLayout() {
             <Link to="user">LiftingState</Link>
           </li>
           <li>
-            <Link to="/">AfterLogin</Link>
+            <Link to="/after">AfterLogin</Link>
           </li>
           <li>
             <Link to="LoggedIn">FakeLogin</Link>
