@@ -1,17 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useOutlet, useNavigate } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 //import './App.css';
-function FakseStore({setToken}) {
+function FakseStore() {
   //const { setToken }  = useContext(userContext)
  const navigate = useNavigate()
     //'https://fakestoreapi.com/products'
     const [fake, setFake] = useState([]);
-    const logOutHandler = () =>{
-      setToken("");
-      localStorage.clear();
+    var [temp1] =useState('');
+    const {id} = useParams();
+     temp1 = {id};
+    
+    console.log(temp1)
+    const logOutHandler = useCallback(() =>{
+      
+      //localStorage.clear(temp);
       navigate('/LoggedIn')
-    }
+    },[])
     
     console.log(fake)
     const fakeStore = async()=>{
@@ -21,12 +26,13 @@ function FakseStore({setToken}) {
         //console.log(jsonData)
         setFake(jsonData);
     }
-   useMemo(()=>{
+    useMemo(()=>{
       return fakeStore();
   },[])
   return (
     <>
     <div>
+    <h1>Hello :{id}</h1>
       <h2>Fake Api Store</h2>
       <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
       <div className="container">
@@ -38,6 +44,9 @@ function FakseStore({setToken}) {
                 <p>{value.description}</p>
             </div>
            <img src={value.image} alt=""/>
+           <button onClick={()=>{
+          setFake([ value]);
+      }} >add-to-cart</button>
         </div>
         )
       })}
@@ -47,11 +56,12 @@ function FakseStore({setToken}) {
         
       </div>
 
-
+      
 
     </div>
     <useOutlet/>
     </>
+   
   )
 }
 

@@ -8,16 +8,17 @@ export const userContext = createContext()
 const AfterLogin = (props) =>{
   const navigate = useNavigate()
   const {Cmp} = props;
-  const {id} = useParams();
-
+ const {id} = useParams();
+     
     const [token, setToken] = useState();
     //console.log('hello')
     //{ token ? <userContext.Provider value={{ setToken }}/>: <userContext.Provider value={{ setToken }} token={token}/>}
+    //<FakseStore setToken={setToken}/>
   return (
     <div className='App'>
-    <h1>hello{id}</h1>
-      
-    {token ? <FakseStore setToken={setToken}/>: <FakeLogin token={token} setToken={setToken}/>}
+   <h1>hello:{id}</h1>
+   
+    <FakeLogin token={token} setToken={setToken}/>
     </div>
    
   )

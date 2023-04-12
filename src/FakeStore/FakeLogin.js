@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useRef, useState,useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 function FakeLogin({token,setToken}) {
     const focusPoint = useRef(null);
    const lastRef = useRef();
-   
-    
+   const {id} = useParams();
+    console.log({id})
    useEffect(() =>{
     //console.log(focusPoint);
     //console.log(lastRef);
@@ -15,7 +15,7 @@ function FakeLogin({token,setToken}) {
     lastRef.current.style.backgroundColor = "pink";
       focusPoint.current.focus();
     //focusPoint.current.focus();
-   lastRef.current.focus();
+   //lastRef.current.focus();
     //console.log(newRef.current.innerHTML)
    },[focusPoint,lastRef])
     //const { token,setToken }  = useContext(userContext)
@@ -41,7 +41,7 @@ function FakeLogin({token,setToken}) {
             setToken(res.data.token);
             //localStorage.setItem("userToken",res.data.token)
             const user =res.data.token;
-        navigate(`/after/${user}`)
+        navigate(`/listofproduct/${user}`)
             console.log('user',user)
            // navigate()
             
