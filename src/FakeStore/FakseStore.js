@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useOutlet, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import FakeCart from './FakeCart';
 //import './App.css';
 function FakseStore() {
   //const { setToken }  = useContext(userContext)
@@ -44,10 +45,13 @@ function FakseStore() {
                 <p>{value.description}</p>
             </div>
            <img src={value.image} alt=""/>
-           <button onClick={()=>{
-          setFake([ value]);
-      }} >add-to-cart</button>
-        </div>
+           <button className='add' onClick={()=>{
+          setFake([value]);
+      }}> add to cart</button>
+          {/*<FakeCart prod={[value]} key={value.id} setFake={setFake}/>*/}
+          </div>
+     
+  
         )
       })}
        
