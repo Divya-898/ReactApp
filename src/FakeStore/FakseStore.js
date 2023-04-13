@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useOutlet, useNavigate } from 'react-router-dom';
+import { useOutlet, useNavigate, json } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import FakeCart from './FakeCart';
+import { computeHeadingLevel } from '@testing-library/react';
 //import './App.css';
 function FakseStore() {
   //const { setToken }  = useContext(userContext)
@@ -10,6 +11,7 @@ function FakseStore() {
     const [fake, setFake] = useState([]);
     var [temp1] =useState('');
     const {id} = useParams();
+    const {user} = useParams()
      temp1 = {id};
     
     console.log(temp1)
@@ -34,10 +36,14 @@ function FakseStore() {
     <>
     <div>
     <h1>Hello :{id}</h1>
+    <h2>my :{user}</h2>
       <h2>Fake Api Store</h2>
       <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
       <div className="container">
       {fake.map((value)=>{
+        const temp =(value)
+        const temp1 = JSON.stringify(temp)
+        console.log(`${temp1}`)
         return(
             <div className='box'>
             <div className='content'>
@@ -46,9 +52,15 @@ function FakseStore() {
             </div>
            <img src={value.image} alt=""/>
            <button className='add' onClick={()=>{
-          setFake([value]);
+          //setFake([value]);
+          console.log("i am divya");
+          
+          navigate(`/store/${temp}`)
+          //console.log(`/store/${temp}`)
+          //navigate(`/store/${temp}`);
+          //<FakeCart product={temp} key={value.id} setFake={setFake}/>
       }}> add to cart</button>
-          {/*<FakeCart prod={[value]} key={value.id} setFake={setFake}/>*/}
+        
           </div>
      
   

@@ -40,6 +40,9 @@ export default function MainLayout() {
           <li>
             <Link to="LoggedIn">FakeLogin1</Link>
           </li>
+          <li>
+            <Link to="store">storeCart</Link>
+          </li>
         </ul>
       </nav>
       

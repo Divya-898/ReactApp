@@ -160,6 +160,7 @@ import Home from './Context-Api-App/Home';
 import Cart from './Context-Api-App/Cart';
 import { useState } from 'react';
 import Protected from './FakeStore/Protected';
+import FakeCart from './FakeStore/FakeCart';
 export default function App() {
 //const[cart, setCart]= useState([])
   
@@ -171,10 +172,11 @@ export default function App() {
       <Routes>
       <Route path="/dashboard" element={<Protected/>}>  </Route>
       <Route path='after'  element={<AfterLogin Cmp={AfterLogin}/>}/>
-     <Route path='/listofproduct/:id' element={<FakseStore/>}/>
+     <Route path='/listofproduct/:user' element={<FakseStore/>}/>
      <Route path='/' element={<AfterLogin Cmp={FakeLogin}/>}/>
      
      <Route path='LoggedIn1' element={< FakeLogin/>}/>
+     <Route path='/store/:id' element={<FakeCart></FakeCart>}/>
   </Routes>
   </div>
     </>
