@@ -176,7 +176,9 @@ export default function App() {
      <Route path='/' element={<AfterLogin Cmp={FakeLogin}/>}/>
      
      <Route path='LoggedIn1' element={< FakeLogin/>}/>
-     <Route path='/store/:id' element={<FakeCart></FakeCart>}/>
+     <Route path='/store' element={<FakeCart/>}>
+     
+     </Route>
   </Routes>
   </div>
     </>

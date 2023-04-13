@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useOutlet, useNavigate, json } from 'react-router-dom';
+import { useOutlet, useNavigate, json,Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import FakeCart from './FakeCart';
 import { computeHeadingLevel } from '@testing-library/react';
@@ -41,9 +41,11 @@ function FakseStore() {
       <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
       <div className="container">
       {fake.map((value)=>{
-        const temp =(value)
-        const temp1 = JSON.stringify(temp)
-        console.log(`${temp1}`)
+        var temp =([value])
+        var temp1 = JSON.stringify(temp)
+      var te =`${temp1}`;
+      var temp2 = JSON.stringify(te)
+      console.log(te)
         return(
             <div className='box'>
             <div className='content'>
@@ -51,14 +53,18 @@ function FakseStore() {
                 <p>{value.description}</p>
             </div>
            <img src={value.image} alt=""/>
-           <button className='add' onClick={()=>{
+           
+       <button className='add' id={temp1} onClick={(e,id)=>{
+                e.preventDefault();
+                var targe =e.target.id
           //setFake([value]);
           console.log("i am divya");
+          localStorage.setItem('username',temp1)
           
-          navigate(`/store/${temp}`)
+          //navigate('/store',{...temp})
           //console.log(`/store/${temp}`)
-          //navigate(`/store/${temp}`);
-          //<FakeCart product={temp} key={value.id} setFake={setFake}/>
+        navigate('/store');
+          //<FakeCart product={temp} key={value.id} setFake={setFake([value])}/>
       }}> add to cart</button>
         
           </div>

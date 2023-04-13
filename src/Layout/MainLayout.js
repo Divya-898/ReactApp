@@ -41,7 +41,7 @@ export default function MainLayout() {
             <Link to="LoggedIn">FakeLogin1</Link>
           </li>
           <li>
-            <Link to="store">storeCart</Link>
+            <Link to="store/">storeCart</Link>
           </li>
         </ul>
       </nav>

@@ -1,13 +1,25 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useLoaderData, useLocation, useParams } from 'react-router-dom'
 
 function FakeCart() {
+//const location =useLocation()
   //const {cart} ={prod};
   console.log("welcome to cart")
-  const {name} =useParams();
-  console.log({name})
+  var local =localStorage.getItem('username')
+  console.log(local)
+  var array = [];
+array.push(local);
+console.log(array);
+//document.write(JSON.stringify(array, null, ' '));
+
+  //const {id} =location.state();
+  //console.log({id})
+ 
+  //local.replace(/['"]+/g, '')
+  //console.log(local)
+  
   return(
-    <h1>hello {name}</h1>
+    <h1>hello {local[0].id}</h1>
   )
   //setFake(product)
   /*return (
