@@ -42,10 +42,33 @@ function FakseStore() {
       <div className="container">
       {fake.map((value)=>{
         var temp =([value])
-       
-       
+        var t = value.image
+        var getBase64StringFromDataURL = (t) =>
+    t.replace('data:', '').replace(/^.+,/, '');
+    
+        var temp3= [{
+          title :value.title,
+          description:value.description,
+          image:getBase64StringFromDataURL(value.image)
+
+        }
+        ]
+        var temp6 = value.image;
+        console.log(temp6);
+        //var a =window.btoa(JSON.stringify(temp3)); 
+        console.log(typeof(temp3))
+       // var t3 =JSON.parse(temp3)
+       console.log(temp3)
+       const parsetemp = JSON.stringify(temp3)
        let encodedObject = encodeURIComponent(JSON.stringify(temp)); 
-     
+       console.log(typeof(parsetemp))
+        console.log(parsetemp)
+        var parse1 = JSON.parse(parsetemp)
+        console.log()
+        var temp1 = JSON.stringify(temp)
+      var te =`${temp1}`;
+      var temp2 = JSON.parse(te)
+      var temp4 =temp2[0];
         return(
             <div className='box'>
             <div className='content'>
@@ -54,8 +77,13 @@ function FakseStore() {
             </div>
            <img src={value.image} alt=""/>
            
-       <button className='add'  onClick={()=>{
-               
+       <button className='add' id={temp1} onClick={(e,id)=>{
+                e.preventDefault();
+                var targe =e.target.id
+          //setFake([value]);
+          console.log("i am divya");
+          localStorage.setItem('username',temp1)
+          var user =localStorage.getItem('username')
           //navigate('/store',{...temp})
           //console.log(`/store/${temp}`)
           navigate('/store/'+encodedObject);
