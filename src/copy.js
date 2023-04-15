@@ -52,10 +52,10 @@ function FakseStore() {
             <div className='box'>
            <StoreComponent product={value}></StoreComponent>
             <button className='add' id={value} onClick={()=>{
-               
+               navigate('/store/'+encodedObject);
           //navigate('/store',{...temp})
           //console.log(`/store/${temp}`)
-          navigate('/store/'+encodedObject);
+          
           //<FakeCart product={temp} key={value.id} setFake={setFake([value])}/>
       }}> add to cart</button>
         </div>

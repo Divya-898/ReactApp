@@ -36,8 +36,12 @@ function FakseStore() {
 const navigateUser = (e) =>{
   var id =e.target.id;
   console.log(id)
+  let encodedObject = encodeURIComponent((id)); 
+  console.log(encodedObject)
+  navigate('/store/'+encodedObject);
+  //console.log(id)
 }
-console.log(document.querySelectorAll('.btn-user'))
+//console.log(document.querySelectorAll('.btn-user'))
   return (
     <>
     <div>
@@ -50,21 +54,25 @@ console.log(document.querySelectorAll('.btn-user'))
       {fake.map((value)=>{
         var temp =([value]);
         console.log(value)
+        let encodedObject = encodeURIComponent(JSON.stringify(temp)); 
           var temp2 = JSON.stringify(value)
         return(
           
             
             <div className='box'>
            <StoreComponent product={value}></StoreComponent>
-           <button className="btn-user" onClick={navigateUser} id={temp2}>add</button>
-           <button className="to-add" 
-              id={JSON.stringify(value)}>Add to cart</button>
+           <button className="btn-user" id={JSON.stringify(temp)} onClick={navigateUser}>add</button>
+          
+               
           
            
           
 
            {/* <button className='add' id={value} onClick={()=>{
-               
+               <button className='add'  onClick={()=>{
+               navigate('/store/'+encodedObject);
+        
+              }}>Add to cart</button>
                
           //navigate('/store',{...temp})
           //console.log(`/store/${temp}`)

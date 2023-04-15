@@ -10,13 +10,16 @@ function FakeCart() {
 
 
    const {id} = useParams();
-  
+   const name = {id};
+  //console.log(name[0].title);
+ const id1 =JSON.stringify({id})
+ console.log(id1)
+  console.log(Object.values(id));
 console.log( typeof( id ));
   var local =localStorage.getItem('username')
   //console.log(typeof(local))
-  const data = JSON.parse(local);
+  //const data = JSON.parse(local);
   console.log(typeof( data ))
- 
   const data2 =JSON.parse(id)
   console.log(data2)
   const data1 = JSON.stringify(data2)
@@ -41,13 +44,26 @@ console.log(array);
       {id.map(home => <div>{home.title}</div>)}
     </div>*/
   
-  return(
-    <>
-    <h1>welcome to cart</h1>
-    <div className="col">
-
+    return(
+      <>
+      <h1>welcome to cart</h1>
+      <div className="col">
+  
+      
+      {data2.map((value)=>{
+     return(
+      <div className='box'>
+             <StoreComponent product={value}></StoreComponent>
+             </div>
+      
+     )
+      })}
+    </div>
     
-    {data2.map((value)=>{
+   
+    {/*
+    
+     {data2.map((value)=>{
    return(
     <div className='box'>
            <StoreComponent product={value}></StoreComponent>
@@ -55,11 +71,7 @@ console.log(array);
     
    )
     })}
-  </div>
-    
-    
-   
-    {/*{data.map((value)=>
+    {data.map((value)=>
     <div className='box'>
     <div className='content'>
         <h5>{value.title}</h5>
