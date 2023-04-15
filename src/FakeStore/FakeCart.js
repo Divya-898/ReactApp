@@ -1,5 +1,6 @@
 import React from 'react'
-import { useLoaderData, useLocation, useParams } from 'react-router-dom'
+import { useLoaderData, useLocation, useParams } from 'react-router-dom';
+import StoreComponent from './StoreComponent';
 
 function FakeCart() {
 //const location =useLocation()
@@ -17,6 +18,7 @@ console.log( typeof( id ));
   console.log(typeof( data ))
  
   const data2 =JSON.parse(id)
+  console.log(data2)
   const data1 = JSON.stringify(data2)
   console.log(typeof(data1))
   console.log(data2[0].title)
@@ -41,18 +43,18 @@ console.log(array);
   
   return(
     <>
+    <h1>welcome to cart</h1>
     <div className="col">
 
     
-    {data2.map((value)=>
+    {data2.map((value)=>{
+   return(
     <div className='box'>
-    <div className='content'>
-        <h5>{value.title}</h5>
-        <p>{value.description}</p>
-        <img src={value.image} alt=""/>
-    </div>
-    </div>
-    )}
+           <StoreComponent product={value}></StoreComponent>
+           </div>
+    
+   )
+    })}
   </div>
     
     

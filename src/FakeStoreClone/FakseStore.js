@@ -20,6 +20,18 @@ function FakseStore() {
       //localStorage.clear(temp);
       navigate('/LoggedIn')
     },[])
+    useEffect(()=>{
+      const add = document.querySelectorAll('.add-btn');
+      add.forEach((value) =>{
+        value.addEventListner('click',navigateHandle);
+      })
+  
+    },[])
+
+    const navigateHandle = (e) =>{
+          const id = e.target.id;
+          console.log(id)
+    }
     
     console.log(fake)
     const fakeStore = async()=>{
@@ -76,9 +88,10 @@ function FakseStore() {
                 <p>{value.description}</p>
             </div>
            <img src={value.image} alt=""/>
+           <button className='add-btn' id={temp1}>add</button>
            
-       <button className='add' id={temp1} onClick={(e,id)=>{
-                e.preventDefault();
+       {/*<button className='add' id={temp1} onClick={(e,id)=>{
+              
                 var targe =e.target.id
           //setFake([value]);
           console.log("i am divya");
@@ -88,7 +101,7 @@ function FakseStore() {
           //console.log(`/store/${temp}`)
           navigate('/store/'+encodedObject);
           //<FakeCart product={temp} key={value.id} setFake={setFake([value])}/>
-      }}> add to cart</button>
+      }}> add to cart</button>*/}
         
           </div>
      

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useOutlet, useNavigate, json,Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import FakeCart from './FakeCart';
+import { computeHeadingLevel } from '@testing-library/react';
 import StoreComponent from './StoreComponent';
 import './StoreStyle.css'
 //import './App.css';
@@ -22,55 +23,41 @@ function FakseStore() {
       navigate('/LoggedIn')
     },[])
     
+    console.log(fake)
     const fakeStore = async()=>{
         const response = await fetch("https://fakestoreapi.com/products");
+        //console.log(response);
         const jsonData = await response.json();
+        //console.log(jsonData)
         setFake(jsonData);
     }
     useMemo(()=>{
       return fakeStore();
   },[])
-
-
-
-const navigateUser = (e) =>{
-  var id =e.target.id;
-  console.log(id)
-}
-console.log(document.querySelectorAll('.btn-user'))
   return (
     <>
     <div>
     <h1>Hello :{id}</h1>
     <h2>my :{user}</h2>
       <h2>Fake Api Store</h2>
-      <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button><br></br><br></br>
-     
+      <button className='Log-out-btn' onClick={logOutHandler}>Log Out</button>
       <div className="container">
       {fake.map((value)=>{
         var temp =([value]);
         console.log(value)
-          var temp2 = JSON.stringify(value)
+       let encodedObject = encodeURIComponent(JSON.stringify(temp)); 
         return(
           
             
             <div className='box'>
            <StoreComponent product={value}></StoreComponent>
-           <button className="btn-user" onClick={navigateUser} id={temp2}>add</button>
-           <button className="to-add" 
-              id={JSON.stringify(value)}>Add to cart</button>
-          
-           
-          
-
-           {/* <button className='add' id={value} onClick={()=>{
-               
+            <button className='add' id={value} onClick={()=>{
                
           //navigate('/store',{...temp})
           //console.log(`/store/${temp}`)
-         // navigate('/store/'+encodedObject);
+          navigate('/store/'+encodedObject);
           //<FakeCart product={temp} key={value.id} setFake={setFake([value])}/>
-      }}> add to cart</button>*/} 
+      }}> add to cart</button>
         </div>
           
      

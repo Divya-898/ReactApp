@@ -24,10 +24,8 @@ function FakeLogin({token,setToken}) {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
     const[error, setError] = useState("");
-    const loginHandler = ()=>{
-        //setError("");
-        //setPassword("");
-        //setUsername("");
+    const loginHandler = (e)=>{
+      e.preventDefault();
         axios({
             url:'https://fakestoreapi.com/auth/login',
             method:"POST",
@@ -42,9 +40,7 @@ function FakeLogin({token,setToken}) {
             //localStorage.setItem("userToken",res.data.token)
             const user =res.data.token;
         navigate(`/listofproduct/${user}`)
-            console.log('user',user)
-           // navigate()
-            
+            console.log('user',user)  
         }).catch((err)=>{
            console.log(err.response);
            setError(err.response.data)
