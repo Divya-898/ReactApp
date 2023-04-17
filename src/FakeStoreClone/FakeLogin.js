@@ -8,18 +8,10 @@ function FakeLogin({token,setToken}) {
    const {id} = useParams();
     console.log({id})
    useEffect(() =>{
-    //console.log(focusPoint);
-    //console.log(lastRef);
-    
     focusPoint.current.style.backgroundColor = "pink";
     lastRef.current.style.backgroundColor = "pink";
       focusPoint.current.focus();
-    //focusPoint.current.focus();
-   //lastRef.current.focus();
-    //console.log(newRef.current.innerHTML)
    },[focusPoint,lastRef])
-    //const { token,setToken }  = useContext(userContext)
-    //const firstRef = useRef
    const navigate = useNavigate();
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");

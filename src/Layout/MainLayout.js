@@ -43,6 +43,12 @@ export default function MainLayout() {
           <li>
             <Link to="store/">storeCart</Link>
           </li>
+          <li>
+            <Link to="context">context</Link>
+          </li>
+          <li>
+            <Link to="statemanagement">stateLift</Link>
+          </li>
         </ul>
       </nav>
       

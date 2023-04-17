@@ -33,22 +33,25 @@ import FakeLogin from './FakeStore/FakeLogin';
 import AfterLogin from './FakeStore/AfterLogin';
 import { App2 } from './useContext/ProsContext';
 import Context from './Context-Api-App/Context';
+import Parent from './Assignment/Parent';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
+ <BrowserRouter>
       <div className="App">
         <h1>useRoutes Example</h1>
     <App/>
       </div>
       
     </BrowserRouter>
+  
+    
 
      {/*
     
-     
+     <
  <Context>
  <App/>
  </Context>

@@ -38,7 +38,7 @@ h2{
 }
 
 .container{
-  /*background-color: rgb(253,253,255);*/
+  background-color: black;
   max-width: 1300px;
   margin: 0 auto;
   display: flex;
@@ -77,10 +77,14 @@ img{
   background-color: white;
 }
 .login-input{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 50%);
+    height: 150px;
+    padding: 40px;
+    width: 450px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
 }
 small{
   color:red;

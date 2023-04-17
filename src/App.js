@@ -161,6 +161,8 @@ import Cart from './Context-Api-App/Cart';
 import { useState } from 'react';
 import Protected from './FakeStore/Protected';
 import FakeCart from './FakeStore/FakeCart';
+import SuperParent from './ContextExample/SuperParent';
+import Parent from './Assignment/Parent';
 export default function App() {
 //const[cart, setCart]= useState([])
   
@@ -176,9 +178,9 @@ export default function App() {
      <Route path='/' element={<AfterLogin Cmp={FakeLogin}/>}/>
      
      <Route path='LoggedIn1' element={< FakeLogin/>}/>
-     <Route path='store/:id' element={<FakeCart/>}>
-     
-     </Route>
+     <Route path='store/:id' element={<FakeCart/>}></Route>
+     <Route path="/context" element={<SuperParent></SuperParent>}></Route>
+     <Route path="statemanagement" element={<Parent></Parent>}></Route>
   </Routes>
   </div>
     </>
