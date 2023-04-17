@@ -2,12 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Child from './Child';
 
 function Parent() {
-    const[count, setCount] = useState(1);
-     useEffect(()=>{
-     btnHandle()
-
+    const[count, setCount] = useState(0);
+   /*  useEffect(()=>{
+     btnHandle();
          
-    },[])
+    },[])*/
     const btnHandle = ()=>{
         setCount(count+1)
     }
@@ -15,7 +14,7 @@ function Parent() {
     <div>
       <Child count={count} ></Child>
       <h1>{count}</h1>
-      <button onClick={btnHandle}>update state</button>
+      <button onClick={btnHandle}>parent state</button>
     </div>
   )
 }

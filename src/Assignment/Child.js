@@ -9,17 +9,17 @@ export default function Child({count}) {
         
     },[count])
     useEffect(() =>{
-        console.log("child",countTwo+1);
+        console.log("child",countTwo);
         
     })
-    /*const setBtn=()=>{
+    const setBtn=()=>{
         setCountTwo(countTwo+1)
-    }*/
+    }
   return (
     <div>
     <h1>Props: {count}</h1>
         <h1>{countTwo}</h1>
-      {/*<button onClick={setBtn}>update state</button>*/}
+      <button onClick={setBtn}>update state</button>
     </div>
   )
 }

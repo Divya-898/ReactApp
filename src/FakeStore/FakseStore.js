@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import FakeCart from "./FakeCart";
 import StoreComponent from "./StoreComponent";
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
 import "./StoreStyle.css";
 //import './App.css';
 function FakseStore() {
@@ -34,8 +35,14 @@ function FakseStore() {
     var id = e.target.id;
     console.log(id);
     let encodedObject = encodeURIComponent(id);
-    console.log(encodedObject);
-    navigate("/store/" + encodedObject);
+   /* let encoded = base64_encode(id);
+    let en = JSON.stringify(encoded)
+    console.log(encoded)
+    
+    let decoded = base64_decode(encoded);
+    console.log(typeof(encoded))
+    console.log(typeof(encoded));*/
+   navigate("/store/"+encodedObject);
     //console.log(id)
   },[]);
   //console.log(document.querySelectorAll('.btn-user'))
