@@ -2,17 +2,18 @@ import React from 'react'
 import {useParams } from 'react-router-dom';
 import StoreComponent from './StoreComponent';
 import {decode as base64_decode, encode as base64_encode} from 'base-64';
+import { FakeModule } from '@faker-js/faker';
 function FakeCart() {
   console.log("welcome to cart")
    const {id} = useParams();
-   const data =JSON.parse(id)
+   //const data =JSON.parse(id);
    //let encoded = base64_encode(data);
    //let en = JSON.stringify(encoded)
    //console.log(en)
-   //let decoded = base64_decode(encoded);
+   let decoded = base64_decode(id);
+   let data = JSON.parse(decoded)
    //console.log(decoded)
    //let da = JSON.parse(decoded);
-   
   return(
       <>
       <h1>welcome to cart</h1>

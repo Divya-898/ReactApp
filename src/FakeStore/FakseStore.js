@@ -34,15 +34,15 @@ function FakseStore() {
   const navigateUser = useCallback((e) =>{
     var id = e.target.id;
     console.log(id);
-    let encodedObject = encodeURIComponent(id);
-   /* let encoded = base64_encode(id);
-    let en = JSON.stringify(encoded)
+    //let encodedObject = encodeURIComponent(id);
+    let encoded = base64_encode(id);
+    //let en = JSON.stringify(encoded)
     console.log(encoded)
     
-    let decoded = base64_decode(encoded);
-    console.log(typeof(encoded))
-    console.log(typeof(encoded));*/
-   navigate("/store/"+encodedObject);
+    //let decoded = base64_decode(encoded);
+    //console.log(typeof(encoded))
+    //console.log(typeof(encoded));*/
+   navigate("/store/"+encoded);
     //console.log(id)
   },[]);
   //console.log(document.querySelectorAll('.btn-user'))
@@ -60,9 +60,8 @@ function FakseStore() {
         <div className="container">
           {fake.map((value) => {
             var temp = [value];
-            console.log(value);
-           // let encodedObject = encodeURIComponent(JSON.stringify(temp));
-           // var temp2 = JSON.stringify(value);
+            //console.log(value);
+           
             return (
               <div className="box">
                 <StoreComponent product={value}></StoreComponent>

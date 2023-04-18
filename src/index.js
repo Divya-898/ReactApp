@@ -34,6 +34,9 @@ import AfterLogin from './FakeStore/AfterLogin';
 import { App2 } from './useContext/ProsContext';
 import Context from './Context-Api-App/Context';
 import Parent from './Assignment/Parent';
+import { Children } from 'react';
+import ChildrenPropss from './PropsChildren/ChildrenProps';
+import SuperChild from './PropsChildren/SuperChild';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -46,7 +49,7 @@ root.render(
       </div>
       
     </BrowserRouter>
-  
+    <SuperChild></SuperChild>
     
 
      {/*
