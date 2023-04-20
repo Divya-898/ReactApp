@@ -37,6 +37,12 @@ import Parent from './Assignment/Parent';
 import { Children } from 'react';
 import ChildrenPropss from './PropsChildren/ChildrenProps';
 import SuperChild from './PropsChildren/SuperChild';
+import User1 from './LiftingState/User1';
+import { Example1 } from './ContextExample2';
+import MainApp from './MultipleContext/MainApp';
+import ExampleStore from './FakeStore/ExampleStore';
+import ContextParent from './ContextAssignment/ContextParent';
+import App3 from './NestedContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -49,11 +55,14 @@ root.render(
       </div>
       
     </BrowserRouter>
-    <SuperChild></SuperChild>
     
+   <MainApp></MainApp>
+ <App3></App3>
 
      {/*
-    
+     <Example1></Example1>
+     <SuperChild></SuperChild>
+    <User1></User1>
      <
  <Context>
  <App/>

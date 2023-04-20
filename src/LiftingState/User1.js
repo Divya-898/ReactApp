@@ -3,7 +3,7 @@ import User from './User'
 
 function User1() {
     function parentAlert(data){
-        alert(data)
+        alert(data.name+data.email)
     }
     //let data ="ram"
   return (

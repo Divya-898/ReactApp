@@ -39,10 +39,10 @@ function FakeLogin({token,setToken}) {
             setToken(res.data.token);
             //localStorage.setItem("userToken",res.data.token)
             const user =res.data.token;
-        navigate(`/listofproduct/${user}`)
+        navigate('/listofproduct')
             console.log('user',user)  
         }).catch((err)=>{
-           console.log(err.response);
+           //console.log(err.response);
            setError(err.response.data)
         })
     }

@@ -1,56 +1,45 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import FakeCart from "./FakeCart";
 import StoreComponent from "./StoreComponent";
-import {decode as base64_decode, encode as base64_encode} from 'base-64';
+import { decode as base64_decode, encode as base64_encode } from "base-64";
 import "./StoreStyle.css";
-//import './App.css';
+import { LoginContext } from "./FakeLogin";
+import { JsonContext } from "../App";
 function FakseStore() {
-  //const { setToken }  = useContext(userContext)
+  const { fake } = useContext(JsonContext);
+  console.log(fake);
   const navigate = useNavigate();
-  //'https://fakestoreapi.com/products'
-  const [fake, setFake] = useState([]);
-  var [temp1] = useState("");
-  const { id } = useParams();
-  const { user } = useParams();
-  temp1 = { id };
-
-  console.log(temp1);
   const logOutHandler = useCallback(() => {
     //localStorage.clear(temp);
     navigate("/LoggedIn");
   }, []);
 
-  const fakeStore = async () => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const jsonData = await response.json();
-    setFake(jsonData);
-  };
-  useMemo(() => {
-    return fakeStore();
-  }, []);
-
-  const navigateUser = useCallback((e) =>{
-    var id = e.target.id;
+  const navigateUser = useCallback((id) => {
     console.log(id);
     //let encodedObject = encodeURIComponent(id);
-    let encoded = base64_encode(id);
+    // let encoded = base64_encode(id);
     //let en = JSON.stringify(encoded)
-    console.log(encoded)
-    
     //let decoded = base64_decode(encoded);
     //console.log(typeof(encoded))
     //console.log(typeof(encoded));*/
-   navigate("/store/"+encoded);
+    //navigate("/store/"+encoded);
     //console.log(id)
-  },[]);
+    navigate(`/store/${id}`)
+  }, []);
   //console.log(document.querySelectorAll('.btn-user'))
   return (
     <>
       <div>
-        <h1>Hello :{id}</h1>
-        <h1>my :{user}</h1>
+        <div></div>
         <h2>Fake Api Store</h2>
         <button className="Log-out-btn" onClick={logOutHandler}>
           Log Out
@@ -60,18 +49,27 @@ function FakseStore() {
         <div className="container">
           {fake.map((value) => {
             var temp = [value];
-            //console.log(value);
-           
+            console.log(value.title);
             return (
-              <div className="box">
+              <div className="box" key={value.id}>
                 <StoreComponent product={value}></StoreComponent>
-                <button
+                <button onClick={()=>navigateUser(value.id)}>add to cart</button>
+                {/*<button
                   className="btn-user"
                   id={JSON.stringify(temp)}
                   onClick={navigateUser}
                 >
                   add
                 </button>
+
+                <button onClick={()=>{
+                  var fake1 = setFake([value]);
+                 <globalInformation.Provider value={{fake1}}>
+                 <FakeCart></FakeCart>
+              navigate('/store')
+                    
+                }}
+                >add</button>*/}
               </div>
             );
           })}

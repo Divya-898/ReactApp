@@ -158,14 +158,27 @@ import AfterLogin from './FakeStore/AfterLogin';
 import Header from './Context-Api-App/Header';
 import Home from './Context-Api-App/Home';
 import Cart from './Context-Api-App/Cart';
-import { useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 import Protected from './FakeStore/Protected';
 import FakeCart from './FakeStore/FakeCart';
 import SuperParent from './ContextExample/SuperParent';
 import Parent from './Assignment/Parent';
+import ThemeContext1 from './ThemeContext';
+import ContextParent from './ContextAssignment/ContextParent';
+export const JsonContext = createContext();
 export default function App() {
 //const[cart, setCart]= useState([])
   
+const [fake, setFake] = useState([]);
+const fakeStore = async () => {
+  const response = await fetch("https://fakestoreapi.com/products");
+  const jsonData = await response.json();
+  console.log(jsonData)
+  setFake(jsonData);
+};
+useMemo(() => {
+  return fakeStore();
+}, []);
 
   return (
     <>
@@ -174,13 +187,25 @@ export default function App() {
       <Routes>
       <Route path="/dashboard" element={<Protected/>}>  </Route>
       <Route path='after'  element={<AfterLogin Cmp={AfterLogin}/>}/>
-     <Route path='/listofproduct/:user' element={<FakseStore/>}/>
      <Route path='/' element={<AfterLogin Cmp={FakeLogin}/>}/>
-     
      <Route path='LoggedIn1' element={< FakeLogin/>}/>
-     <Route path='store/:id' element={<FakeCart/>}></Route>
+     {/*} <Route path='store' element={<FakeCart/>}></Route>
+     <Route path='/listofproduct/:user' element={<FakseStore/>}/>
+     */}
      <Route path="/context" element={<SuperParent></SuperParent>}></Route>
      <Route path="statemanagement" element={<Parent></Parent>}></Route>
+     <Route path="contextBtn" element={<ThemeContext1></ThemeContext1>}></Route>
+     <Route path="contextAssignment" element={<ContextParent></ContextParent>}></Route>
+     <Route
+      path="listofproduct" element={<JsonContext.Provider value={{fake}}>
+      <FakseStore/>
+     </JsonContext.Provider>}
+     ></Route>
+      <Route
+      path="store/:id" element={<JsonContext.Provider value={{fake}}>
+      <FakeCart/>
+     </JsonContext.Provider>}
+     ></Route>
   </Routes>
   </div>
     </>

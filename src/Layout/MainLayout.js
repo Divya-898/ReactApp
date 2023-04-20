@@ -49,6 +49,12 @@ export default function MainLayout() {
           <li>
             <Link to="statemanagement">stateLift</Link>
           </li>
+          <li>
+            <Link to="contextBtn">contextBtn</Link>
+          </li>
+          <li>
+            <Link to="contextAssignment">contextAssignment</Link>
+          </li>
         </ul>
       </nav>
       

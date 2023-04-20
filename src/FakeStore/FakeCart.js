@@ -1,23 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {useParams } from 'react-router-dom';
 import StoreComponent from './StoreComponent';
 import {decode as base64_decode, encode as base64_encode} from 'base-64';
 import { FakeModule } from '@faker-js/faker';
+import  globalInformation  from './FakseStore';
+import { JsonContext } from '../App';
+
 function FakeCart() {
+  const {fake} = useContext(JsonContext);  
+  console.log(typeof(fake))
+    const {id} = useParams();
+    
+    const obj = fake.find(data => parseInt(data.id) === parseInt(id) );
+    console.log(typeof(obj))
+
   console.log("welcome to cart")
-   const {id} = useParams();
+   //const {id} = useParams();
    //const data =JSON.parse(id);
    //let encoded = base64_encode(data);
    //let en = JSON.stringify(encoded)
    //console.log(en)
-   let decoded = base64_decode(id);
-   let data = JSON.parse(decoded)
+   //let decoded = base64_decode(id);
+   //let data = JSON.parse(decoded)
    //console.log(decoded)
    //let da = JSON.parse(decoded);
   return(
       <>
-      <h1>welcome to cart</h1>
-      <div className="container">
+      <div>
+      
+        <div>
+        <h1>{obj.title}</h1>
+     <img src={obj.image}></img>
+     </div>
+     
+      
+     </div>
+      {/*<div className="container">
       {data.map((value)=>{
      return(
       <div className='box'>
@@ -25,7 +43,7 @@ function FakeCart() {
       </div>
        )
       })}
-    </div>
+    </div>*/}
     </>
     )}
   export default FakeCart;
