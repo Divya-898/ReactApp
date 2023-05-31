@@ -1,0 +1,13 @@
+curl --location 'http://localhost:3500/comments' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+
+       "postId": 2,
+        "name": "et fugit eligendi deleniti quidem qui sint nihil autem",
+        "email": "Presley.Mueller@myrl.com",
+        "body": "doloribus at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in"
+}'
+
+
+http://localhost:3500/comments;
+{"postId":2,"name":"Leanne Graham","email":"Sincere@april.biz","body":"test comment"}

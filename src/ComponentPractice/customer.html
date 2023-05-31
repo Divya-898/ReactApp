@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+const fullName = "First Response Academy";
+const name = "First Response";
+const firstName = "First";
+const denormalized = "fIrStNaMe LastName";
+
+const toInitials = str => 
+  str
+    // strip off capital letters (example: "First Last" ==> "FL")
+   .replace(/[^A-Z]/g, "") 
+    // append the second character of the first word to end of this new string  (example: "FL" ==> "FLI")
+   .concat(str.charAt(1).toUpperCase()) 
+    // limit this new string to 2 characters (example: "FLI" ==> "FL")
+   .substring(0, 2); 
+
+[fullName, name, firstName, denormalized].forEach(w => {
+    console.log(`${w}: ${toInitials(w)}`)
+});
+
+    </script>
+</body>
+</html>
