@@ -29,6 +29,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {
   Button,
   Container,
+  Divider,
   InputLabel,
   LinearProgress,
   Pagination,
@@ -124,6 +125,7 @@ function Post() {
     title: "", // required
     body: "", // required
   });
+  const[com, setCom]=useState()
   const handleClose = () => {
     setOpen(false);
   };
@@ -141,10 +143,40 @@ function Post() {
   var options = { year: "numeric", month: "long", day: "numeric" };
   const currentDate = new Date();
   const dateFormate = currentDate.toLocaleDateString("en-US", options);
-  const handleExpandClick = (id) => {
-    if (id) {
-      setExpanded(!expanded);
+  const handleExpandClick = (itemid) => {
+    // console.log(typeof(expanded))
+  //  com ? setExpanded(!expanded) :
+  setCom(itemid)
+  if(com){
+    if(expanded === false ){
+      setExpanded(!expanded)
+        // setCom("")
+        
     }
+    setExpanded(!expanded)
+    // else if(expanded === true ){
+    //   setExpanded(!expanded)
+    // }
+    // else if(expanded===false){
+    //   setExpanded(true)
+    // }
+    // }
+    //  setExpanded(!expanded)
+  }
+  else{
+    console.log(expanded)
+    setExpanded(!expanded)
+    // setExpanded(expanded)
+  }
+   
+    
+    
+
+    // if(post.filter(id => id !==itemid)){
+    // // console.log(post.filter(id => id !==itemid))
+    //   setExpanded(!expanded);
+    // }
+  
   };
   const getData = useCallback(() => {
     fetch(`http://localhost:3500/posts?userId=${userId}`)
@@ -153,9 +185,9 @@ function Post() {
       .catch((error) => console.log("error", error));
     //console.log(match)
   });
-  let postLength = post.length;
+  // let postLength = post.length;
   if (post) {
-    console.log("posttype", typeof post);
+    console.log("posttype",  post);
   }
   const getUserData = () => {
     fetch(`http://localhost:3500/users/${userId}`)
@@ -288,9 +320,9 @@ function Post() {
     payload["title"] = postData.title;
     // payload["completed"] = postData.completed;
     if (postData.body && postData.title) {
-      setTimeout(() => {
-        setLoading1(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
 
       setLoading(true);
 
@@ -299,23 +331,23 @@ function Post() {
         .post(`http://localhost:3500/posts`, payload)
         .then((res) => console.log("successfully"));
         setDisabled(true);
-      setTimeout(() => {
-        setLoading(true);
+      // setTimeout(() => {
+      //   setLoading(true);
 
        
-      }, 1000);
-      setTimeout(() => {
-        setLoading(false);
+      // }, 1000);
+      // setTimeout(() => {
+      //   setLoading(false);
 
        
-      }, 2000);
+      // }, 2000);
      
       setTimeout(() => {
-       
+        setLoading(false);
         setError("Succesfully Created");
 
         window.location.reload();
-      }, 20000);
+      }, 2000);
 
       // window.location.reload();
     } else {
@@ -421,7 +453,7 @@ function Post() {
                       PaperProps={{
                         sx: {
                           width: "50%",
-                          maxHeight: 300,
+                          maxHeight: 350,
                         },
                       }}
                     >
@@ -498,8 +530,11 @@ function Post() {
                           >
                             Submit
                           </button>  */}
+                          <div>
+          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
+         </div>
                           <DialogActions dividers={scroll === "paper"}>
-          <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+          <Box sx={{ width: "80%", margin:"-10px 0px 0px 70px" }}>
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -510,27 +545,23 @@ function Post() {
                                 ""
                               )}
                               <div className="message" style={{position:"relative",left:"80px"}}>
-                              {error==="Successfully ctreated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                              {error==="Succesfully Created" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
                            
-                            <div style={{margin:"20px 0px 0px 0px", display:"flex"}}> 
-                            <Button
-                              onClick={handleClose}
-                              color="error"
-                              variant="contained"
-                              sx={{marginRight:"10px"}}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              type="submit"
-                              color="success"
-                              variant="contained"
-                            >
-                              Submit
-                            </Button>
-                            </div>
+                            <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
+                  <Button
+                    onClick={handleClose}
+                    color="error"
+                    variant="contained"
+                    sx={{ marginRight: "10px" }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="success" variant="contained">
+                    Create
+                  </Button>
+                </div>
           </DialogActions>
                         </form>
                       </DialogContent>
@@ -601,13 +632,13 @@ function Post() {
                           <Typography>Comments:</Typography>
                           <ExpandMore
                             onClick={() => handleExpandClick(items.id)}
-                            aria-expanded={expanded}
+                             aria-expanded={expanded}
                             aria-label="show more"
                           >
                             <ExpandMoreIcon />
                           </ExpandMore>
                         </CardActions>
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                       {(items.id === com) ? <Collapse in={expanded}>
                           <CardContent sx={{ padding: "0px" }}>
                             <CommentPost
                               postId={items.id}
@@ -615,7 +646,7 @@ function Post() {
                               items={items}
                             ></CommentPost>
                           </CardContent>
-                        </Collapse>
+                        </Collapse>:""}
                       </Card>
                     </>
                   ))}

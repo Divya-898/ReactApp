@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import BadgeIcon from '@mui/icons-material/Badge';
-import { Icon, IconButton, LinearProgress, ListItem, ListItemText } from '@mui/material';
+import { Divider, Icon, IconButton, LinearProgress, ListItem, ListItemText, Typography } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import AddIcCallIcon from '@mui/icons-material/AddIcCall';
@@ -123,7 +123,7 @@ const handleSubmit = (e) => {
       setError("Succesfully updated");
 
       window.location.reload();
-    }, 20000);
+    }, 2000);
 }
 else{
   setError("Todo is not Submitted")
@@ -169,7 +169,7 @@ function handleChange(e) {
         sx: {
           width: "50%",
           // height:"500px",
-          maxHeight: 610,
+          maxHeight: 640,
         },
       }}
     >
@@ -345,12 +345,12 @@ function handleChange(e) {
                 padding: "10px",
               }}
             >
-              CatchPhrase
+              Catch-Phrase
             </InputLabel>
             {/* <input type="text" name="body"
               value={values.body}
               onChange={e => setValue(e.target.value)}/> */}
-              <div style={{marginLeft:"3px"}}>
+              <div style={{marginLeft:"-3px"}}>
             <TextField
              disabled={disabled}
               sx={{
@@ -494,8 +494,11 @@ function handleChange(e) {
           >
             Submit
           </button>  */}
+          <div>
+          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"10px"}}/>
+         </div>
           <DialogActions dividers={scroll === "paper"}>
-          <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+          <Box sx={{ width: "80%", margin:"-10px 0px 20px 70px" }}>
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -509,11 +512,13 @@ function handleChange(e) {
                               {error==="Succesfully updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
-                <Button onClick={handleClose}  color="error"
+                            <Typography sx={{paddingTop:"10px", display:"flex", margin:"20px"}}>
+                <Button onClick={handleClose}  color="error" sx={{marginRight:"10px"}}
                               variant="contained">Cancel</Button>
                 <Button type="submit"  
                               color="success"
-                              variant="contained">Submit</Button>
+                              variant="contained">Update</Button>
+                            </Typography>
           </DialogActions>
         </form>
       </DialogContent>

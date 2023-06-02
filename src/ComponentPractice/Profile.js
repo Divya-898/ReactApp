@@ -6,11 +6,11 @@ import UserIntro from "./UserIntro";
 import AlbumsData from "./Apis"
 function Profile({user}) {
   const x = user.name;
-    // var nameparts = [];
-    // nameparts = x.split(" ");
-    // var initials =
-    //   nameparts[0].charAt(0).toUpperCase() +
-    //   nameparts[1].charAt(0).toUpperCase();
+    var nameparts = [];
+    nameparts = x.split(" ");
+    var initials =
+      nameparts[0].charAt(0).toUpperCase() +
+      nameparts[1].charAt(0).toUpperCase();
   //     const current = new Date();
   // var data = AlbumsData();
   // useEffect(()=>{
@@ -37,7 +37,7 @@ function Profile({user}) {
             alt="Remy Sharp"
             
             sx={{ width: 180, height: 180,border:5,borderColor:"white" ,bgcolor: "red",fontSize:"60px" }}
-          >{user.name}</Avatar>
+          >{initials}</Avatar>
            <Box sx={{width: "300px", marginLeft:"15px", marginTop: "40px"}}><div><div><span><h1>{user.name}</h1></span></div></div></Box>
         </Box>
        

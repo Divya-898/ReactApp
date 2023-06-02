@@ -99,26 +99,27 @@ export default function EditComment({ commentId, postId, commentObj }) {
         setError("Succesfully update");
 
         window.location.reload();
-      }, 20000);
+      }, 2000);
     } else {
       setError("Todo is not Submitted");
     }
   };
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(() => {
-        setLoading1(false);
-      }, 5000);
+      setLoading(true);
+      // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
       axios.delete(`http://localhost:3500/comments/${id}`).then((res) => {});
-      setTimeout(() => {
-        setLoading(true);
-      }, 10000);
+      // setTimeout(() => {
+      //   setLoading(true);
+      // }, 10000);
       setTimeout(() => {
         setLoading(false);
         setError("Succesfully Deleted");
 
         window.location.reload();
-      }, 20000);
+      }, 2000);
     } else {
       setError("Comment is not deleted");
     }
@@ -168,7 +169,7 @@ export default function EditComment({ commentId, postId, commentObj }) {
 
         <div>
           <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}>
-            <DialogTitle>Delete Post</DialogTitle>
+            <DialogTitle>Delete Comment</DialogTitle>
             <Divider />
             <DialogContent>
               <Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
@@ -178,27 +179,27 @@ export default function EditComment({ commentId, postId, commentObj }) {
                 </Typography>
               </Box>
             </DialogContent>
-
+            <Typography>
+              <Divider/>
+            </Typography>
             <DialogActions>
-              <Box sx={{ width: "80%", margin: "-30px 0px 0px 70px" }}>
-                {loading ? (
-                  <LinearProgress
-                    variant="buffer"
-                    value={progress}
-                    valueBuffer={buffer}
-                  />
-                ) : (
-                  ""
-                )}
-                <div className="message" style={{ position: "relative" }}>
-                  {error === "Succesfully Deleted" ? (
-                    <p style={{ color: "green" }}>{error}</p>
-                  ) : (
-                    <p style={{ color: "red" }}>{error}</p>
-                  )}
-                </div>
-              </Box>
-              <Button onClick={handleClose1} variant="contained" color="error">
+            <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+                              {loading ? (
+                                <LinearProgress
+                                  variant="buffer"
+                                  value={progress}
+                                  valueBuffer={buffer}
+                                />
+                              ) : (
+                                ""
+                              )}
+                              <div className="message" style={{position:"relative",width:"100px"}}>
+                              {error==="Succesfully Deleted" ? <p style={{color:"green",width:"150px"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                            </div>
+                            </Box>
+                              
+               <Typography sx={{display:"flex", marginTop:"30px"}}>         
+              <Button onClick={handleClose1} variant="contained" color="error" sx={{marginRight:"10px"}}>
                 Cancel
               </Button>
               <Button
@@ -207,8 +208,9 @@ export default function EditComment({ commentId, postId, commentObj }) {
                 onClick={(e) => handleDelete(commentId)}
                 color="success"
               >
-                Ok
+                Delete
               </Button>
+              </Typography>   
             </DialogActions>
           </Dialog>
         </div>
@@ -221,7 +223,7 @@ export default function EditComment({ commentId, postId, commentObj }) {
           PaperProps={{
             sx: {
               width: "50%",
-              maxHeight: 300,
+              maxHeight: 350,
             },
           }}
         >
@@ -321,8 +323,13 @@ export default function EditComment({ commentId, postId, commentObj }) {
           >
             Submit
           </button>  */}
+         
+         <div>
+          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
+         </div>
               <DialogActions dividers={scroll === "paper"}>
-                <Box sx={{ width: "80%", margin: "-30px 0px 0px 70px" }}>
+              
+                <Box sx={{ width: "80%", margin: "0px 0px 0px 70px" }}>
                   {loading ? (
                     <LinearProgress
                       variant="buffer"
@@ -344,7 +351,7 @@ export default function EditComment({ commentId, postId, commentObj }) {
                   </div>
                 </Box>
 
-                <div style={{ margin: "20px 0px 0px 0px", display: "flex" }}>
+                <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
                   <Button
                     onClick={handleClose}
                     color="error"
@@ -354,7 +361,7 @@ export default function EditComment({ commentId, postId, commentObj }) {
                     Cancel
                   </Button>
                   <Button type="submit" color="success" variant="contained">
-                    Submit
+                    Update
                   </Button>
                 </div>
               </DialogActions>

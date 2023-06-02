@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
+
+import axios from "axios";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
+  Menu,
+  MenuItem,
+  TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import axios from "axios";
+import { useParams } from "react-router-dom";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -31,56 +33,59 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );
 
-
-export default function UserAlbumsPhoto({
-  albumId,
-  albumWidth,
-  albumHeight,
-  items,
-}) {
-  // console.log("album",user)
-  const [photo, setPhoto] = useState("");
+export default function EditPhotos({ todos }) {
+  // console.log("comments",commentId);
+  const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-  const [values, setValue] = useState(items);
+  const [values, setValue] = useState(todos);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState("");
-  const { userId } = useParams();
-  const handleClose = () => {
-    setOpen(false);
+  // ({
+  //   title: "", // required
+  //   completed: "",
+
+  // });
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-  // console.log(pid);
-  //   const getPhotosData = () => {
-  //       fetch(`http://localhost:3500/photos?albumId=${albumId}`)
-  //         .then((response) => response.json())
-  //         .then((result) => setPhoto(result[0]))
-  //         .catch((error) => console.log("error", error));
-  //     };
-  //       if (photo) {
-  //   console.log(photo);
-  //  }
-  // useEffect(()=>{
-  //   getPhotosData();
-  // },[])
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   const handleClickOpen1 = () => {
     setOpenBox(true);
   };
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-  };
+
   const handleClose1 = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpenBox(false);
     }
   };
-  function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
-  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleClickOpen = (scrollType) => () => {
+    setOpen(true);
+  };
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:3500/todos/${todos.id}`)
+  //     .then((response) => {
+  //       setValue(response.data);
+  //       console.log(response.data);
+  //     })
+  //     //.then((result) => setValue(result))
+  //     .catch((error) => console.log("error", error));
+  // }, []);
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
@@ -96,7 +101,7 @@ export default function UserAlbumsPhoto({
         // }, 5000);
         setLoading(true)
       axios
-        .put(`http://localhost:3500/albums/${items.id}`, payload)
+        .put(`http://localhost:3500/todos/${todos.id}`, payload)
         .then((res) => {
           console.log("hello");
         });
@@ -121,19 +126,19 @@ export default function UserAlbumsPhoto({
       // }, 1000)
     
   };
-
   const handleDelete = (id) => {
     if (id) {
       // setTimeout(() => {
       //   setLoading1(false);
       // }, 5000);
       setLoading(true);
-      axios.delete(`http://localhost:3500/albums/${items.id}`).then((res) => {
+      axios.delete(`http://localhost:3500/todos/${todos.id}`).then((res) => {
         // window.location.reload();
       });
       // setTimeout(() => {
       //   setLoading(true);
 
+       
       // }, 10000);
       setTimeout(() => {
         setLoading(false);
@@ -141,46 +146,69 @@ export default function UserAlbumsPhoto({
 
         window.location.reload();
       }, 1000);
-    } else {
-      setError("Todos is not deleted");
-    }
+  }
+  else{
+    setError("Todos is not deleted")
+  }
+    
   };
 
+  function handleChange(e) {
+    setValue({ ...values, [e.target.name]: e.target.value });
+  }
   return (
     <>
-      <div className="container">
-        <div
-          style={{
-            display: "flex",
-            position: "relative",
-            top: "35px",
-            left: "75px",
-            color: "white",
-          }}
-        >
-          <DeleteIcon onClick={handleClickOpen1}></DeleteIcon>
-          <ModeEditIcon onClick={handleClickOpen("paper")}></ModeEditIcon>
-        </div>
-        <img
-          src={albumId.thumbnailUrl}
-          alt="photo"
-          width={albumWidth}
-          height={albumHeight}
-          style={{ borderRadius: "10px" }}
-        ></img>
+      <div>
         <div>
-          <Dialog
-            disableEscapeKeyDown
-            open={openBox}
-            onClose={handleClose1}
-            PaperProps={{
-              sx: {
-                width: "30%",
-                maxHeight: 300,
-              },
+          <Button
+            sx={{ position: "relative", left: "310px" }}
+            id="basic-button"
+            aria-controls={menuOpen ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={menuOpen ? "true" : undefined}
+            onClick={handleClickMenu}
+          >
+            <div>
+              <MoreVertIcon sx={{ float: "right" }} />
+            </div>
+          </Button>
+
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={handleCloseMenu}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
             }}
           >
-            <DialogTitle>Delete Albums</DialogTitle>
+            <MenuItem>
+              <Button
+                onClick={handleClickOpen("paper")}
+                sx={{ float: "right" }}
+              >
+                Edit
+              </Button>{" "}
+            </MenuItem>
+            <MenuItem>
+              {" "}
+              <Button onClick={handleClickOpen1} sx={{ float: "right" }}>
+                delete
+              </Button>
+            </MenuItem>
+          </Menu>
+        </div>
+
+        <div>
+          <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}
+          PaperProps={{
+            sx: {
+              width:"30%",
+            maxHeight: 300,
+            },
+          }}
+          >
+            <DialogTitle>Delete Todos</DialogTitle>
             <Divider />
             <DialogContent>
               <Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
@@ -188,49 +216,37 @@ export default function UserAlbumsPhoto({
               </Box>
             </DialogContent>
             <Typography>
-              <Divider />
+              <Divider/>
             </Typography>
             <DialogActions>
-              <Box sx={{ width: "80%", margin: "-30px 0px 0px 70px" }}>
-                {loading ? (
-                  <LinearProgress
-                    variant="buffer"
-                    value={progress}
-                    valueBuffer={buffer}
-                  />
-                ) : (
-                  ""
-                )}
-                <div
-                  className="message"
-                  style={{ position: "relative", width: "100px" }}
-                >
-                  {error === "Succesfully Deleted" ? (
-                    <p style={{ color: "green", width: "150px" }}>{error}</p>
-                  ) : (
-                    <p style={{ color: "red" }}>{error}</p>
-                  )}
-                </div>
-              </Box>
-
-              <Typography sx={{ display: "flex", marginTop: "30px" }}>
-                <Button
-                  onClick={handleClose1}
-                  variant="contained"
-                  color="error"
-                  sx={{ marginRight: "10px" }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  //onClick={e=>handleDelete(commentId)}
-                  variant="contained"
-                  onClick={(e) => handleDelete(items.id)}
-                  color="success"
-                >
-                  Delete
-                </Button>
-              </Typography>
+            <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+                              {loading ? (
+                                <LinearProgress
+                                  variant="buffer"
+                                  value={progress}
+                                  valueBuffer={buffer}
+                                />
+                              ) : (
+                                ""
+                              )}
+                              <div className="message" style={{position:"relative",width:"100px"}}>
+                              {error==="Succesfully Deleted" ? <p style={{color:"green",width:"150px"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                            </div>
+                            </Box>
+                              
+               <Typography sx={{display:"flex", marginTop:"30px"}}>         
+              <Button onClick={handleClose1} variant="contained" color="error" sx={{marginRight:"10px"}}>
+                Cancel
+              </Button>
+              <Button
+                //onClick={e=>handleDelete(commentId)}
+                variant="contained"
+                onClick={(e) => handleDelete(todos.id)}
+                color="success"
+              >
+                Delete
+              </Button>
+              </Typography>   
             </DialogActions>
           </Dialog>
         </div>
@@ -248,7 +264,7 @@ export default function UserAlbumsPhoto({
           }}
         >
           <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
-            Update Albums
+            Update Todos
           </DialogTitle>
           <DialogContent dividers={scroll === "paper"}>
             <form
@@ -315,7 +331,23 @@ export default function UserAlbumsPhoto({
                 />
               </div>
 
-             
+              <div style={{ display: "flex" }}>
+                <InputLabel
+                  sx={{
+                    padding: "8px",
+                    margin: "5px 0px 0px 1px",
+                  }}
+                >
+                  Status
+                </InputLabel>
+                <StyledTextarea
+                  type="text"
+                  disabled={disabled}
+                  name="completed"
+                  value={values.completed}
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
 
               {/* <button
             className="login-btn"
@@ -360,101 +392,6 @@ export default function UserAlbumsPhoto({
           </DialogContent>
         </Dialog>
       </div>
-
-      {/* <Grid item xs={6}>
-          <Item>2</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>3</Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>4</Item>
-        </Grid> */}
-
-      {/* <Grid rowSpacing={1}>
-  <Grid item xs={4}>
-    <Item>{photo.id}</Item>
-  </Grid>
-  
-</Grid> */}
     </>
   );
 }
-//  <ImageList sx={{ width: 400, height: 450,padding: "11px" }} cols={3} rowHeight={164}>
-// {photo && photo.map((item) => (
-//     <ImageListItem key={item.id}>
-//       <img
-//         src={item.thumbnailUrl}
-
-//         alt={item.title}
-//         loading="lazy"
-//       />
-//     </ImageListItem>
-//   ))}
-//     </ImageList>
-//     );
-//   }
-{
-  /* {photo && photo.map((item) => (
-        <ImageListItem key={item.id}>
-          <img
-            src={item.thumbnailUrl}
-           
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))} */
-}
-// </ImageList>
-
-// const itemData = [
-//   {
-//     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-//     title: 'Breakfast',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-//     title: 'Burger',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-//     title: 'Camera',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-//     title: 'Coffee',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-//     title: 'Hats',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-//     title: 'Honey',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-//     title: 'Basketball',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-//     title: 'Fern',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-//     title: 'Mushrooms',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-//     title: 'Tomato basil',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-//     title: 'Sea star',
-//   },
-//   {
-//     img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-//     title: 'Bike',
-//   },
-// ];

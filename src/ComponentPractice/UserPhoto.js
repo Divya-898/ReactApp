@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import UserAlbumsPhoto from "./UserAlbumsPhoto";
-import { Grid, ImageList } from "@mui/material";
+import { Grid, ImageList, ImageListItemBar } from "@mui/material";
 import ImageListItem from "@mui/material/ImageListItem";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
@@ -14,6 +14,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   LazyLoadComponent,
   LazyLoadImage,
@@ -25,6 +27,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import EditPhotos from "./EditPhotos";
+import Edit from "./Edit";
 const style = {
   position: "absolute",
   top: "50%",
@@ -58,7 +62,68 @@ function UserPhoto({ photos, albums }) {
 
   
  const [createPhotos, setCreatePhotos] = React.useState('');
-
+ const itemData = [
+  {
+    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    title: 'Breakfast',
+    author: '@bkristastucchio',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    title: 'Burger',
+    author: '@rollelflex_graphy726',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    title: 'Camera',
+    author: '@helloimnik',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    title: 'Coffee',
+    author: '@nolanissac',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    title: 'Hats',
+    author: '@hjrc33',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+    title: 'Honey',
+    author: '@arwinneil',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+    title: 'Basketball',
+    author: '@tjdragotta',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+    title: 'Fern',
+    author: '@katie_wasserman',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+    title: 'Mushrooms',
+    author: '@silverdalex',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    title: 'Tomato basil',
+    author: '@shelleypauls',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+    title: 'Sea star',
+    author: '@peterlaster',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    title: 'Bike',
+    author: '@southside_customs',
+  },
+];
 
  const handleClose = () => {
   setOpen(false);
@@ -287,21 +352,56 @@ const handleClickOpen = (scrollType) => () => {
               </form>
             </Box>
           </Modal> */}
-          <LazyLoadComponent>
-            <div style={{ height: "55vh", overflow: "auto" }}>
+            {/* <div style={{ height: "55vh", overflow: "auto", }}>
               {photos &&
-                photos.map((image) => (
+                photos.map((image) => ( 
+                  <>
+                  
+                  
+                 <span><Edit photoUrl={image}></Edit></span>
+                
                   <LazyLoadImage
                     className="load-image"
                     height="150px"
                     src={image.thumbnailUrl}
-                    width="130px"
+                    width="80px"
                     effect="opacity"
                     threshold={10}
                   />
+                 
+                
+
+                  </>
+                  
+                  
                 ))}
-            </div>
-          </LazyLoadComponent>
+            </div> */}
+            <ImageList sx={{  height: 300 ,padding:"0 8px"}} cols={3} gap={8}>
+      {photos  && photos.map((item) => (
+        <>
+        <ImageListItem key={item.img} sx={{height:"150px"}}>
+       <span style={{marginTop:"-25px"}}><Edit photoUrl={item}></Edit></span>
+          {/* <Edit photoUrl={item}></Edit> */}
+          {/* </ImageListItemBar> */}
+        <ImageListItemBar
+            title={item.title}
+           position="bottom"
+          
+          /> 
+          <img
+            src={item.thumbnailUrl}
+            width="100px"
+            height="100px"
+            alt={item.title}
+            loading="lazy"
+          />
+           
+        </ImageListItem>
+       
+          </>
+      ))}
+    </ImageList>
+         
         </Paper>
       </Box>
     </div>

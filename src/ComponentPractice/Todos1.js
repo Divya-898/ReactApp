@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useParams } from 'react-router-dom';
 import Checkbox, { checkboxClasses } from "@mui/material/Checkbox";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputLabel, LinearProgress, TextField, TextareaAutosize, Typography} from '@mui/material';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, InputLabel, LinearProgress, TextField, TextareaAutosize, Typography} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
@@ -89,6 +89,7 @@ function UserTodos() {
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     console.log("postId", userId);
+    // payload["photos"]={ "thumbnail":streetref.current.value,}
     let payload = {};
      payload["userId"]=userId;
     // payload["name"] = user.name;
@@ -96,9 +97,9 @@ function UserTodos() {
      payload["title"] = formData.title;
     payload["completed"] = formData.completed;
     if (formData.title && formData.completed) {
-      setTimeout(() => {
-        setLoading1(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
 
       setLoading(true);
     fetch(`http://localhost:3500/todos`, {
@@ -108,17 +109,17 @@ function UserTodos() {
     })
       .then((res) => res.json())
       setDisabled(true)
-      setTimeout(() => {
-        setLoading(true);
+      // setTimeout(() => {
+      //   setLoading(true);
 
        
-      }, 10000);
+      // }, 1000);
       setTimeout(() => {
         setLoading(false);
         setError("Successfully created");
 
         window.location.reload();
-      }, 20000);
+      }, 2000);
   }
   else{
     setError("Todo is not Submitted")
@@ -140,7 +141,7 @@ function UserTodos() {
         '& > :not(style)': {
           m: 1,
           width: "422px",
-          height: "1100px",
+          height: "600px",
         },
       }}
     >
@@ -244,8 +245,11 @@ function UserTodos() {
                           >
                             Submit
                           </button>  */}
+                          <div>
+          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
+         </div>
                           <DialogActions dividers={scroll === "paper"}>
-                            <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+                            <Box sx={{ width: "80%", margin:"-10px 0px 0px 70px" }}>
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -256,27 +260,23 @@ function UserTodos() {
                                 ""
                               )}
                               <div className="message" style={{position:"relative",left:"80px",color:"red"}}>
-                              {error==="Succesfully Created" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                              {error==="Successfully created" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
                            
-                            <div style={{margin:"20px 0px 0px 0px", display:"flex"}}> 
-                            <Button
-                              onClick={handleClose}
-                              color="error"
-                              variant="contained"
-                              sx={{marginRight:"10px"}}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              type="submit"
-                              color="success"
-                              variant="contained"
-                            >
-                              Submit
-                            </Button>
-                            </div>
+                            <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
+                  <Button
+                    onClick={handleClose}
+                    color="error"
+                    variant="contained"
+                    sx={{ marginRight: "10px" }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="success" variant="contained">
+                    Create
+                  </Button>
+                </div>
                            
                           </DialogActions>
                         </form>
@@ -335,6 +335,7 @@ function UserTodos() {
          <Grid item xs={10} sx={{ width:"150px"}}>
          <Item sx={{boxShadow:"none","text-align": "start",height:"10px",width:"380px" ,padding: "0px 0px 0px 20px"}}>{data1.title} 
            <Checkbox disableTouchRipple Default Read-Only 
+           sx={{ "&:hover": { backgroundColor: "transparent" } }}
             labelStyle={{color: 'blue'}}
   iconStyle={{fill: 'blue'}}
           

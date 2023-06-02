@@ -18,6 +18,8 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
@@ -31,175 +33,137 @@ const StyledTextarea = styled(TextareaAutosize)(
   margin:10px;
   border-radius: 4px
 `
-);
-
-export default function EditTodos({ todos }) {
-  // console.log("comments",commentId);
-  const { userId } = useParams();
-  const [open, setOpen] = React.useState(false);
-  const [openBox, setOpenBox] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
-  const [values, setValue] = useState(todos);
-  const [progress, setProgress] = useState(0);
-  const [buffer, setBuffer] = useState(10);
-  const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const [error, setError] = useState("");
-  // ({
-  //   title: "", // required
-  //   completed: "",
-
-  // });
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClickOpen1 = () => {
-    setOpenBox(true);
-  };
-
-  const handleClose1 = (event, reason) => {
-    if (reason !== "backdropClick") {
-      setOpenBox(false);
-    }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-  };
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:3500/todos/${todos.id}`)
-  //     .then((response) => {
-  //       setValue(response.data);
-  //       console.log(response.data);
-  //     })
-  //     //.then((result) => setValue(result))
-  //     .catch((error) => console.log("error", error));
-  // }, []);
-
-  const handleSubmit = (e, id) => {
-    e.preventDefault();
-    console.log("comments");
-    let payload = {};
-    payload["userId"] = id;
-    payload["title"] = values.title;
-    payload["completed"] = values.completed;
-
-    if (values.title) {
+);;
+function Edit({photoUrl}) {
+    const { userId } = useParams();
+    const [open, setOpen] = React.useState(false);
+    const [openBox, setOpenBox] = React.useState(false);
+    const [scroll, setScroll] = React.useState("paper");
+    
+    const [values, setValue] = useState(photoUrl);
+    const [progress, setProgress] = useState(0);
+    const [buffer, setBuffer] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(true);
+    const [disabled, setDisabled] = useState(false);
+    const [error, setError] = useState("");
+    // ({
+    //   title: "", // required
+    //   completed: "",
+  
+    // });
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const menuOpen = Boolean(anchorEl);
+    const handleClickMenu = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+      setAnchorEl(null);
+    };
+  
+    const handleClickOpen1 = () => {
+      setOpenBox(true);
+    };
+  
+    const handleClose1 = (event, reason) => {
+      if (reason !== "backdropClick") {
+        setOpenBox(false);
+      }
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleClickOpen = (scrollType) => () => {
+      setOpen(true);
+    };
+    // useEffect(() => {
+    //   axios
+    //     .get(`http://localhost:3500/todos/${todos.id}`)
+    //     .then((response) => {
+    //       setValue(response.data);
+    //       console.log(response.data);
+    //     })
+    //     //.then((result) => setValue(result))
+    //     .catch((error) => console.log("error", error));
+    // }, []);
+  
+    const handleSubmit = (e, id) => {
+      e.preventDefault();
+      console.log("comments");
+      let payload = {};
+      payload["albumId"] = id;
+      payload["url"] = values.url;
+      payload["thumbnailUrl"] = values.thumbnailUrl;
+  
+      if (values.thumbnailUrl) {
+          // setTimeout(() => {
+          //   setLoading(true);
+          // }, 5000);
+          setLoading(true)
+        axios
+          .put(`http://localhost:3500/photos/${photoUrl.id}`, payload)
+          .then((res) => {
+            console.log("hello");
+          });
+          // setTimeout(() => {
+          //   setLoading(true);
+    
+           
+          // }, 10000);
+          setDisabled(true);
+          setTimeout(() => {
+            setLoading(false);
+            setError("Succesfully updated");
+    
+            // window.location.reload();
+          }, 2000);
+      }
+      else{
+        setError("Todo is not Submitted")
+      }
+        // setTimeout(()=>{
+        //     window.location.reload();
+        // }, 1000)
+      
+    };
+    const handleDelete = (id) => {
+      if (id) {
         // setTimeout(() => {
-        //   setLoading(true);
+        //   setLoading1(false);
         // }, 5000);
-        setLoading(true)
-      axios
-        .put(`http://localhost:3500/todos/${todos.id}`, payload)
-        .then((res) => {
-          console.log("hello");
+        setLoading(true);
+        axios.delete(`http://localhost:3500/photos/${photoUrl.id}`).then((res) => {
+          // window.location.reload();
         });
         // setTimeout(() => {
         //   setLoading(true);
   
          
         // }, 10000);
-        setDisabled(true);
         setTimeout(() => {
           setLoading(false);
-          setError("Succesfully updated");
+          setError("Succesfully Deleted");
   
           window.location.reload();
-        }, 2000);
+        }, 1000);
     }
     else{
-      setError("Todo is not Submitted")
+      setError("Todos is not deleted")
     }
-      // setTimeout(()=>{
-      //     window.location.reload();
-      // }, 1000)
-    
-  };
-  const handleDelete = (id) => {
-    if (id) {
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-      setLoading(true);
-      axios.delete(`http://localhost:3500/todos/${todos.id}`).then((res) => {
-        // window.location.reload();
-      });
-      // setTimeout(() => {
-      //   setLoading(true);
-
-       
-      // }, 10000);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Succesfully Deleted");
-
-        window.location.reload();
-      }, 1000);
-  }
-  else{
-    setError("Todos is not deleted")
-  }
-    
-  };
-
-  function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
-  }
+      
+    };
+  
+    function handleChange(e) {
+      setValue({ ...values, [e.target.name]: e.target.value });
+    }
   return (
-    <>
-      <div>
-        <div>
-          <Button
-            sx={{ position: "relative", left: "310px" }}
-            id="basic-button"
-            aria-controls={menuOpen ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={menuOpen ? "true" : undefined}
-            onClick={handleClickMenu}
-          >
-            <div>
-              <MoreVertIcon sx={{ float: "right" }} />
-            </div>
-          </Button>
-
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleCloseMenu}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem>
-              <Button
-                onClick={handleClickOpen("paper")}
-                sx={{ float: "right" }}
-              >
-                Edit
-              </Button>{" "}
-            </MenuItem>
-            <MenuItem>
-              {" "}
-              <Button onClick={handleClickOpen1} sx={{ float: "right" }}>
-                delete
-              </Button>
-            </MenuItem>
-          </Menu>
-        </div>
-
-        <div>
+  <>
+        <span style={{position: "relative",
+    left: "82px",
+    top: "30px"}}><ModeEditIcon onClick={handleClickOpen("paper")}></ModeEditIcon>
+        <DeleteIcon onClick={handleClickOpen1}></DeleteIcon></span>
+        <span>
           <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}
           PaperProps={{
             sx: {
@@ -208,7 +172,7 @@ export default function EditTodos({ todos }) {
             },
           }}
           >
-            <DialogTitle>Delete Todos</DialogTitle>
+            <DialogTitle>Delete Photos</DialogTitle>
             <Divider />
             <DialogContent>
               <Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
@@ -241,7 +205,7 @@ export default function EditTodos({ todos }) {
               <Button
                 //onClick={e=>handleDelete(commentId)}
                 variant="contained"
-                onClick={(e) => handleDelete(todos.id)}
+                onClick={(e) => handleDelete(photoUrl.id)}
                 color="success"
               >
                 Delete
@@ -249,8 +213,7 @@ export default function EditTodos({ todos }) {
               </Typography>   
             </DialogActions>
           </Dialog>
-        </div>
-        <Dialog
+          <Dialog
           open={open}
           onClose={handleClose}
           scroll={scroll}
@@ -264,12 +227,12 @@ export default function EditTodos({ todos }) {
           }}
         >
           <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
-            Update Todos
+            Update Photos
           </DialogTitle>
           <DialogContent dividers={scroll === "paper"}>
             <form
               className="login-form"
-              onSubmit={(e) => handleSubmit(e, userId)}
+              onSubmit={(e) => handleSubmit(e, photoUrl.albumId)}
             >
               {/* <div style={{ display: "flex" }}>
             <InputLabel
@@ -311,25 +274,25 @@ export default function EditTodos({ todos }) {
               onChange={e => handleChange(e)}
             />
           </div> */}
-              <div style={{ display: "flex" }}>
+              {/* <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
                     padding: "8px",
                     margin: "5px 15px 0px 0px",
                   }}
                 >
-                  Title
+                  PhotoUrl
                 </InputLabel>
                 <StyledTextarea
                 //  disabled={disabled}
                   minRows={3}
                   type="text"
                   disabled={disabled}
-                  name="title"
-                  value={values.title}
+                  name="url"
+                  value={values.url}
                   onChange={(e) => handleChange(e)}
                 />
-              </div>
+              </div> */}
 
               <div style={{ display: "flex" }}>
                 <InputLabel
@@ -338,13 +301,13 @@ export default function EditTodos({ todos }) {
                     margin: "5px 0px 0px 1px",
                   }}
                 >
-                  Status
+                  ThumbUrl
                 </InputLabel>
                 <StyledTextarea
                   type="text"
                   disabled={disabled}
-                  name="completed"
-                  value={values.completed}
+                  name="thumbnailUrl"
+                  value={values.thumbnailUrl}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -391,7 +354,9 @@ export default function EditTodos({ todos }) {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
-    </>
-  );
+        </span>
+        </>
+  )
 }
+
+export default Edit

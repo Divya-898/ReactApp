@@ -116,7 +116,11 @@ padding: 15px;
     position: relative;
     right: 10px;
 }
-
+.css-12u555e-MuiImageListItem-root {
+  
+ 
+   height: 150px;
+}
 /* .MuiCheckbox-colorPrimary.Mui-checked {
    color: #e82997 !important;
    position: relative;

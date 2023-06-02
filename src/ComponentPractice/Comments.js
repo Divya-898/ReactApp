@@ -261,8 +261,8 @@ function CommentPost({ postId, user }) {
                       disabled={disabled}
                       onChange={(e) => handleChange(e)}
                     />
-                    <Button className="commentBtn" type="submit">
-                      <PlayArrowIcon />
+                    <Button className="commentBtn" type="submit" sx= {{marginTop: "15px" ,"&:hover": {backgroundColor: "transparent"}}}>
+                      <PlayArrowIcon  />
                     </Button>{" "}
                   </>
                 

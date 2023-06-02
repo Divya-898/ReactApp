@@ -89,11 +89,11 @@ export default function PrimarySearchAppBar({user}) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
   const x = user.name;
-  // var nameparts = [];
-  // nameparts = x.split(" ");
-  // var initials =
-  //   nameparts[0].charAt(0).toUpperCase() +
-  //   nameparts[1].charAt(0).toUpperCase();
+  var nameparts = [];
+  nameparts = x.split(" ");
+  var initials =
+    nameparts[0].charAt(0).toUpperCase() +
+    nameparts[1].charAt(0).toUpperCase();
   
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -255,7 +255,7 @@ export default function PrimarySearchAppBar({user}) {
             <IconButton>
             <Avatar
   sx={{ width: 30, height: 30, bgcolor: "red",fontSize:"15px"}}
->{user.name}</Avatar>
+>{initials}</Avatar>
 </IconButton>
             {/* <IconButton
               size="large"

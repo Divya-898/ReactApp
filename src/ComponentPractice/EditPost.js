@@ -81,23 +81,24 @@ export default function EditPost({edit,postId}) {
     payload["body"] = values.body;
     payload["title"] = values.title;
     if(values.title && values.body){
-      setTimeout(() => {
-        setLoading1(false);
-      }, 5000);
+      // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
+      setLoading(true);
     axios.put(`http://localhost:3500/posts/${edit}`, payload).
     then(res => {console.log("successfully")})
     setDisabled(true);
-    setTimeout(() => {
-      setLoading(true);
+    // setTimeout(() => {
+    //   setLoading(true);
 
      
-    }, 10000);
+    // }, 10000);
     setTimeout(() => {
       setLoading(false);
       setError("Successfully update");
 
       window.location.reload();
-    }, 20000);
+    }, 2000);
 }
 else{
   setError("Todo is not Submitted")
@@ -117,11 +118,12 @@ else{
         // setTimeout(() => {
         //   setLoading1(false);
         // }, 5000);
-        setTimeout(() => {
-          setLoading(true);
+        // setTimeout(() => {
+        //   setLoading(true);
   
          
-        }, 500);
+        // }, 500);
+        setLoading(true);
         axios.delete(`http://localhost:3500/posts/${id}`).then((res) => {
           // window.location.reload();
         });
@@ -131,10 +133,10 @@ else{
           setError("Succesfully Deleted");
   
           window.location.reload();
-        }, 20000);
+        }, 2000);
     }
     else{
-      setError("Todos is not deleted")
+      setError("Post is not deleted")
     }
   }
  
@@ -187,8 +189,11 @@ else{
          
         </DialogContent>
        
-        <DialogActions>
-        <Box sx={{ width: "80%", margin:"-40px 0px 0px 60px" }}>
+        <Typography>
+              <Divider/>
+            </Typography>
+            <DialogActions>
+            <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -198,14 +203,24 @@ else{
                               ) : (
                                 ""
                               )}
-                              <div className="message" style={{position:"relative"}}>
-                              {error==="Succesfully Deleted" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                              <div className="message" style={{position:"relative",width:"100px"}}>
+                              {error==="Succesfully Deleted" ? <p style={{color:"green",width:"150px"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
-              <Button onClick={handleClose1} variant="contained" color="error">
+                              
+               <Typography sx={{display:"flex", marginTop:"30px"}}>         
+              <Button onClick={handleClose1} variant="contained" color="error" sx={{marginRight:"10px"}}>
                 Cancel
               </Button>
-          <Button onClick={e=>handleDelete(edit)} variant="contained" color="success">Ok</Button>
+              <Button
+                //onClick={e=>handleDelete(commentId)}
+                variant="contained"
+                onClick={(e) => handleDelete(edit)}
+                color="success"
+              >
+                Delete
+              </Button>
+              </Typography>   
         </DialogActions>
       </Dialog>
     </div>
@@ -331,8 +346,11 @@ else{
           >
             Submit
           </button>  */}
+          <div>
+          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
+         </div>
           <DialogActions dividers={scroll === "paper"}>
-          <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
+          <Box sx={{ width: "80%", margin:"-10px 0px 0px 70px" }}>
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -347,23 +365,19 @@ else{
                             </div>
                             </Box>
                            
-                            <div style={{margin:"20px 0px 0px 0px", display:"flex"}}> 
-                            <Button
-                              onClick={handleClose}
-                              color="error"
-                              variant="contained"
-                              sx={{marginRight:"10px"}}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              type="submit"
-                              color="success"
-                              variant="contained"
-                            >
-                              Submit
-                            </Button>
-                            </div>
+                            <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
+                  <Button
+                    onClick={handleClose}
+                    color="error"
+                    variant="contained"
+                    sx={{ marginRight: "10px" }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="success" variant="contained">
+                    Update
+                  </Button>
+                </div>
           </DialogActions>
         </form>
       </DialogContent>
