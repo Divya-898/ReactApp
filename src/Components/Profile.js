@@ -4,12 +4,15 @@ import { Avatar } from "@mui/material";
 
 
 function Profile({user}) {
-  const x = user.name;
+let x= user.name
+  if(user.name){
+  // const x = user.name;
     var nameparts = [];
     nameparts = x.split(" ");
     var initials =
       nameparts[0].charAt(0).toUpperCase() +
       nameparts[1].charAt(0).toUpperCase();
+  }
   //     const current = new Date();
   // var data = AlbumsData();
   // useEffect(()=>{

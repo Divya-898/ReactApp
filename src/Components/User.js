@@ -27,18 +27,15 @@ import {
   Divider,
   InputLabel,
   LinearProgress,
-  
 } from "@mui/material";
 
 import CommentPost from "./Comments";
-
 
 import { useParams, useSearchParams } from "react-router-dom";
 import Profile from "./Profile";
 import UserIntro from "./UserIntro";
 import UserAlbums from "./UserAlbums";
 import UserPhoto from "./UserPhoto";
-
 
 import PrimarySearchAppBar from "./Navbar";
 
@@ -50,6 +47,10 @@ import TextareaAutosize from "@mui/base/TextareaAutosize";
 import SelectedUserName from "./SelectedUser";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, showPost } from "../mainRedux/features/PostSlice";
+import { showUser } from "../mainRedux/features/UserSlice";
+import { showPhotos } from "../mainRedux/features/PhotoSlice";
+import { showAlbums } from "../mainRedux/features/AlbumSlice";
+// import { showAlbums } from "../mainRedux/features/AlbumSlice";
 
 const style = {
   position: "absolute",
@@ -86,21 +87,28 @@ const ExpandMore = styled((props) => {
   }),
 }));
 function User() {
+  // const dispatch = useDispatch();
   const { userId } = useParams();
+  const { user } = useSelector((state) => state.userIntro);
+  if ({ user }) {
+    console.log(user);
+  }
   // const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
-  const [photos, setPhotos] = useState();
+  // const [photos, setPhotos] = useState();
   const [expanded, setExpanded] = useState(false);
   const [post, setPosts] = useState([]);
-  const [user, setUser] = useState();
-  const [albums, setAlbums] = useState();
+  // const [user, setUser] = useState();
+  // const [albums, setAlbums] = useState();
   const [error, setError] = useState("");
   const [value, setValue] = useState();
   // const {userPosts,loading}=useSelector((state)=>state.userPosts);
   const { userPosts, loading } = useSelector((state) => state.userPosts);
-  console.log(userPosts)
+  const{photos} = useSelector((state)=>state.userPhotos);
+   const { albums } = useSelector((state) => state.userAlbums);
+  // console.log(useSelector((state)=>state));
   const dispatch = useDispatch();
-  
+
   // const [open, setOpen] = React.useState(false);
   // const handleOpen = () => setOpen(true);
   const [open, setOpen] = React.useState(false);
@@ -115,7 +123,7 @@ function User() {
   // };
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [commonList, setCommonList] = useState();
+  const [commonList, setCommonList] = useState("");
   const [createData, setCreateData] = useState();
   const [common, setCommonPh] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -123,7 +131,7 @@ function User() {
     title: "", // required
     body: "", // required
   });
-  const[com, setCom]=useState()
+  const [com, setCom] = useState();
   const handleClose = () => {
     setOpen(false);
   };
@@ -142,62 +150,24 @@ function User() {
   const currentDate = new Date();
   const dateFormate = currentDate.toLocaleDateString("en-US", options);
   const handleExpandClick = (itemid) => {
-    // console.log(typeof(expanded))
-  //  com ? setExpanded(!expanded) :
-  setCom(itemid)
-  if(com){
-    if(expanded === false ){
-      setExpanded(!expanded)
-        // setCom("")
-        
+    setCom(itemid);
+    setExpanded(true);
+    if (com) {
+      if (expanded === true) setExpanded(!expanded);
     }
-    setExpanded(!expanded)
-    setExpanded(!expanded)
-    // else if(expanded === true ){
-    //   setExpanded(!expanded)
-    // }
-    // else if(expanded===false){
-    //   setExpanded(true)
-    // }
-    // }
-    //  setExpanded(!expanded)
+  
   }
-  else{
-    console.log(expanded)
-    setExpanded(!expanded)
-    // setExpanded(expanded)
-  }
-   
-  };
-  // const getData = useCallback(() => {
-  //   fetch(`http://localhost:3500/posts?userId=${userId}`)
+  // const getAlbumData = () => {
+  //   fetch(`http://localhost:3500/albums?userId=${userId}`)
   //     .then((response) => response.json())
-  //     .then((result) => setPosts(result))
+  //     .then((result) => setAlbums(result))
   //     .catch((error) => console.log("error", error));
-    
-  // });
-  if (post) {
-    console.log("posttype",  post);
-  }
-  const getUserData = () => {
-    fetch(`http://localhost:3500/users/${userId}`)
-      .then((response) => response.json())
-      .then((result) => setUser(result))
-      .catch((error) => console.log("error", error));
-  };
-  const getAlbumData = () => {
-    fetch(`http://localhost:3500/albums?userId=${userId}`)
-      .then((response) => response.json())
-      .then((result) => setAlbums(result))
-      .catch((error) => console.log("error", error));
-  };
+  // };
   let str = "";
   if (albums) {
     console.log(albums);
     albums &&
       albums.map((data) => {
-        // let st = data.id;
-        // st2 +=st;
         const str1 = "albumId=" + data.id + "&";
         str += str1;
       });
@@ -210,111 +180,122 @@ function User() {
       setCommonPh(str);
     }
     if (common) {
-      getPhotosData();
+      // getPhotosData();
+      dispatch(showPhotos(common))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [str, common]);
+  // useEffect(()=>{
 
-  const getPhotosData = () => {
-    fetch(`http://localhost:3500/photos?${common}`)
-      .then((response) => response.json())
-      .then((result) => setPhotos(result))
-      .catch((error) => console.log("error", error));
-  };
+  // },[])
+
+  // const getPhotosData = () => {
+  //   fetch(`http://localhost:3500/photos?${common}`)
+  //     .then((response) => response.json())
+  //     .then((result) => setPhotos(result))
+  //     .catch((error) => console.log("error", error));
+  // };
 
   if (photos) {
     console.log(photos);
   }
   useEffect(() => {
-    getUserData();
-    getAlbumData();
-  }, []);
+    if (userId) {
+      dispatch(showUser(userId));
+      dispatch(showPost(userId));
+    }
+    // getAlbumData();
+  }, [dispatch, userId]);
+
+  useEffect(()=>{
+    // getAlbumData()
+    
+    dispatch(showAlbums(userId))
+  
+  },[dispatch, userId])
+    // useEffect(() => {
+  //   let photosObj = {};
+  //   if (photos && albums) {
+  //     for (let i = 0; i < photos.length; i++) {
+  //       let albumId = photos[i].albumId;
+  //       if (photosObj[albumId] && photosObj[albumId].length > 0) {
+  //         photosObj[albumId].push(photos[i]);
+  //       } else {
+  //         photosObj[albumId] = [];
+  //         photosObj[albumId].push(photos[i]);
+  //       }
+  //     }
+  //     var tempData = "";
+  //     tempData = albums
+  //     for (let j = 0; j < albums.length; j++) {
+  //       tempData[j]["photos"] = photosObj[albums[j].id];
+  //       console.log("photosObj", tempData);
+  //       setCommonList(tempData);
+  //     }
+  //   }
+  // }, [albums, photos]);
+
+  // useEffect(()=>{
+
+  // },[])
+
   useEffect(() => {
-    dispatch(showPost(userId))
-    // getData();
-  }, []);
-  // var tempData
-  useEffect(() => {
-    let photosObj = {};
-    if (photos && albums) {
-      for (let i = 0; i < photos.length; i++) {
-        let albumId = photos[i].albumId;
-        if (photosObj[albumId] && photosObj[albumId].length > 0) {
-          photosObj[albumId].push(photos[i]);
-        } else {
-          photosObj[albumId] = [];
-          photosObj[albumId].push(photos[i]);
+      if (photos && albums) {
+        
+        let photosObj = {}
+        console.log("albums",albums)
+        console.log("photos",photos)
+        for (let i = 0; i < photos.length; i++) {
+          let albumId = photos[i].albumId;
+  
+          if (photosObj[albumId] && photosObj[albumId].length > 0) {
+            photosObj[albumId].push(photos[i]);
+          } else {
+            photosObj[albumId] = []
+            photosObj[albumId].push(photos[i]);
+          }
+        }
+        const newObj = Object.assign({selected: false}, 'photos');
+        // var t = JSON.parse(JSON.stringify('photos'));
+        var y = albums;
+        // console.log(t)
+        for (let j = 0; j < albums.length; j++) {
+          y[newObj] = photosObj[albums[j].id];
+          console.log(y)
+          // 
+          setCommonList(y);
         }
       }
-      let tempData = albums;
-      for (let j = 0; j < albums.length; j++) {
-        tempData[j]["photos"] = photosObj[albums[j].id];
-        console.log("photosObj", tempData);
-        setCommonList(tempData);
-      }
-    }
-  }, [albums, photos]);
-  if (commonList) {
-    console.log("tempdata", commonList);
-  }
+  
+    }, [albums, photos])
 
+    // if(albums){
+    
+    // }
+    // if(photos){
+     
+    // }
+
+if(commonList){
+  console.log(commonList[0].photos)
+}
   var initials;
   const handleSubmit = (e, userId) => {
     e.preventDefault();
-    console.log("postId", userId);
-    // payload["photos"]={ "thumbnail":streetref.current.value,}
     let payload = {};
     payload["userId"] = userId;
-    // payload["name"] = user.name;
-    // payload["email"] = user.email;
     payload["title"] = postData.title;
     payload["body"] = postData.body;
-    
-    
     if (postData.body && postData.title) {
       dispatch(createPost(payload));
-      // setLoading(true);
-    //   axios
-    //     .post(`http://localhost:3500/posts`, payload)
-    //     .then((res) => console.log("successfully"));
-    //     setDisabled(true)
-     
-    //   setTimeout(() => {
-    //     // setLoading(false);
-    //     setError("Succesfully Created");
-
-    //     window.location.reload();
-    //   }, 2000);
-
-    //   // window.location.reload();
-    // } else {
-    //   setError("not submitted");
-    // }
-    // // method: "POST",
-    // // headers: { "Content-Type": "application/json" },
-    // body: JSON.stringify(payload),
-    // }).then((res) => {console.log(res)})
-    // //  .then((data) => setPostData(data));
-    // setError(err.response.data)
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+    }
   };
-}
   function handleTodosChange(e) {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   }
-  function editHandle(e, item) {
-    console.log("item", item);
-  }
-  // // const handleClick = (e) => {
-  // //   e.preventDefault();
-  // //   if(postData){
-  // //     alert("successfully")
-  // //   }
-
-  // }
-  // const handleSubmitBtn=()=>{
-  //   if(postData){
-  //     alert("successfully")
-  //   }
-  // }
 
   return (
     <>
@@ -335,8 +316,12 @@ function User() {
                   "margin-right": "40px",
                 }}
               >
-                <UserIntro user={user}></UserIntro>
-                {commonList ? (
+                {user && user.address && user.company ? (
+                  <UserIntro user={user}></UserIntro>
+                ) : (
+                  ""
+                )}
+                { commonList ? (
                   <UserAlbums commonList={commonList}></UserAlbums>
                 ) : (
                   ""
@@ -414,16 +399,6 @@ function User() {
                             >
                               Title
                             </InputLabel>
-                            {/* <TextField
-                              sx={{
-                                paddingTop: "10px",
-                                marginLeft: "5px",
-                              }}
-                              InputProps={{ sx: { height: 25, width:330, border:"1px solid black" } }}
-                              type="text"
-                              name="title"
-                              onChange={(e) => handleTodosChange(e)}
-                            />{" "} */}
                             <StyledTextarea
                               // InputProps={{ sx: { height: 25, width:330, border:"1px solid black" } }}
                               disabled={disabled}
@@ -443,35 +418,30 @@ function User() {
                               Desc
                             </InputLabel>
                             <StyledTextarea
-                             disabled={disabled}
+                              disabled={disabled}
                               minRows={3}
                               type="text"
                               name="body"
                               onChange={(e) => handleTodosChange(e)}
                             />
                           </div>
-                            {/* <TextField
-                              sx={{
-                                paddingTop: "10px",
-                              }}
-                              InputProps={{ sx: { height: 25 } }}
-                              type="text"
-                              name="body"
-                               onChange={(e) => handleTodosChange(e)}
-                            /> */}
-                         
-                          {/* <button
-                            className="login-btn"
-                            type="submit"
-                            style={{ float: "right" }}
-                          >
-                            Submit
-                          </button>  */}
                           <div>
-          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
-         </div>
+                            <Divider
+                              sx={{
+                                width: "610px",
+                                right: "30px",
+                                position: "relative",
+                                top: "20px",
+                              }}
+                            />
+                          </div>
                           <DialogActions dividers={scroll === "paper"}>
-          <Box sx={{ width: "80%", margin:"-10px 0px 0px 70px" }}>
+                            <Box
+                              sx={{
+                                width: "80%",
+                                margin: "-10px 0px 0px 70px",
+                              }}
+                            >
                               {loading ? (
                                 <LinearProgress
                                   variant="buffer"
@@ -481,36 +451,46 @@ function User() {
                               ) : (
                                 ""
                               )}
-                              <div className="message" style={{position:"relative",left:"80px"}}>
-                              {error==="Succesfully Created" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
-                            </div>
+                              <div
+                                className="message"
+                                style={{ position: "relative", left: "80px" }}
+                              >
+                                {error === "Succesfully Created" ? (
+                                  <p style={{ color: "green" }}>{error}</p>
+                                ) : (
+                                  <p style={{ color: "red" }}>{error}</p>
+                                )}
+                              </div>
                             </Box>
-                           
-                            <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
-                  <Button
-                    onClick={handleClose}
-                    color="error"
-                    variant="contained"
-                    sx={{ marginRight: "10px" }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button type="submit" color="success" variant="contained">
-                    Create
-                  </Button>
-                </div>
-          </DialogActions>
+
+                            <div
+                              style={{
+                                margin: "40px 0px 0px 0px",
+                                display: "flex",
+                              }}
+                            >
+                              <Button
+                                onClick={handleClose}
+                                color="error"
+                                variant="contained"
+                                sx={{ marginRight: "10px" }}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                type="submit"
+                                color="success"
+                                variant="contained"
+                              >
+                                Create
+                              </Button>
+                            </div>
+                          </DialogActions>
                         </form>
                       </DialogContent>
                     </Dialog>
                   </div>
                 </Card>
-                {/* <div class="my-post">
-          <div class="post-top">
-            <img src="images/images/profile.png"/>
-            <input type="text" placeholder="What's on you mind?"/>
-          </div> 
-        </div>*/}
                 {userPosts &&
                   userPosts.map((items) => (
                     <>
@@ -529,19 +509,25 @@ function User() {
                         <CardContent>
                           <Typography variant="body2">
                             <b>
-                              {items.title}
-                              {/* {items.title.charAt(0).toUpperCase() +
-                              items.title.slice(1).toLowerCase()} */}
+                              {/* {items.title} */}
+                              {items.title != null
+                                ? items.title.charAt(0).toUpperCase() +
+                                  items.title.slice(1).toLowerCase()
+                                : ""}
                             </b>
                           </Typography>
                           <Typography variant="body2">
-                            {items.body}
+                            {/* {items.body} */}
+                            {items.body != null
+                              ? items.body.charAt(0).toUpperCase() +
+                                items.body.slice(1).toLowerCase()
+                              : ""}
                             {/* {items.body.charAt(0).toUpperCase() +
-                            items.body.slice(1).toLowerCase()} */}
+                            items.body.slice(1).toLowerCase()}  */}
                           </Typography>
                         </CardContent>
 
-                        <div>
+                        {/* <div>
                           {commonList ? (
                             <img
                               src={commonList[0].photos[0].thumbnailUrl}
@@ -551,43 +537,33 @@ function User() {
                           ) : (
                             ""
                           )}
-                        </div>
-                        {/* <UserAlbumsPhoto
-                            albumId={commonList[0].photos[0].thumbnailUrl}
-                            albumWidth={"550px"}
-                            albumHeight={"210p"}
-                          sx={{borderRadius:"0px"}}></UserAlbumsPhoto> */}
-
-                        {/* <UserAlbumsPhoto user={user}></UserAlbumsPhoto>  */}
-
-                        {/* // component="img"
-                  // height="194"
-                  // image="https://upload.wikimedia.org/wikipedia/commons/f/fb/Breakfast%21.jpg"
-                  // alt="Paella dish" */}
-
+                        </div> */}
                         <CardActions disableSpacing>
                           <Typography>Comments:</Typography>
                           <ExpandMore
                             onClick={() => handleExpandClick(items.id)}
-                             aria-expanded={expanded}
+                            aria-expanded={expanded}
                             aria-label="show more"
                           >
                             <ExpandMoreIcon />
                           </ExpandMore>
                         </CardActions>
-                       {(items.id === com) ? <Collapse in={expanded}>
-                          <CardContent sx={{ padding: "0px" }}>
-                            <CommentPost
-                              postId={items.id}
-                              user={user}
-                              items={items}
-                            ></CommentPost>
-                          </CardContent>
-                        </Collapse>:""}
+                        {items.id === com ? (
+                          <Collapse in={items.id === com}>
+                            <CardContent sx={{ padding: "0px" }}>
+                              <CommentPost
+                                postId={items.id}
+                                user={user}
+                                items={items}
+                              ></CommentPost>
+                            </CardContent>
+                          </Collapse>
+                        ) : (
+                          ""
+                        )}
                       </Card>
                     </>
                   ))}
-                ;
               </div>
             </Container>
           </Container>

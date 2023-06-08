@@ -23,7 +23,7 @@ import EditTodos from "./EditTodos";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { displayPartsToString } from "typescript";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, showTodo } from "../mainRedux/features/TodoSlice";
+import { createTodo, createUser, showTodo } from "../mainRedux/features/TodoSlice";
 const style = {
   position: "absolute",
   top: "50%",
@@ -74,7 +74,6 @@ function UserTodos() {
     title: "", // required
     completed: "", // required
   });
-  //   const [comment, setComment] = useState();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -92,57 +91,15 @@ function UserTodos() {
     }
     return true;
   };
-
-  // const getData = useCallback(() => {
-  //   fetch(`http://localhost:3500/todos?userId=${userId}`)
-  //     .then((response) => response.json())
-  //     .then((result) => setTodos(result))
-  //     .catch((error) => console.log("error", error));
-  //   //console.log(match)
-  // });
-  const handle = () => {};
-  // if(todos){
-  //  console.log(typeof(todos[1].completed))
-  // }
   const handleSubmit = (e, userId) => {
     e.preventDefault();
-    console.log("postId", userId);
-    // payload["photos"]={ "thumbnail":streetref.current.value,}
     let payload = {};
     payload["userId"] = userId;
-    // payload["name"] = user.name;
-    // payload["email"] = user.email;
     payload["title"] = formData.title;
     payload["completed"] = formData.completed;
     if (formData.title && formData.completed) {
-      dispatch(createUser(payload));
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-
-      // setLoading(true);
-      //   fetch(`http://localhost:3500/todos`, {
-      //     method: "POST",
-      //     headers: {'Content-Type' : 'application/json'},
-      //     body: JSON.stringify(payload),
-      //   })
-      //     .then((res) => res.json())
-      //     setDisabled(true)
-      //     // setTimeout(() => {
-      //     //   setLoading(true);
-
-      //     // }, 1000);
-      //     setTimeout(() => {
-      //       // setLoading(false);
-      //       setError("Successfully created");
-
-      //       window.location.reload();
-      //     }, 2000);
-      // }
-      // else{
-      //   setError("Todo is not Submitted")
-      // }
-    } // .then((data) => setFormData(data));
+      dispatch(createTodo(payload));
+    } 
   };
   function handleTodosChange(e) {
     setformData({ ...formData, [e.target.name]: e.target.value });
@@ -336,7 +293,6 @@ function UserTodos() {
                     </Grid>
                     <Grid item>
                       <item>
-                      
                         <EditTodos data={data1}></EditTodos>
                       </item>
                     </Grid>
@@ -354,3 +310,40 @@ function UserTodos() {
 }
 
 export default UserTodos;
+//get api for the post
+// const getData = useCallback(() => {
+  //   fetch(`http://localhost:3500/todos?userId=${userId}`)
+  //     .then((response) => response.json())
+  //     .then((result) => setTodos(result))
+  //     .catch((error) => console.log("error", error));
+  //   //console.log(match)
+  // });
+
+  //post api for post request
+  // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
+
+      // setLoading(true);
+      //   fetch(`http://localhost:3500/todos`, {
+      //     method: "POST",
+      //     headers: {'Content-Type' : 'application/json'},
+      //     body: JSON.stringify(payload),
+      //   })
+      //     .then((res) => res.json())
+      //     setDisabled(true)
+      //     // setTimeout(() => {
+      //     //   setLoading(true);
+
+      //     // }, 1000);
+      //     setTimeout(() => {
+      //       // setLoading(false);
+      //       setError("Successfully created");
+
+      //       window.location.reload();
+      //     }, 2000);
+      // }
+      // else{
+      //   setError("Todo is not Submitted")
+      // }
+    // .then((data) => setFormData(data));

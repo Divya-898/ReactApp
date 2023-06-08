@@ -21,6 +21,8 @@ import {
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
+import { useDispatch } from "react-redux";
+import { deleteComment, updateComment } from "../mainRedux/features/CommentSlice";
 
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -35,6 +37,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 );
 export default function EditComment({ commentId, postId, commentObj }) {
   console.log("comments", commentId);
+  const dispatch = useDispatch();
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
@@ -86,40 +89,43 @@ export default function EditComment({ commentId, postId, commentObj }) {
     payload["name"] = values.name;
     payload["body"] = values.body;
     payload["email"] = values.email;
+    payload["id"] =commentId
     if (values.name && values.body && values.email) {
-      setLoading(true);
-      axios
-        .put(`http://localhost:3500/comments/${commentId}`, payload)
-        .then((res) => {
-          console.log("hello");
-        });
-        setDisabled(true);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Succesfully update");
+         dispatch(updateComment(payload))
+      // setLoading(true);
+      // axios
+      //   .put(`http://localhost:3500/comments/${commentId}`, payload)
+      //   .then((res) => {
+      //     console.log("hello");
+      //   });
+      //   setDisabled(true);
+      // setTimeout(() => {
+      //   setLoading(false);
+      //   setError("Succesfully update");
 
-        window.location.reload();
-      }, 2000);
+      //   window.location.reload();
+      // }, 2000);
     } else {
       setError("Todo is not Submitted");
     }
   };
   const handleDelete = (id) => {
     if (id) {
-      setLoading(true);
+      dispatch(deleteComment(id))
+      // setLoading(true);
+      // // setTimeout(() => {
+      // //   setLoading1(false);
+      // // }, 5000);
+      // axios.delete(`http://localhost:3500/comments/${id}`).then((res) => {});
+      // // setTimeout(() => {
+      // //   setLoading(true);
+      // // }, 10000);
       // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-      axios.delete(`http://localhost:3500/comments/${id}`).then((res) => {});
-      // setTimeout(() => {
-      //   setLoading(true);
-      // }, 10000);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Succesfully Deleted");
+      //   setLoading(false);
+      //   setError("Succesfully Deleted");
 
-        window.location.reload();
-      }, 2000);
+      //   window.location.reload();
+      // }, 2000);
     } else {
       setError("Comment is not deleted");
     }

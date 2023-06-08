@@ -31,6 +31,8 @@ import {
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditComment from "./EditComments";
+import { useDispatch, useSelector } from "react-redux";
+import { createComment, showComments } from "../mainRedux/features/CommentSlice";
 const style = {
   position: "absolute",
   top: "50%",
@@ -43,8 +45,9 @@ const style = {
   p: 4,
 };
 function CommentPost({ postId, user }) {
-  console.log(user);
-  console.log(postId);
+  const{userComments, loading} = useSelector((state)=>state.userComments);
+  const dispatch = useDispatch();
+  console.log(userComments);
   const [disabled, setDisabled] = useState(false);
   const [comment, setComment] = useState();
   const [open, setOpen] = React.useState(false);
@@ -54,12 +57,11 @@ function CommentPost({ postId, user }) {
   const [progress, setProgress] = React.useState(0);
   const [buffer, setBuffer] = React.useState(10);
   const [error, setError] = useState("");
-
   const progressRef = React.useRef(() => {});
   const { userId } = useParams();
   // const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
   const [scroll, setScroll] = React.useState("paper");
   const [values, setValue] = useState({
@@ -74,14 +76,14 @@ function CommentPost({ postId, user }) {
     setOpen(true);
   };
 
-  const getdata = () => {
-    fetch(`http://localhost:3500/comments?postId=${postId}`)
-      .then((response) => response.json())
-      .then((result) => setComments(result))
-      .catch((error) => console.log("error", error));
-  };
+  // const getdata = () => {
+  //   fetch(`http://localhost:3500/comments?postId=${postId}`)
+  //     .then((response) => response.json())
+  //     .then((result) => setComments(result))
+  //     .catch((error) => console.log("error", error));
+  // };
   useEffect(() => {
-    getdata();
+    dispatch(showComments(postId))
   }, []);
 
   const handleSubmit = (e, postId) => {
@@ -93,23 +95,24 @@ function CommentPost({ postId, user }) {
     payload["email"] = user.email;
     payload["body"] = comment;
     if (comment) {
-      setTimeout(() => {
-        setLoading1(false);
-      }, 5000);
+      dispatch(createComment(payload))
+      // setTimeout(() => {
+      //   setLoading1(false);
+      // }, 5000);
 
-      setLoading(true);
+      // // setLoading(true);
 
-      fetch(`http://localhost:3500/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).then((res) => res.json());
-      setDisabled(true);
-      setTimeout(() => {
-        setLoading(false);
-           setError("Successfully created")
-        window.location.reload();
-      }, 10000);
+      // fetch(`http://localhost:3500/comments`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // }).then((res) => res.json());
+      // setDisabled(true);
+      // setTimeout(() => {
+      //   // setLoading(false);
+      //      setError("Successfully created")
+      //   window.location.reload();
+      // }, 10000);
     }
     else{
       setError("Comment is not created")
@@ -154,23 +157,24 @@ function CommentPost({ postId, user }) {
     nameparts[0].charAt(0).toUpperCase() + nameparts[1].charAt(0).toUpperCase();
   return (
     <>
-      {comments
-        ? comments.map((post) => {
-            //const x = post.name;
+      {userComments
+        ? userComments.map((post) => {
+            const x = post.name;
+          
             const mySentence = post.name;
-            const words = mySentence.split(" ").slice(0, 2);
+            const words = (post.name ? mySentence.split(" ").slice(0, 2):"");
             for (let i = 0; i < words.length; i++) {
               words[i] = words[i][0] + words[i].substr(1);
             }
             const commentName = words.join(" ");
-            {
-              /* {
-          /* nameparts = x.split(" ");
-  var initials =
-    nameparts[0].toUpperCase() +
-    nameparts[1].toUpperCase(); */
-            }
-            //console.log(v) */}
+            
+      
+           {/* nameparts = x.split(" ");
+  var initials =[]
+  initials = nameparts[0].toUpperCase() +
+    nameparts[1].toUpperCase(); 
+            console.log(initials) */}
+            
             return (
               <div style={{}}>
                 <div style={{ padding: 14 }} className="App">
@@ -184,12 +188,13 @@ function CommentPost({ postId, user }) {
                     <Grid item>
                       <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
                         <p>
-                          {post.name
+                          {post.name ? 
+                          post.name
                             .split("")
                             .slice(0, 2)
                             .map((w) => w[0])
                             .join("")
-                            .toUpperCase()}
+                            .toUpperCase():""}
                         </p>
                       </Avatar>
                     </Grid>

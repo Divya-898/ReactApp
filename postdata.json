@@ -1,10 +1,10 @@
 {
   "posts": [
     {
-      "userId": 1,
+      "userId": "1",
       "id": 2,
       "title": "qui",
-      "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+      "body": "est retum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
     },
     {
       "userId": 1,
@@ -25,10 +25,10 @@
       "body": "repudiandae veniam quaerat sunt sed\nalias aut fugiat sit autem sed est\nvoluptatem omnis possimus esse voluptatibus quis\nest aut tenetur dolor neque"
     },
     {
-      "userId": 1,
+      "userId": "1",
       "id": 6,
       "title": "dolorem eum magni eos aperiam quia",
-      "body": "ut aspernatur corporis harum nihil quis provident sequi\nmollitia nobis aliquid molestiae\nperspiciatis et ea nemo ab reprehenderit accusantium quas\nvoluptate dolores velit et doloremque molestiae"
+      "body": "ut aspernatur corporis hartum nihil quis provident sequi\nmollitia nobis aliquid molestiae\nperspiciatis et ea nemo ab reprehenderit accusantium quas\nvoluptate dolores velit et doloremque molestiae"
     },
     {
       "userId": 1,
@@ -575,76 +575,15 @@
       "id": 100,
       "title": "at nam consequatur ea labore ea harum",
       "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
-    },
-    {
-      "userId": "1",
-      "title": "create",
-      "body": "05 jun",
-      "id": 101
-    },
-    {
-      "userId": "1",
-      "title": "flower",
-      "body": "5 jun",
-      "id": 102
-    },
-    {
-      "userId": "1",
-      "title": "ggggg",
-      "body": "5665",
-      "id": 103
-    },
-    {
-      "userId": "1",
-      "title": "ghg",
-      "body": "77878",
-      "id": 104
-    },
-    {
-      "userId": "1",
-      "title": "gh",
-      "body": "56",
-      "id": 105
-    },
-    {
-      "userId": "1",
-      "title": "gjgjghg",
-      "id": 106
-    },
-    {
-      "userId": "1",
-      "title": "",
-      "id": 107
-    },
-    {
-      "userId": "1",
-      "title": "hggh",
-      "id": 109
-    },
-    {
-      "userId": "1",
-      "title": "898",
-      "id": 110
-    },
-    {
-      "userId": "1",
-      "title": "87878",
-      "id": 111
-    },
-    {
-      "userId": "1",
-      "title": "1234",
-      "body": "hello i am",
-      "id": 112
     }
   ],
   "comments": [
     {
       "postId": 2,
-      "id": 6,
       "name": "et fugit eligendi deleniti quidem qui sint nihil autem",
+      "body": "Doloribus at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in",
       "email": "Presley.Mueller@myrl.com",
-      "body": "doloribus at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in"
+      "id": 6
     },
     {
       "{\"userId\":\"1\",\"title\":\"Magnam facilis autem\",\"body\":\"Dolore placeat quam ea quo vitaemagni quis enim qui quis quo nemo aut saepequidem repellat excepturi ut quiasunt ut sequi eos ea sed quas\"}": "",
@@ -2040,13 +1979,6 @@
       "id": 503
     },
     {
-      "postId": 2,
-      "name": "e ",
-      "email": "P",
-      "body": "oloribus doloribus",
-      "id": 504
-    },
-    {
       "body": "ggfhghfdgf jgjdgjfgjfg",
       "id": 505
     },
@@ -2258,13 +2190,20 @@
       "email": "Sincere@april.com",
       "body": "test create",
       "id": 557
+    },
+    {
+      "postId": 2,
+      "name": "Leanne Tiwari",
+      "email": "Sincere@april.com",
+      "body": "comment 6 jun",
+      "id": 558
     }
   ],
   "albums": [
     {
       "userId": 1,
-      "id": 2,
-      "title": "sunt qui excepturi placeat culpa"
+      "title": "sunt qui excepturi placeat culpa",
+      "id": 2
     },
     {
       "userId": 1,
@@ -2273,8 +2212,8 @@
     },
     {
       "userId": 1,
-      "id": 4,
-      "title": "non esse culpa molestiae omnis sed optio"
+      "title": "non esse culpa molestiae omnis sed option",
+      "id": 4
     },
     {
       "userId": 1,
@@ -4182,13 +4121,7 @@
       "url": "https://via.placeholder.com/600/1dc050",
       "thumbnailUrl": "https://via.placeholder.com/150/1dc050"
     },
-    {
-      "albumId": 6,
-      "id": 253,
-      "title": "dolor qui id",
-      "url": "https://via.placeholder.com/600/bfb73",
-      "thumbnailUrl": "https://via.placeholder.com/150/bfb73"
-    },
+    
     {
       "albumId": 6,
       "id": 254,
@@ -4238,13 +4171,7 @@
       "url": "https://via.placeholder.com/600/b1b6c7",
       "thumbnailUrl": "https://via.placeholder.com/150/b1b6c7"
     },
-    {
-      "albumId": 6,
-      "id": 261,
-      "title": "officia fugit corrupti impedit enim odit",
-      "url": "https://via.placeholder.com/600/96dc0d",
-      "thumbnailUrl": "https://via.placeholder.com/150/96dc0d"
-    },
+    
     {
       "albumId": 6,
       "id": 262,
@@ -4294,13 +4221,7 @@
       "url": "https://via.placeholder.com/600/2efb1a",
       "thumbnailUrl": "https://via.placeholder.com/150/2efb1a"
     },
-    {
-      "albumId": 6,
-      "id": 269,
-      "title": "quod est illum ipsa unde voluptatem eum est",
-      "url": "https://via.placeholder.com/600/cb47e2",
-      "thumbnailUrl": "https://via.placeholder.com/150/cb47e2"
-    },
+  
     {
       "albumId": 6,
       "id": 270,
@@ -5875,13 +5796,6 @@
       "title": "facilis sunt consequatur",
       "url": "https://via.placeholder.com/600/ba5b26",
       "thumbnailUrl": "https://via.placeholder.com/150/ba5b26"
-    },
-    {
-      "albumId": 10,
-      "url": "https://via.placeholder.com/600/8b9187",
-      "thumbnailUrl": "https://via.placeholder.com/150/8b9187",
-      "title": "beatai et quia illt",
-      "id": 495
     },
     {
       "albumId": 11,
@@ -37393,26 +37307,47 @@
       "title": "non sunt voluptatem placeat consequuntur rem incidunt",
       "url": "https://via.placeholder.com/600/8e973b",
       "thumbnailUrl": "https://images.all-free-download.com/images/graphiclarge/homemade_burger_560254.jpg"
+    },
+    {
+      "id": 5002,
+      "albumId": 2,
+      "url": "https://freepngimg.com/thumb/doraemon/71299-nobi-youtube-nobita-television-doraemon-free-photo-png-thumb.png",
+      "thumbnailUrl": "https://freepngimg.com/thumb/doraemon/71299-nobi-youtube-nobita-television-doraemon-free-photo-png-thumb.png",
+      "title": "doraemon cartoon"
+    },
+    {
+      "albumId": 2,
+      "thumbnailUrl": "https://www.pngmart.com/files/6/Mowgli-PNG-File.png",
+      "url": "https://www.pngmart.com/files/6/Mowgli-PNG-File.png",
+      "title": "chhota bhai jaan",
+      "id": 5003
+    },
+    {
+      "id": 5004,
+      "albumId": 2,
+      "url": "https://freepngimg.com/thumb/doraemon/35165-2-doraemon-hd-thumb.png",
+      "thumbnailUrl": "https://freepngimg.com/thumb/doraemon/35165-2-doraemon-hd-thumb.png",
+      "title": "chhota bhai jaan"
     }
   ],
   "users": [
     {
-      "name": "Leanne Tiwari",
-      "email": "Sincere@april.com",
+      "id": 1,
+      "name": "Leanne Graham",
+      "email": "Sincere@april.biz",
       "phone": "1-770-736-8031 x56442",
-      "website": "hildegard.com",
+      "website": "hildegard.in",
       "address": {
         "street": "Kulas Light",
         "city": "Gwenborough",
-        "suite": "Apt. 594",
-        "zipcode": "92998-3878"
+        "suite": "Apt. 557",
+        "zipcode": "92998-3874"
       },
       "company": {
         "catchPhrase": "Multi-layered client-server neural-net",
         "bs": "harness real-time e-markets",
         "name": "Romaguera-Croma"
-      },
-      "id": 1
+      }
     },
     {
       "name": "Ervin Howell",
@@ -37635,10 +37570,28 @@
   ],
   "todos": [
     {
-      "userId": "1",
-      "title": "illo est ratione doloremque quia maiores aut",
-      "completed": "true",
-      "id": 10
+      "userId": 1,
+      "id": 5,
+      "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
+      "completed": false
+    },
+    {
+      "userId": 1,
+      "id": 6,
+      "title": "qui ullam ratione quibusdam voluptatem quia omnis",
+      "completed": false
+    },
+    {
+      "userId": 1,
+      "id": 7,
+      "title": "illo expedita consequatur quia in",
+      "completed": false
+    },
+    {
+      "userId": 1,
+      "id": 8,
+      "title": "quo adipisci enim quam ut ab",
+      "completed": true
     },
     {
       "userId": 2,
@@ -38124,12 +38077,6 @@
       "userId": 6,
       "id": 102,
       "title": "sed ab consequatur",
-      "completed": false
-    },
-    {
-      "userId": 6,
-      "id": 103,
-      "title": "non sunt delectus illo nulla tenetur enim omnis",
       "completed": false
     },
     {
@@ -38737,19 +38684,7 @@
     },
     {
       "userId": "1",
-      "title": "ytytytytytty",
-      "completed": "true",
-      "id": 206
-    },
-    {
-      "userId": "1",
-      "title": "ghgh",
-      "completed": "true",
-      "id": 207
-    },
-    {
-      "userId": "1",
-      "title": "788",
+      "title": "7th jun",
       "completed": "true",
       "id": 208
     }

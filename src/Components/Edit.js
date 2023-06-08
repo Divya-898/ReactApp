@@ -23,6 +23,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { deletePhotos, updatePhotos } from "../mainRedux/features/PhotoSlice";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -35,6 +37,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );;
 function Edit({photoUrl}) {
+  const dispatch = useDispatch();
     const { userId } = useParams();
     const [open, setOpen] = React.useState(false);
     const [openBox, setOpenBox] = React.useState(false);
@@ -92,32 +95,34 @@ function Edit({photoUrl}) {
       e.preventDefault();
       console.log("comments");
       let payload = {};
+      payload["id"]=photoUrl.id
       payload["albumId"] = id;
       payload["url"] = values.url;
       payload["thumbnailUrl"] = values.thumbnailUrl;
      payload["title"]=values.title
       if (values.thumbnailUrl) {
+        dispatch(updatePhotos(payload))
           // setTimeout(() => {
           //   setLoading(true);
           // }, 5000);
-          setLoading(true)
-        axios
-          .put(`http://localhost:3500/photos/${photoUrl.id}`, payload)
-          .then((res) => {
-            console.log("hello");
-          });
-          // setTimeout(() => {
-          //   setLoading(true);
+        //   setLoading(true)
+        // axios
+        //   .put(`http://localhost:3500/photos/${photoUrl.id}`, payload)
+        //   .then((res) => {
+        //     console.log("hello");
+        //   });
+        //   // setTimeout(() => {
+        //   //   setLoading(true);
     
            
-          // }, 10000);
-          setDisabled(true);
-          setTimeout(() => {
-            setLoading(false);
-            setError("Succesfully updated");
+        //   // }, 10000);
+        //   setDisabled(true);
+        //   setTimeout(() => {
+        //     setLoading(false);
+        //     setError("Succesfully updated");
     
-            window.location.reload();
-          }, 2000);
+        //     window.location.reload();
+        //   }, 2000);
       }
       else{
         setError("Photo is not Submitted")
@@ -129,24 +134,7 @@ function Edit({photoUrl}) {
     };
     const handleDelete = (id) => {
       if (id) {
-        // setTimeout(() => {
-        //   setLoading1(false);
-        // }, 5000);
-        setLoading(true);
-        axios.delete(`http://localhost:3500/photos/${photoUrl.id}`).then((res) => {
-          // window.location.reload();
-        });
-        // setTimeout(() => {
-        //   setLoading(true);
-  
-         
-        // }, 10000);
-        setTimeout(() => {
-          setLoading(false);
-          setError("Succesfully Deleted");
-  
-          window.location.reload();
-        }, 1000);
+       dispatch(deletePhotos(id))
     }
     else{
       setError("Photos is not deleted")
@@ -222,7 +210,7 @@ function Edit({photoUrl}) {
           PaperProps={{
             sx: {
               width: "50%",
-              maxHeight: 350,
+              maxHeight: 400,
             },
           }}
         >

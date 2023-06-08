@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { deleteAlbums, updateAlbums } from "../mainRedux/features/AlbumSlice";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -39,6 +41,7 @@ export default function UserAlbumsPhoto({
   items,
 }) {
   // console.log("album",user)
+  const dispatch = useDispatch();
   const [photo, setPhoto] = useState("");
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
@@ -54,19 +57,7 @@ export default function UserAlbumsPhoto({
   const handleClose = () => {
     setOpen(false);
   };
-  // console.log(pid);
-  //   const getPhotosData = () => {
-  //       fetch(`http://localhost:3500/photos?albumId=${albumId}`)
-  //         .then((response) => response.json())
-  //         .then((result) => setPhoto(result[0]))
-  //         .catch((error) => console.log("error", error));
-  //     };
-  //       if (photo) {
-  //   console.log(photo);
-  //  }
-  // useEffect(()=>{
-  //   getPhotosData();
-  // },[])
+
   const handleClickOpen1 = () => {
     setOpenBox(true);
   };
@@ -89,29 +80,30 @@ export default function UserAlbumsPhoto({
     payload["userId"] = id;
     payload["title"] = values.title;
     payload["completed"] = values.completed;
-
+    payload["id"]=items.id
     if (values.title) {
+      dispatch(updateAlbums(payload))
         // setTimeout(() => {
         //   setLoading(true);
         // }, 5000);
-        setLoading(true)
-      axios
-        .put(`http://localhost:3500/albums/${items.id}`, payload)
-        .then((res) => {
-          console.log("hello");
-        });
-        // setTimeout(() => {
-        //   setLoading(true);
+      //   setLoading(true)
+      // axios
+      //   .put(`http://localhost:3500/albums/${items.id}`, payload)
+      //   .then((res) => {
+      //     console.log("hello");
+      //   });
+      //   // setTimeout(() => {
+      //   //   setLoading(true);
   
          
-        // }, 10000);
-        setDisabled(true);
-        setTimeout(() => {
-          setLoading(false);
-          setError("Succesfully updated");
+      //   // }, 10000);
+      //   setDisabled(true);
+      //   setTimeout(() => {
+      //     setLoading(false);
+      //     setError("Succesfully updated");
   
-          window.location.reload();
-        }, 2000);
+      //     window.location.reload();
+      //   }, 2000);
     }
     else{
       setError("Todo is not Submitted")
@@ -124,23 +116,24 @@ export default function UserAlbumsPhoto({
 
   const handleDelete = (id) => {
     if (id) {
+      dispatch(deleteAlbums(id))
       // setTimeout(() => {
       //   setLoading1(false);
       // }, 5000);
-      setLoading(true);
-      axios.delete(`http://localhost:3500/albums/${items.id}`).then((res) => {
-        // window.location.reload();
-      });
+      // setLoading(true);
+      // axios.delete(`http://localhost:3500/albums/${items.id}`).then((res) => {
+      //   // window.location.reload();
+      // });
+      // // setTimeout(() => {
+      // //   setLoading(true);
+
+      // // }, 10000);
       // setTimeout(() => {
-      //   setLoading(true);
+      //   setLoading(false);
+      //   setError("Succesfully Deleted");
 
-      // }, 10000);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Succesfully Deleted");
-
-        window.location.reload();
-      }, 1000);
+      //   window.location.reload();
+      // }, 1000);
     } else {
       setError("Todos is not deleted");
     }

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const showPost = createAsyncThunk(
-  "showPost",
-  async (userId, { rejectWithValue }) => {
+export const showComments = createAsyncThunk(
+  "showComments",
+  async (postId, { rejectWithValue }) => {
     const response = await fetch(
-      `http://localhost:3500/posts?userId=${userId}`
+      `http://localhost:3500/comments?postId=${postId}`
     );
     try {
       const result = await response.json();
@@ -17,10 +17,10 @@ export const showPost = createAsyncThunk(
 );
 
 //create Todo
-export const createPost = createAsyncThunk(
-  "createPost",
+export const createComment = createAsyncThunk(
+  "createComment",
   async (data, { rejectWithValue }) => {
-    const response = await fetch("http://localhost:3500/posts", {
+    const response = await fetch("http://localhost:3500/comments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,11 +37,11 @@ export const createPost = createAsyncThunk(
   }
 );
 //update todo
-export const updatePost = createAsyncThunk(
-  "updatePost",
+export const updateComment = createAsyncThunk(
+  "updateComment",
   async (data, { rejectWithValue }) => {
     console.log("updated data", data);
-    const response = await fetch(`http://localhost:3500/posts/${data.id}`, {
+    const response = await fetch(`http://localhost:3500/comments/${data.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -59,10 +59,10 @@ export const updatePost = createAsyncThunk(
 );
 
 //delete todoos
-export const deletePost = createAsyncThunk(
-  "deletePost",
+export const deleteComment = createAsyncThunk(
+  "deleteComment",
   async (id, { rejectWithValue }) => {
-    const response = await fetch(`http://localhost:3500/posts/${id}`, {
+    const response = await fetch(`http://localhost:3500/comments/${id}`, {
       method: "DELETE",
     });
 
@@ -76,64 +76,64 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-const postSlice = createSlice({
+const commentSlice = createSlice({
   name: "post",
   initialState: {
-    userPosts: [],
-    // edit:[],
+    userComments: [],
+   
     loading: false,
     error: null,
   },
   extraReducers: {
-    [createPost.pending]: (state) => {
+    [createComment.pending]: (state) => {
       state.loading = true;
     },
-    [createPost.fulfilled]: (state, action) => {
+    [createComment.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;
-      state.userPosts.push(action.payload);
+      state.userComments.push(action.payload);
     },
-    [createPost.rejected]: (state, action) => {
+    [createComment.rejected]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.userComments = action.payload;
     },
-    [showPost.pending]: (state, action) => {
+    [showComments.pending]: (state, action) => {
       state.loading = true;
     },
-    [showPost.fulfilled]: (state, action) => {
+    [showComments.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.userComments = action.payload;
     },
-    [showPost.rejected]: (state, action) => {
+    [showComments.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
 
-    [updatePost.pending]: (state) => {
+    [updateComment.pending]: (state) => {
       state.loading = true;
     },
-    [updatePost.fulfilled]: (state, action) => {
+    [updateComment.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userPosts = state.userPosts.map((ele) =>
+      state.userComments = state.userComments.map((ele) =>
         ele.id === action.payload.id ? action.payload : ele
       );
     },
-    [updatePost.rejected]: (state, action) => {
+    [updateComment.rejected]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.userComments = action.payload;
     },
-    [deletePost.fulfilled]: (state, action) => {
+    [deleteComment.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;
-      state.userPosts = state.userPosts.filter(
+      state.userComments = state.userComments.filter(
         (ele) => ele.id !== action.payload
       );
     },
-    [deletePost.rejected]: (state, action) => {
+    [deleteComment.rejected]: (state, action) => {
       state.loading = true;
       state.error = action.payload;
     },
   },
 });
 
-export default postSlice.reducer;
+export default commentSlice.reducer;

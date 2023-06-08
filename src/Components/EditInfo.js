@@ -22,7 +22,7 @@ import { Link, useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { deleteUser, updateUser } from "../mainRedux/features/TodoSlice";
+// import { deleteUser } from "../mainRedux/features/TodoSlice";
 import Edit from "./Edit";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -106,7 +106,7 @@ export default function EditInfo({ data }) {
     payload["completed"] = values.completed;
       payload["id"]=id;
     console.log(payload)
-      dispatch(updateUser(payload))
+      // dispatch(updateUser(payload))
   }
     return(
         <><h1>hello</h1>

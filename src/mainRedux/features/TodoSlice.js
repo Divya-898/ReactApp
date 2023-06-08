@@ -1,7 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
 export const showTodo = createAsyncThunk(
-    "showUser",
+    "showTodo",
     async ( id ) => {
       return fetch(`http://localhost:3500/todos?userId=${id}`
       ).then((res)=>
@@ -10,7 +10,7 @@ export const showTodo = createAsyncThunk(
     })
   
 //create Todo
-export const createUser = createAsyncThunk("createUser", async(data, {rejectWithValue})=>{
+export const createTodo = createAsyncThunk("createTodo", async(data, {rejectWithValue})=>{
     const response = await fetch("http://localhost:3500/todos",{
      method:"POST",
      headers:{
@@ -27,8 +27,8 @@ export const createUser = createAsyncThunk("createUser", async(data, {rejectWith
     }
 })
 //update todo
-export const updateUser = createAsyncThunk(
-    "updateUser",
+export const updateTodo = createAsyncThunk(
+    "updateTodo",
     async (data, { rejectWithValue }) => {
       console.log("updated data", data);
       const response = await fetch(
@@ -52,8 +52,8 @@ export const updateUser = createAsyncThunk(
   );
 
 //delete todoos
-export const deleteUser = createAsyncThunk(
-  "deleteUser",
+export const deleteTodo = createAsyncThunk(
+  "deleteTodo",
   async (id, { rejectWithValue }) => {
     const response = await fetch(
       `http://localhost:3500/todos/${id}`,
@@ -63,7 +63,7 @@ export const deleteUser = createAsyncThunk(
     try {
       const result = await response.json();
       console.log(result);
-      return result;
+      return id;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -79,15 +79,14 @@ export const deleteUser = createAsyncThunk(
         error: null,
         },
         extraReducers: {
-
-            [createUser.pending]:(state)=>{
+            [createTodo.pending]:(state)=>{
                 state.loading = true;
             },
-            [createUser.fulfilled]:(state, action)=>{
+            [createTodo.fulfilled]:(state, action)=>{
                 state.loading = false;
                 state.todos.push(action.payload)
             },
-            [createUser.rejected]:(state, action)=>{
+            [createTodo.rejected]:(state, action)=>{
                 state.loading = false;
                 state.todos = action.payload
             },
@@ -103,22 +102,20 @@ export const deleteUser = createAsyncThunk(
                 state.error = action.payload;
               },
               
-              [updateUser.pending]:(state)=>{
+              [updateTodo.pending]:(state)=>{
                 state.loading = true;
             },
-            [updateUser.fulfilled]:(state, action)=>{
+            [updateTodo.fulfilled]:(state, action)=>{
                 state.loading = false;
                 state.todos=state.todos.map((ele)=>
-                (ele.id === action.payload.id ? action.payload : ele)
-               
-                )
-                
+                (ele.id === action.payload.id ? action.payload : ele)  
+                )   
             },
-            [updateUser.rejected]:(state, action)=>{
+            [updateTodo.rejected]:(state, action)=>{
                 state.loading = false;
                 state.todos = action.payload
             },
-            [deleteUser.fulfilled]: (state, action) => {
+            [deleteTodo.fulfilled]: (state, action) => {
               console.log(action)
               state.loading = false;
               state.todos =  state.todos.filter((ele)=>ele.id !== action.payload);
@@ -131,7 +128,7 @@ export const deleteUser = createAsyncThunk(
               // console.log(state.users)
               // }
             },
-            [deleteUser.rejected]: (state, action) => {
+            [deleteTodo.rejected]: (state, action) => {
               state.loading = false;
               state.error = action.payload;
             },

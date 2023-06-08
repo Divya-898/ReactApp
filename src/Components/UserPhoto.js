@@ -26,6 +26,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 import Edit from "./Edit";
+import { useDispatch } from "react-redux";
+import { createPhotos } from "../mainRedux/features/PhotoSlice";
 const style = {
   position: "absolute",
   top: "50%",
@@ -45,8 +47,11 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 function UserPhoto({ photos, albums }) {
-  // let temp=albums[0].id
-  //console.log(albums);
+  // if(albums[0].photos){
+  // console.log(albums[0].photos)
+  // }
+  // const{photos} = useSelector((state)=>state.userPhotos);
+  const dispatch = useDispatch()
   const [formData, setformData] = useState({
     thumbnailUrl: "", // required
      url:"",
@@ -60,7 +65,7 @@ function UserPhoto({ photos, albums }) {
 
   const [error, setError] = useState("");
   
- const [createPhotos, setCreatePhotos] = useState('');
+ const [getPhotos, setPhotos] = useState('');
  const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -74,13 +79,13 @@ const handleClickOpen = (scrollType) => () => {
   setOpen(true);
 };
   const handleChange = (event) => {
-    setCreatePhotos(event.target.value)
+    setPhotos(event.target.value)
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("postId", temp);
     let payload = {};
-    payload["albumId"] = createPhotos;
+    payload["albumId"] = getPhotos;
     // payload["name"] = user.name;
     // payload["email"] = user.email;
     payload["thumbnailUrl"] = formData.thumbnailUrl;
@@ -88,29 +93,30 @@ const handleClickOpen = (scrollType) => () => {
     payload["title"]=formData.title
     // payload["completed"] = formData.completed;
     if (formData.title && formData.thumbnailUrl) {
+      dispatch(createPhotos(payload))
       // setTimeout(() => {
       //   setLoading1(false);
       // }, 5000);
 
-      setLoading(true);
-    fetch(`http://localhost:3500/photos`, {
-      method: "POST",
-      headers: {'Content-Type' : 'application/json'},
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      setDisabled(true)
-      // setTimeout(() => {
-      //   setLoading(true);
+    //   setLoading(true);
+    // fetch(`http://localhost:3500/photos`, {
+    //   method: "POST",
+    //   headers: {'Content-Type' : 'application/json'},
+    //   body: JSON.stringify(payload),
+    // })
+    //   .then((res) => res.json())
+    //   setDisabled(true)
+    //   // setTimeout(() => {
+    //   //   setLoading(true);
 
        
-      // }, 1000);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Successfully created");
+    //   // }, 1000);
+    //   setTimeout(() => {
+    //     setLoading(false);
+    //     setError("Successfully created");
 
-        window.location.reload();
-      }, 2000);
+    //     window.location.reload();
+    //   }, 2000);
   }
   else{
     setError("photos is not Submitted")
@@ -251,6 +257,7 @@ const handleClickOpen = (scrollType) => () => {
                 >
                   {albums &&
                     albums.map((items) => (
+                     
                       <MenuItem
                         value={items.id}
               

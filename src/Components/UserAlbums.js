@@ -21,6 +21,8 @@ import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useDispatch } from "react-redux";
+import { createAlbums } from "../mainRedux/features/AlbumSlice";
 
 const style = {
   position: "absolute",
@@ -53,6 +55,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 function UserAlbums({ commonList }) {
+  console.log(commonList)
+  const dispatch = useDispatch();
   // const [albums,setAlbums ] = useState();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -87,27 +91,28 @@ function UserAlbums({ commonList }) {
     // payload["completed"] = formData.completed;
     console.log(payload);
     if (formData.title) {
+      dispatch(createAlbums(payload))
       // setTimeout(() => {
       //   setLoading1(false);
       // }, 5000);
 
-      setLoading(true);
-      fetch(`http://localhost:3500/albums`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).then((res) => res.json());
-      setDisabled(true);
-      // setTimeout(() => {
-      //   setLoading(true);
+      // setLoading(true);
+      // fetch(`http://localhost:3500/albums`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // }).then((res) => res.json());
+      // setDisabled(true);
+      // // setTimeout(() => {
+      // //   setLoading(true);
 
-      // }, 1000);
-      setTimeout(() => {
-        setLoading(false);
-        setError("Successfully created");
+      // // // }, 1000);
+      // // setTimeout(() => {
+      // //   setLoading(false);
+      // //   setError("Successfully created");
 
-        // window.location.reload();
-      }, 2000);
+      // //   // window.location.reload();
+      // // }, 2000);
     } else {
       setError("Todo is not Submitted");
     }
@@ -239,7 +244,7 @@ function UserAlbums({ commonList }) {
               </DialogContent>
             </Dialog>
           </div>
-
+         {commonList ?
           <Grid
             container
             rowSpacing={4}
@@ -248,13 +253,14 @@ function UserAlbums({ commonList }) {
           >
             {commonList &&
               commonList.map((items) => {
-                var str = "";
-                var obj = items.photos;
-                if (obj) {
-                  str = obj[0];
-                } else {
+                console.log(items);
+                var str=""
+                if(items.photos){
+                 str = items.photos[0];
+                console.log("obj",str)
+              } else {
                   str = {
-                    thumbnailUrl:
+                    "thumbnailUrl":
                       "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pink_flower.jpg",
                   };
                 }
@@ -294,7 +300,7 @@ function UserAlbums({ commonList }) {
                   </Grid>
                 );
               })}
-          </Grid>
+          </Grid>:""}
         </Paper>
         {/* {albums && albums.map((items) =>(
        <UserAlbumsPhoto albumId={items.id} key={items.id}/>

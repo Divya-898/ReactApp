@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const showPost = createAsyncThunk(
-  "showPost",
-  async (userId, { rejectWithValue }) => {
+export const showPhotos = createAsyncThunk(
+  "showPhotos",
+  async (common, { rejectWithValue }) => {
     const response = await fetch(
-      `http://localhost:3500/posts?userId=${userId}`
+      `http://localhost:3500/photos?${common}`
     );
     try {
       const result = await response.json();
@@ -17,10 +17,10 @@ export const showPost = createAsyncThunk(
 );
 
 //create Todo
-export const createPost = createAsyncThunk(
-  "createPost",
+export const createPhotos = createAsyncThunk(
+  "createPhotos",
   async (data, { rejectWithValue }) => {
-    const response = await fetch("http://localhost:3500/posts", {
+    const response = await fetch(`http://localhost:3500/photos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,11 +37,11 @@ export const createPost = createAsyncThunk(
   }
 );
 //update todo
-export const updatePost = createAsyncThunk(
-  "updatePost",
+export const updatePhotos = createAsyncThunk(
+  "updatePhotos",
   async (data, { rejectWithValue }) => {
     console.log("updated data", data);
-    const response = await fetch(`http://localhost:3500/posts/${data.id}`, {
+    const response = await fetch(`http://localhost:3500/photos/${data.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -59,10 +59,10 @@ export const updatePost = createAsyncThunk(
 );
 
 //delete todoos
-export const deletePost = createAsyncThunk(
-  "deletePost",
+export const deletePhotos = createAsyncThunk(
+  "deletePhotos",
   async (id, { rejectWithValue }) => {
-    const response = await fetch(`http://localhost:3500/posts/${id}`, {
+    const response = await fetch(`http://localhost:3500/photos/${id}`, {
       method: "DELETE",
     });
 
@@ -76,64 +76,64 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-const postSlice = createSlice({
+const photoSlice = createSlice({
   name: "post",
   initialState: {
-    userPosts: [],
-    // edit:[],
+    photos: [],
+   
     loading: false,
     error: null,
   },
   extraReducers: {
-    [createPost.pending]: (state) => {
+    [createPhotos.pending]: (state) => {
       state.loading = true;
     },
-    [createPost.fulfilled]: (state, action) => {
+    [createPhotos.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;
-      state.userPosts.push(action.payload);
+      state.photos.push(action.payload);
     },
-    [createPost.rejected]: (state, action) => {
+    [createPhotos.rejected]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.photos = action.payload;
     },
-    [showPost.pending]: (state, action) => {
+    [showPhotos.pending]: (state, action) => {
       state.loading = true;
     },
-    [showPost.fulfilled]: (state, action) => {
+    [showPhotos.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.photos = action.payload;
     },
-    [showPost.rejected]: (state, action) => {
+    [showPhotos.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
 
-    [updatePost.pending]: (state) => {
+    [updatePhotos.pending]: (state) => {
       state.loading = true;
     },
-    [updatePost.fulfilled]: (state, action) => {
+    [updatePhotos.fulfilled]: (state, action) => {
       state.loading = false;
-      state.userPosts = state.userPosts.map((ele) =>
+      state.photos = state.photos.map((ele) =>
         ele.id === action.payload.id ? action.payload : ele
       );
     },
-    [updatePost.rejected]: (state, action) => {
+    [updatePhotos.rejected]: (state, action) => {
       state.loading = false;
-      state.userPosts = action.payload;
+      state.photos = action.payload;
     },
-    [deletePost.fulfilled]: (state, action) => {
+    [deletePhotos.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;
-      state.userPosts = state.userPosts.filter(
+      state.photos = state.photos.filter(
         (ele) => ele.id !== action.payload
       );
     },
-    [deletePost.rejected]: (state, action) => {
+    [deletePhotos.rejected]: (state, action) => {
       state.loading = true;
       state.error = action.payload;
     },
   },
 });
 
-export default postSlice.reducer;
+export default photoSlice.reducer;
