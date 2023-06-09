@@ -157,3 +157,12 @@ padding: 15px;
      /* padding-bottom: 8px; */
      outline: 0;
  }
+ .css-dasnyc-MuiImageListItemBar-title {
+  font-size: 1rem;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  top: 10px;
+}

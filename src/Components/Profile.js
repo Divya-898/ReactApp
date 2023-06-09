@@ -1,18 +1,19 @@
 import React from "react";
 import { Box, Container } from "@mui/system";
 import { Avatar } from "@mui/material";
-
+import UserName from "./UserName";
 
 function Profile({user}) {
-let x= user.name
-  if(user.name){
-  // const x = user.name;
-    var nameparts = [];
-    nameparts = x.split(" ");
-    var initials =
-      nameparts[0].charAt(0).toUpperCase() +
-      nameparts[1].charAt(0).toUpperCase();
-  }
+// let name= user.name
+let initialName = UserName(user.name)
+  // if(user.name){
+  // // const x = user.name;
+  //   var nameparts = [];
+  //   nameparts = x.split(" ");
+  //   var initials =
+  //     nameparts[0].charAt(0).toUpperCase() +
+  //     nameparts[1].charAt(0).toUpperCase();
+  // }
   //     const current = new Date();
   // var data = AlbumsData();
   // useEffect(()=>{
@@ -39,7 +40,7 @@ let x= user.name
             alt="Remy Sharp"
             
             sx={{ width: 180, height: 180,border:5,borderColor:"white" ,bgcolor: "red",fontSize:"60px" }}
-          >{initials}</Avatar>
+          >{initialName}</Avatar>
            <Box sx={{width: "300px", marginLeft:"15px", marginTop: "40px"}}><div><div><span><h1>{user.name}</h1></span></div></div></Box>
         </Box>
        

@@ -155,13 +155,15 @@ export default function UserAlbumsPhoto({
           <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon>
           <DeleteIcon color="error" onClick={handleClickOpen1}></DeleteIcon>
         </div>
-        {/* <img
+        <div id="bg-image" className="lazy" style={{marginTop:"30px"}}>
+        <img 
           src={albumId.thumbnailUrl}
-          alt="photo"
+          alt=""
           width={albumWidth}
           height={albumHeight}
           style={{ borderRadius: "10px" }}
-        ></img> */}
+        ></img>
+        </div>
         <div>
           <Dialog
             disableEscapeKeyDown

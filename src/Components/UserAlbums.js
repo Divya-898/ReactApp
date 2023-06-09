@@ -12,6 +12,9 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
   InputLabel,
   LinearProgress,
   TextareaAutosize,
@@ -23,6 +26,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch } from "react-redux";
 import { createAlbums } from "../mainRedux/features/AlbumSlice";
+import Gallary from "./Gallary";
 
 const style = {
   position: "absolute",
@@ -131,7 +135,7 @@ function UserAlbums({ commonList }) {
       >
         <Paper
           elevation={3}
-          sx={{ width: "422px", height: "720px", borderRadius: "10px" }}
+          sx={{ width: "422px", height: "500px", borderRadius: "10px" }}
         >
           <div style={{ display: "flex" }}>
             <h1 style={{ padding: "10px", width: "390px" }}>Albums</h1>
@@ -245,12 +249,7 @@ function UserAlbums({ commonList }) {
             </Dialog>
           </div>
          {commonList ?
-          <Grid
-            container
-            rowSpacing={4}
-            columnSpacing={{ sm: 1 }}
-            sx={{ padding: "0px 10px 10px 10px", width: "430px" }}
-          >
+          <ImageList sx={{  height: 370 ,padding:"0 8px"}} cols={3} gap={8}>
             {commonList &&
               commonList.map((items) => {
                 console.log(items);
@@ -265,26 +264,68 @@ function UserAlbums({ commonList }) {
                   };
                 }
                 str ? console.log("str",str):console.log("false");
-                return (
-                  <Grid item xs={4} sx={{ height: "150px", width: "100px" }}>
+            
+                  {/* <Grid item xs={4} sx={{ height: "150px", width: "100px" }}>
                     <Item
                       sx={{
-                        height: "100px",
+                        // height: "100px",
                         boxShadow: "none",
-                        padding: "0px",
+                        // padding: "0px",
                         borderRadius: "10px",
+                       height: 100 ,
+                       padding:"0 8px"
                       }}
-                    >
-                      <UserAlbumsPhoto
+                    > */}
+                    return(
+                   
+        <ImageListItem key={items.img} sx={{height:"150px"}}>
+       <span style={{marginTop:"-25px"}}></span>
+          {/* <Edit photoUrl={item}></Edit> */}
+          {/* </ImageListItemBar> */}
+        {/* <ImageListItemBar
+            title={items.title}
+           position="bottom"
+          
+          /> 
+          <img
+            // src={item.thumbnailUrl}
+            width="130px"
+            height="100px"
+            // alt={item.title}
+            // loading="lazy"
+            src={str.thumbnailUrl}
+             alt=""
+          // width={albumWidth}
+          // height={albumHeight}
+          style={{ borderRadius: "10px" }}
+          /> */}
+          <UserAlbumsPhoto
                         albumId={
                          str
                         }
                         key={items.id}
                         albumWidth={"130px"}
                         albumHeight={"100px"}
-                        items={items}
-                      ></UserAlbumsPhoto>
-                    </Item>
+                        items={items}>
+                      </UserAlbumsPhoto> 
+                      <ImageListItemBar
+            title={items.title}/>
+        </ImageListItem>
+                    )
+      
+      
+              
+    })}</ImageList>:""}
+                       {/* <Gallary
+                        albumId={
+                         str
+                        }
+                        key={items.id}
+                        albumWidth={"130px"}
+                        albumHeight={"100px"}
+                        items={items}>
+                      </Gallary> */}
+                    {/* </Item>
                     <Item
                       sx={{
                         width: "110px",
@@ -300,7 +341,7 @@ function UserAlbums({ commonList }) {
                   </Grid>
                 );
               })}
-          </Grid>:""}
+          </Grid> */}
         </Paper>
         {/* {albums && albums.map((items) =>(
        <UserAlbumsPhoto albumId={items.id} key={items.id}/>

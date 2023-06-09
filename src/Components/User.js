@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-
+import UserName from "./UserName";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { useEffect, useState } from "react";
@@ -307,11 +307,9 @@ function User() {
                 ) : (
                   ""
                 )}
-                {commonList ? (
+              
                   <UserAlbums commonList={commonList}></UserAlbums>
-                ) : (
-                  ""
-                )}
+                
 
                 <UserTodos></UserTodos>
                 {/* <Newtodos></Newtodos> */}
@@ -336,7 +334,7 @@ function User() {
                     avatar={
                       user ? (
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                          {initials}
+                          {UserName(user.name)}
                         </Avatar>
                       ) : (
                         ""
@@ -513,7 +511,7 @@ function User() {
                           </Typography>
                         </CardContent>
 
-                        {/* <div>
+                        <div>
                           {commonList ? (
                             <img
                               src={commonList[0].photos[0].thumbnailUrl}
@@ -523,7 +521,7 @@ function User() {
                           ) : (
                             ""
                           )}
-                        </div> */}
+                        </div>
                         <CardActions disableSpacing>
                           <Typography>Comments:</Typography>
                           <ExpandMore

@@ -22,6 +22,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DesktopWindowsIcon from '@mui/icons-material/DesktopWindows';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import UserName from "./UserName";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -255,7 +256,7 @@ export default function PrimarySearchAppBar({user}) {
             <IconButton>
             <Avatar
   sx={{ width: 30, height: 30, bgcolor: "red",fontSize:"15px"}}
->{user.name}</Avatar>
+>{UserName(user.name)}</Avatar>
 </IconButton>
             {/* <IconButton
               size="large"
