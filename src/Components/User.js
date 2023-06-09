@@ -104,8 +104,11 @@ function User() {
   const [value, setValue] = useState();
   // const {userPosts,loading}=useSelector((state)=>state.userPosts);
   const { userPosts, loading } = useSelector((state) => state.userPosts);
-  const{photos} = useSelector((state)=>state.userPhotos);
-   const { albums } = useSelector((state) => state.userAlbums);
+  const { photos } = useSelector((state) => state.userPhotos);
+  if (photos) {
+    console.log("photos", photos);
+  }
+  const { albums } = useSelector((state) => state.userAlbums);
   // console.log(useSelector((state)=>state));
   const dispatch = useDispatch();
 
@@ -138,13 +141,6 @@ function User() {
 
   //const [albums,setAlbums ] = useState();
   const current = new Date();
-  // var data = AlbumsData();
-  // useEffect(()=>{
-  //   AlbumsData();
-  // },[])
-  // console.log(data)
-  //const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-  //const date =current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
   const date = Date().toLocaleString();
   var options = { year: "numeric", month: "long", day: "numeric" };
   const currentDate = new Date();
@@ -155,8 +151,7 @@ function User() {
     if (com) {
       if (expanded === true) setExpanded(!expanded);
     }
-  
-  }
+  };
   // const getAlbumData = () => {
   //   fetch(`http://localhost:3500/albums?userId=${userId}`)
   //     .then((response) => response.json())
@@ -181,20 +176,10 @@ function User() {
     }
     if (common) {
       // getPhotosData();
-      dispatch(showPhotos(common))
+      dispatch(showPhotos(common));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [str, common]);
-  // useEffect(()=>{
-
-  // },[])
-
-  // const getPhotosData = () => {
-  //   fetch(`http://localhost:3500/photos?${common}`)
-  //     .then((response) => response.json())
-  //     .then((result) => setPhotos(result))
-  //     .catch((error) => console.log("error", error));
-  // };
 
   if (photos) {
     console.log(photos);
@@ -207,13 +192,11 @@ function User() {
     // getAlbumData();
   }, [dispatch, userId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // getAlbumData()
-    
-    dispatch(showAlbums(userId))
-  
-  },[dispatch, userId])
-    // useEffect(() => {
+    dispatch(showAlbums(userId));
+  }, [dispatch, userId]);
+  // useEffect(() => {
   //   let photosObj = {};
   //   if (photos && albums) {
   //     for (let i = 0; i < photos.length; i++) {
@@ -240,45 +223,48 @@ function User() {
   // },[])
 
   useEffect(() => {
-      if (photos && albums) {
-        
-        let photosObj = {}
-        console.log("albums",albums)
-        console.log("photos",photos)
-        for (let i = 0; i < photos.length; i++) {
-          let albumId = photos[i].albumId;
-  
-          if (photosObj[albumId] && photosObj[albumId].length > 0) {
-            photosObj[albumId].push(photos[i]);
-          } else {
-            photosObj[albumId] = []
-            photosObj[albumId].push(photos[i]);
-          }
-        }
-        const newObj = Object.assign({selected: false}, 'photos');
-        // var t = JSON.parse(JSON.stringify('photos'));
-        var y = albums;
-        // console.log(t)
-        for (let j = 0; j < albums.length; j++) {
-          y[newObj] = photosObj[albums[j].id];
-          console.log(y)
-          // 
-          setCommonList(y);
+    if (photos && albums && photos.length > 0 && albums.length > 0) {
+      let photosObj = {};
+      console.log("albums", albums);
+      for (let i = 0; i < photos.length; i++) {
+        let albumId = photos[i].albumId;
+        if (photosObj[albumId] && photosObj[albumId].length > 0) {
+          photosObj[albumId].push(photos[i]);
+        } else {
+          photosObj[albumId] = [];
+          photosObj[albumId].push(photos[i]);
         }
       }
-  
-    }, [albums, photos])
+      // const newObj = Object.assign({selected: false}, 'photos');
+      // const p =JSON.stringify(newObj)
+      var t = JSON.stringify(photos);
+      var y = [];
+      // console.log(t)
 
-    // if(albums){
-    
-    // }
-    // if(photos){
-     
-    // }
+      for (let j = 0; j < albums.length; j++) {
+        let temp = {}
+        temp["photos"] = photosObj[albums[j].id];
+        temp["id"] = albums[j].id
+        temp["title"] =albums[j].title
+        y.push(temp)
+        console.log(y);
+        //
+       
+      }
+      setCommonList(y);
+    }
+  }, [albums, photos]);
 
-if(commonList){
-  console.log(commonList[0].photos)
-}
+  // if(albums){
+
+  // }
+  // if(photos){
+
+  // }
+
+  // if (commonList) {
+  //   console.log(commonList[0].photos);
+  // }
   var initials;
   const handleSubmit = (e, userId) => {
     e.preventDefault();
@@ -321,7 +307,7 @@ if(commonList){
                 ) : (
                   ""
                 )}
-                { commonList ? (
+                {commonList ? (
                   <UserAlbums commonList={commonList}></UserAlbums>
                 ) : (
                   ""

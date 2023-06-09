@@ -103,6 +103,7 @@ export const deleteAlbums = createAsyncThunk(
             [showAlbums.fulfilled]:(state, action)=>{
                 console.log(action)
                 state.loading = false;
+                // var data = { ...state};
                 state.albums = action.payload
             },
             [showAlbums.rejected]: (state, action) => {

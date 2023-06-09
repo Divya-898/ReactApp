@@ -155,13 +155,13 @@ export default function UserAlbumsPhoto({
           <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon>
           <DeleteIcon color="error" onClick={handleClickOpen1}></DeleteIcon>
         </div>
-        <img
+        {/* <img
           src={albumId.thumbnailUrl}
           alt="photo"
           width={albumWidth}
           height={albumHeight}
           style={{ borderRadius: "10px" }}
-        ></img>
+        ></img> */}
         <div>
           <Dialog
             disableEscapeKeyDown
