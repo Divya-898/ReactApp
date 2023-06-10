@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { Link, useParams } from "react-router-dom";
-import Checkbox, { checkboxClasses } from "@mui/material/Checkbox";
+import { useParams } from "react-router-dom";
+import Checkbox from "@mui/material/Checkbox";
+import { useForm } from "react-hook-form";
 import {
   Button,
   Dialog,
@@ -12,29 +13,15 @@ import {
   Grid,
   InputLabel,
   LinearProgress,
-  TextField,
   TextareaAutosize,
-  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useCallback, useEffect, useState } from "react";
-import Modal from "@mui/material/Modal";
+import React, { useEffect, useRef, useState } from "react";
+
 import EditTodos from "./EditTodos";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { displayPartsToString } from "typescript";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodo, createUser, showTodo } from "../mainRedux/features/TodoSlice";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { createTodo, showTodo } from "../mainRedux/features/TodoSlice";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -54,19 +41,12 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-
 function UserTodos() {
   const { userId } = useParams();
-  console.log("userID", userId);
   const { todos, loading } = useSelector((state) => state.app);
-  //  const{loading, todos} = useSelector((state) => state.app));
-  // console.log("todos", todos);
   const dispatch = useDispatch();
-  //   console.log(user)
-  // const [todos, setTodos] = useState();
+  const { register, reset } = useForm();
   const [checked, setChecked] = React.useState(true);
-  // const [loading, setLoading] = useState(false);
-  // const [loading1, setLoading1] = useState(true);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
@@ -76,13 +56,17 @@ function UserTodos() {
   });
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  let completeButtonRef = useRef("");
+  const reload = () => window.location.reload();
+  const handleClose = () => {
+    setOpen(false);
+    reload();
+  };
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
   const IsParsable = (data) => {
     try {
       JSON.parse(data);
@@ -91,6 +75,9 @@ function UserTodos() {
     }
     return true;
   };
+  useEffect(() => {
+    reset(formData);
+  }, [formData]);
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};
@@ -98,14 +85,19 @@ function UserTodos() {
     payload["title"] = formData.title;
     payload["completed"] = formData.completed;
     if (formData.title && formData.completed) {
-      dispatch(createTodo(payload));
-    } 
+      setTimeout(() => {
+        dispatch(createTodo(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setError("Succesfully created");
+      }, 1000);
+    }
   };
   function handleTodosChange(e) {
     setformData({ ...formData, [e.target.name]: e.target.value });
   }
   useEffect(() => {
-    // getData();
     dispatch(showTodo(userId));
   }, []);
   return (
@@ -117,7 +109,8 @@ function UserTodos() {
           "& > :not(style)": {
             m: 1,
             width: "422px",
-            height: "600px",
+            maxHeight: 400,
+            overflow: "auto",
           },
         }}
       >
@@ -140,9 +133,7 @@ function UserTodos() {
               <div>
                 <Dialog
                   open={open}
-                  onClose={handleClose}
                   scroll={scroll}
-                  aria-labelledby="scroll-dialog-title"
                   aria-describedby="scroll-dialog-description"
                   PaperProps={{
                     sx: {
@@ -150,7 +141,12 @@ function UserTodos() {
                       maxHeight: 400,
                     },
                   }}
+                  onClose={handleClose}
                 >
+                  <div
+                    className="fixed inset-0 bg-black/30"
+                    aria-hidden="true"
+                  />
                   <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
                     Create Todos
                   </DialogTitle>
@@ -173,6 +169,7 @@ function UserTodos() {
                           minRows={3}
                           type="text"
                           name="title"
+                          {...register("title")}
                           onChange={(e) => handleTodosChange(e)}
                         />
                       </div>
@@ -190,6 +187,7 @@ function UserTodos() {
                           disabled={disabled}
                           type="text"
                           name="completed"
+                          {...register("completed")}
                           onChange={(e) => handleTodosChange(e)}
                         />
                       </div>
@@ -224,7 +222,7 @@ function UserTodos() {
                               color: "red",
                             }}
                           >
-                            {error === "Successfully created" ? (
+                            {error === "Succesfully created" ? (
                               <p style={{ color: "green" }}>{error}</p>
                             ) : (
                               <p style={{ color: "red" }}>{error}</p>
@@ -239,6 +237,7 @@ function UserTodos() {
                           }}
                         >
                           <Button
+                            ref={completeButtonRef}
                             onClick={handleClose}
                             color="error"
                             variant="contained"
@@ -250,6 +249,12 @@ function UserTodos() {
                             type="submit"
                             color="success"
                             variant="contained"
+                            onClick={() =>
+                              reset({
+                                title: "",
+                                completed: "",
+                              })
+                            }
                           >
                             Create
                           </Button>
@@ -259,7 +264,6 @@ function UserTodos() {
                   </DialogContent>
                 </Dialog>
               </div>
-
               <Grid container columnSpacing={{ sm: 1 }}>
                 {todos.map((data1) => (
                   <>
@@ -312,38 +316,38 @@ function UserTodos() {
 export default UserTodos;
 //get api for the post
 // const getData = useCallback(() => {
-  //   fetch(`http://localhost:3500/todos?userId=${userId}`)
-  //     .then((response) => response.json())
-  //     .then((result) => setTodos(result))
-  //     .catch((error) => console.log("error", error));
-  //   //console.log(match)
-  // });
+//   fetch(`http://localhost:3500/todos?userId=${userId}`)
+//     .then((response) => response.json())
+//     .then((result) => setTodos(result))
+//     .catch((error) => console.log("error", error));
+//   //console.log(match)
+// });
 
-  //post api for post request
-  // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
+//post api for post request
+// setTimeout(() => {
+//   setLoading1(false);
+// }, 5000);
 
-      // setLoading(true);
-      //   fetch(`http://localhost:3500/todos`, {
-      //     method: "POST",
-      //     headers: {'Content-Type' : 'application/json'},
-      //     body: JSON.stringify(payload),
-      //   })
-      //     .then((res) => res.json())
-      //     setDisabled(true)
-      //     // setTimeout(() => {
-      //     //   setLoading(true);
+// setLoading(true);
+//   fetch(`http://localhost:3500/todos`, {
+//     method: "POST",
+//     headers: {'Content-Type' : 'application/json'},
+//     body: JSON.stringify(payload),
+//   })
+//     .then((res) => res.json())
+//     setDisabled(true)
+//     // setTimeout(() => {
+//     //   setLoading(true);
 
-      //     // }, 1000);
-      //     setTimeout(() => {
-      //       // setLoading(false);
-      //       setError("Successfully created");
+//     // }, 1000);
+//     setTimeout(() => {
+//       // setLoading(false);
+//       setError("Successfully created");
 
-      //       window.location.reload();
-      //     }, 2000);
-      // }
-      // else{
-      //   setError("Todo is not Submitted")
-      // }
-    // .then((data) => setFormData(data));
+//       window.location.reload();
+//     }, 2000);
+// }
+// else{
+//   setError("Todo is not Submitted")
+// }
+// .then((data) => setFormData(data));

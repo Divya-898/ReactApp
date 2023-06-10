@@ -18,27 +18,11 @@ import {
   InputLabel,
   LinearProgress,
   TextareaAutosize,
-  Typography,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch } from "react-redux";
 import { createAlbums } from "../mainRedux/features/AlbumSlice";
-import Gallary from "./Gallary";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -50,33 +34,21 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 4px
 `
 );
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 function UserAlbums({ commonList }) {
-  console.log(commonList)
+  console.log(commonList);
   const dispatch = useDispatch();
-  // const [albums,setAlbums ] = useState();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
-  // console.log("commonList" ,commonList[0].photos[0].thumbnailUrl)
   const { userId } = useParams();
   const [formData, setformData] = useState({
     title: "", // required
-    // required
   });
 
   const handleChange = (e) => {
@@ -84,43 +56,14 @@ function UserAlbums({ commonList }) {
   };
   const handleSubmit = (e, userId) => {
     e.preventDefault();
-    console.log("postId", userId);
-    // payload["photos"]={ "thumbnail":streetref.current.value,}
     let payload = {};
     payload["userId"] = userId;
-    // payload["name"] = user.name;
-    // payload["email"] = user.email;
     payload["title"] = formData.title;
-
-    // payload["completed"] = formData.completed;
-    console.log(payload);
     if (formData.title) {
-      dispatch(createAlbums(payload))
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-
-      // setLoading(true);
-      // fetch(`http://localhost:3500/albums`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // }).then((res) => res.json());
-      // setDisabled(true);
-      // // setTimeout(() => {
-      // //   setLoading(true);
-
-      // // // }, 1000);
-      // // setTimeout(() => {
-      // //   setLoading(false);
-      // //   setError("Successfully created");
-
-      // //   // window.location.reload();
-      // // }, 2000);
+      dispatch(createAlbums(payload));
     } else {
       setError("Todo is not Submitted");
     }
-    // .then((data) => setFormData(data));
   };
   return (
     <div>
@@ -227,7 +170,6 @@ function UserAlbums({ commonList }) {
                         )}
                       </div>
                     </Box>
-
                     <div
                       style={{ margin: "40px 0px 0px 0px", display: "flex" }}
                     >
@@ -248,105 +190,41 @@ function UserAlbums({ commonList }) {
               </DialogContent>
             </Dialog>
           </div>
-         {commonList ?
-          <ImageList sx={{  height: 370 ,padding:"0 8px"}} cols={3} gap={8}>
-            {commonList &&
-              commonList.map((items) => {
-                console.log(items);
-                var str=""
-                if(items.photos){
-                 str = items.photos[0];
-                console.log("obj",str)
-              } else {
-                  str = {
-                    "thumbnailUrl":
-                      "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pink_flower.jpg",
-                  };
-                }
-                str ? console.log("str",str):console.log("false");
-            
-                  {/* <Grid item xs={4} sx={{ height: "150px", width: "100px" }}>
-                    <Item
-                      sx={{
-                        // height: "100px",
-                        boxShadow: "none",
-                        // padding: "0px",
-                        borderRadius: "10px",
-                       height: 100 ,
-                       padding:"0 8px"
-                      }}
-                    > */}
-                    return(
-                   
-        <ImageListItem key={items.img} sx={{height:"150px"}}>
-       <span style={{marginTop:"-25px"}}></span>
-          {/* <Edit photoUrl={item}></Edit> */}
-          {/* </ImageListItemBar> */}
-        {/* <ImageListItemBar
-            title={items.title}
-           position="bottom"
-          
-          /> 
-          <img
-            // src={item.thumbnailUrl}
-            width="130px"
-            height="100px"
-            // alt={item.title}
-            // loading="lazy"
-            src={str.thumbnailUrl}
-             alt=""
-          // width={albumWidth}
-          // height={albumHeight}
-          style={{ borderRadius: "10px" }}
-          /> */}
-          <UserAlbumsPhoto
-                        albumId={
-                         str
-                        }
+          {commonList ? (
+            <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8}>
+              {commonList &&
+                commonList.map((items) => {
+                  console.log(items);
+                  var str = "";
+                  if (items.photos) {
+                    str = items.photos[0];
+                    console.log("obj", str);
+                  } else {
+                    str = {
+                      thumbnailUrl:
+                        "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pink_flower.jpg",
+                    };
+                  }
+                  str ? console.log("str", str) : console.log("false");
+                  return (
+                    <ImageListItem key={items.img} sx={{ height: "150px" }}>
+                      <span style={{ marginTop: "-25px" }}></span>
+                      <UserAlbumsPhoto
+                        albumId={str}
                         key={items.id}
                         albumWidth={"130px"}
                         albumHeight={"100px"}
-                        items={items}>
-                      </UserAlbumsPhoto> 
-                      <ImageListItemBar
-            title={items.title}/>
-        </ImageListItem>
-                    )
-      
-      
-              
-    })}</ImageList>:""}
-                       {/* <Gallary
-                        albumId={
-                         str
-                        }
-                        key={items.id}
-                        albumWidth={"130px"}
-                        albumHeight={"100px"}
-                        items={items}>
-                      </Gallary> */}
-                    {/* </Item>
-                    <Item
-                      sx={{
-                        width: "110px",
-                        boxShadow: "none",
-                        "letter-spacing": "0px",
-                        textAlign: "start",
-                        color: "black",
-                        padding: "25px 0px 0px 10px"
-                      }}
-                    >
-                      {items.title}
-                    </Item>
-                  </Grid>
-                );
-              })}
-          </Grid> */}
+                        items={items}
+                      ></UserAlbumsPhoto>
+                      <ImageListItemBar title={items.title} />
+                    </ImageListItem>
+                  );
+                })}
+            </ImageList>
+          ) : (
+            ""
+          )}
         </Paper>
-        {/* {albums && albums.map((items) =>(
-       <UserAlbumsPhoto albumId={items.id} key={items.id}/>
-
-      ))} */}
       </Box>
     </div>
   );

@@ -47,19 +47,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 function UserPhoto({ photos, albums }) {
-  // if(albums[0].photos){
-  // console.log(albums[0].photos)
-  // }
-  // const{photos} = useSelector((state)=>state.userPhotos);
+
   const dispatch = useDispatch()
   const [formData, setformData] = useState({
     thumbnailUrl: "", // required
      url:"",
      title:""// required
   });
-  // const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState("paper");
 
@@ -67,7 +62,6 @@ function UserPhoto({ photos, albums }) {
   
  const [getPhotos, setPhotos] = useState('');
  const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
@@ -83,54 +77,24 @@ const handleClickOpen = (scrollType) => () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("postId", temp);
     let payload = {};
     payload["albumId"] = getPhotos;
-    // payload["name"] = user.name;
-    // payload["email"] = user.email;
     payload["thumbnailUrl"] = formData.thumbnailUrl;
     payload["url"] = formData.url;
     payload["title"]=formData.title
-    // payload["completed"] = formData.completed;
+  
     if (formData.title && formData.thumbnailUrl) {
       dispatch(createPhotos(payload))
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-
-    //   setLoading(true);
-    // fetch(`http://localhost:3500/photos`, {
-    //   method: "POST",
-    //   headers: {'Content-Type' : 'application/json'},
-    //   body: JSON.stringify(payload),
-    // })
-    //   .then((res) => res.json())
-    //   setDisabled(true)
-    //   // setTimeout(() => {
-    //   //   setLoading(true);
-
-       
-    //   // }, 1000);
-    //   setTimeout(() => {
-    //     setLoading(false);
-    //     setError("Successfully created");
-
-    //     window.location.reload();
-    //   }, 2000);
   }
   else{
     setError("photos is not Submitted")
   }
-      // .then((data) => setFormData(data));
-  
-    // .then((data) => setFormData(data));
+    
   };
   function handleTodosChange(e) {
     setformData({ ...formData, [e.target.name]: e.target.value });
   }
   
-  // let x= getScrollX();
-  // let y=getScrollY();
   return (
     <div>
       <Box
@@ -153,7 +117,7 @@ const handleClickOpen = (scrollType) => () => {
     }}}><AddCircleIcon/></Button>
           </div>
           <div>
-                    {/* <Button onClick={handleClickOpen('paper')}>scroll=paper</Button> */}
+                  
 
                     <Dialog
                       open={open}
@@ -236,7 +200,7 @@ const handleClickOpen = (scrollType) => () => {
                               type="text"
                               name="thumbnailUrl"
                               onChange={(e) => handleTodosChange(e)}
-                              //   onChange={(e) => handleTodosChange(e)}
+          
                             />
                           </div>
                           <div style={{ display: "flex" }}>
@@ -268,13 +232,7 @@ const handleClickOpen = (scrollType) => () => {
                 </Select>
                 </div>
           
-                          {/* <button
-                            className="login-btn"
-                            type="submit"
-                            style={{ float: "right" }}
-                          >
-                            Submit
-                          </button>  */}
+              
                           <div>
           <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
          </div>
@@ -314,101 +272,12 @@ const handleClickOpen = (scrollType) => () => {
                     </Dialog>
                   </div>
 
-          {/* <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
-                {/* <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  
-                }}
-              >
-                Title
-              </InputLabel> 
-          <TextField
-                required
-                id="title"
-                name="title"
-                label="Title"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
-              />  */}
-
-                {/* <TextField
-                  type="text"
-                  size="small"
-                  name="thumbnailUrl"
-                  onChange={(e) => handleTodosChange(e)}
-                />
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Title"
-                  onChange={handleChange}
-                >
-                  {albums &&
-                    albums.map((items) => (
-                      <MenuItem
-                        value={items.id}
-              
-                      >
-                        {items.title}
-                      </MenuItem>
-                    ))}
-                </Select>
-                <br></br>
-                <br></br>
-                {/* <TextField type="text" size='small' name="completed"
-                    onChange={(e) => handleTodosChange(e)}/> */}
-                {/* <button
-                  className="login-btn"
-                  type="submit"
-                  style={{ float: "right" }}
-                >
-                  Submit
-                </button>
-              </form>
-            </Box>
-          </Modal> */}
-            {/* <div style={{ height: "55vh", overflow: "auto", }}>
-              {photos &&
-                photos.map((image) => ( 
-                  <>
-                  
-                  
-                 <span><Edit photoUrl={image}></Edit></span>
-                
-                  <LazyLoadImage
-                    className="load-image"
-                    height="150px"
-                    src={image.thumbnailUrl}
-                    width="80px"
-                    effect="opacity"
-                    threshold={10}
-                  />
-                 
-                
-
-                  </>
-                  
-                  
-                ))}
-            </div> */}
+          
             <ImageList sx={{  height: 370 ,padding:"0 8px"}} cols={3} gap={8}>
       {photos  && photos.map((item) => (
         <>
         <ImageListItem key={item.img} sx={{height:"150px"}}>
        <span style={{marginTop:"-25px"}}><Edit photoUrl={item}></Edit></span>
-          {/* <Edit photoUrl={item}></Edit> */}
-          {/* </ImageListItemBar> */}
         <ImageListItemBar
             title={item.title}
            position="bottom"

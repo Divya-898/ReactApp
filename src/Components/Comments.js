@@ -1,38 +1,19 @@
 import {
   Avatar,
-  CardHeader,
-  FormControl,
   Grid,
-  IconButton,
-  InputLabel,
-  TextField,
 } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 
 import Paper from "@mui/material/Paper";
-import Input from "@mui/material/Input";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import LinearProgress from "@mui/material/LinearProgress";
-import SendIcon from "@mui/icons-material/Send";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress"
 import { useParams } from "react-router-dom";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditComment from "./EditComments";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment, showComments } from "../mainRedux/features/CommentSlice";
+import UserName from "./UserName";
 const style = {
   position: "absolute",
   top: "50%",
@@ -51,37 +32,17 @@ function CommentPost({ postId, user }) {
   const [disabled, setDisabled] = useState(false);
   const [comment, setComment] = useState();
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [comments, setComments] = useState("");
   const [progress, setProgress] = React.useState(0);
   const [buffer, setBuffer] = React.useState(10);
   const [error, setError] = useState("");
   const progressRef = React.useRef(() => {});
   const { userId } = useParams();
-  // const [open, setOpen] = React.useState(false);
-  const [openBox, setOpenBox] = React.useState(false);
-  // const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
-  const [scroll, setScroll] = React.useState("paper");
+  
   const [values, setValue] = useState({
     title: "", // required
     body: "", // required
   });
 
-  //  const handleClose = () => {
-  //   setOpen(false);
-  // };
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-  };
-
-  // const getdata = () => {
-  //   fetch(`http://localhost:3500/comments?postId=${postId}`)
-  //     .then((response) => response.json())
-  //     .then((result) => setComments(result))
-  //     .catch((error) => console.log("error", error));
-  // };
   useEffect(() => {
     dispatch(showComments(postId))
   }, []);
@@ -96,65 +57,19 @@ function CommentPost({ postId, user }) {
     payload["body"] = comment;
     if (comment) {
       dispatch(createComment(payload))
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-
-      // // setLoading(true);
-
-      // fetch(`http://localhost:3500/comments`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // }).then((res) => res.json());
-      // setDisabled(true);
-      // setTimeout(() => {
-      //   // setLoading(false);
-      //      setError("Successfully created")
-      //   window.location.reload();
-      // }, 10000);
     }
     else{
       setError("Comment is not created")
     }
 
-      // progressRef.current = () => {
-
-      //     const diff = Math.random() * 10;
-      //     const diff2 = Math.random() * 10;
-      //     setProgress(progress + diff);
-      //     setBuffer(progress + diff + diff2);
-
-      // };
-
-      // const timer = setInterval(() => {
-      //   progressRef.current();
-      // }, 500);
-
-      // return () => {
-      //   clearInterval(timer);
-      // };
-    
-    // .then((data) => setFormData(data));
+      
   };
-  // "postId": 2,
-  // "name": "eligendi deleniti quidem qui sint nihil autem",
-  // "email": "Mueller@myrl.com",
-  // "body": "dolor at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in"
+
 
   function handleChange(e) {
     setComment(e.target.value);
   }
-  if (comment) {
-    console.log(comment);
-  }
 
-  var nameparts = [];
-  const x = user.name;
-  // var nameparts = [];
-  nameparts = x.split(" ");
-  var initials =
-    nameparts[0].charAt(0).toUpperCase() + nameparts[1].charAt(0).toUpperCase();
   return (
     <>
       {userComments
@@ -167,18 +82,11 @@ function CommentPost({ postId, user }) {
               words[i] = words[i][0] + words[i].substr(1);
             }
             const commentName = words.join(" ");
-            
       
-           {/* nameparts = x.split(" ");
-  var initials =[]
-  initials = nameparts[0].toUpperCase() +
-    nameparts[1].toUpperCase(); 
-            console.log(initials) */}
             
             return (
               <div style={{}}>
                 <div style={{ padding: 14 }} className="App">
-                  {/* <Paper style={{ padding: "40px 20px" }}> */}
                   <Grid
                     container
                     wrap="nowrap"
@@ -228,25 +136,19 @@ function CommentPost({ postId, user }) {
                           {commentName}
                         </h4>
                         <span className="commentBody">{post.body}. </span>
-                        {/* </p> */}
                       </Paper>
                     </Grid>
                   </Grid>
-
-                  {/* </Paper> */}
                 </div>
               </div>
             );
           })
         : ""}
-
-      {/* {comment ? <div style={{ padding: 14 }} className="App"></div> : ""} */}
-
-      <div class="post-top" style={{ PaddingTop: "5px", marginLeft: "10px" }}>
+      <div className="post-top" style={{ PaddingTop: "5px", marginLeft: "10px" }}>
         <Grid container wrap="nowrap">
           <Grid item>
             <Avatar sx={{ bgcolor: "red", margin: "15px 0px 0px 6px" }}>
-              {initials}
+              {UserName(user.name)}
             </Avatar>
           </Grid>
 
@@ -256,12 +158,10 @@ function CommentPost({ postId, user }) {
               onSubmit={(e) => handleSubmit(e, postId)}
             >
               <div style={{ display: "flex" }}>
-               
                   <>
                     <input
                       type="text"
                       placeholder="Write a comment...."
-                      // value={comment.body}
                       name="body"
                       disabled={disabled}
                       onChange={(e) => handleChange(e)}

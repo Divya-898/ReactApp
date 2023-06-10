@@ -1,29 +1,18 @@
-import React, { useEffect, useState } from "react";
-
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
-  Menu,
-  MenuItem,
-  TextField,
   TextareaAutosize,
-  Typography,
 } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-// import { deleteUser } from "../mainRedux/features/TodoSlice";
-import Edit from "./Edit";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -37,10 +26,10 @@ const StyledTextarea = styled(TextareaAutosize)(
 );
 
 export default function EditInfo({ data }) {
- console.log("data",data);
+  console.log("data", data);
   const { userId } = useParams();
   const { id } = useParams();
-  console.log(id)
+  console.log(id);
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
@@ -48,33 +37,8 @@ export default function EditInfo({ data }) {
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  // ({
-  //   title: "", // required
-  //   completed: "",
-
-  // });
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClickOpen1 = () => {
-    setOpenBox(true);
-  };
-
-  const handleClose1 = (event, reason) => {
-    if (reason !== "backdropClick") {
-      setOpenBox(false);
-    }
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -85,40 +49,29 @@ export default function EditInfo({ data }) {
   function handleChange(e) {
     setValue({ ...values, [e.target.name]: e.target.value });
   }
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:3500/todos/${todos.id}`)
-  //     .then((response) => {
-  //       setValue(response.data);
-  //       console.log(response.data);
-  //     })
-  //     //.then((result) => setValue(result))
-  //     .catch((error) => console.log("error", error));
-  // }, []);
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
     console.log("comments");
-    console.log("value",values.title)
+    console.log("value", values.title);
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = values.title;
     payload["completed"] = values.completed;
-      payload["id"]=id;
-    console.log(payload)
-      // dispatch(updateUser(payload))
-  }
-    return(
-        <><h1>hello</h1>
-        <Button variant="contained" color="success"
+    payload["id"] = id;
+  };
+  return (
+    <>
+      <h1>hello</h1>
+      <Button
+        variant="contained"
+        color="success"
         onClick={handleClickOpen("paper")}
-        sx={{ float: "right",padding:"0" }}
+        sx={{ float: "right", padding: "0" }}
       >
         Edit
       </Button>
-        <div>
-        
-           
+      <div>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -140,7 +93,6 @@ export default function EditInfo({ data }) {
               className="login-form"
               onSubmit={(e) => handleSubmit(e, data.id)}
             >
-    
               <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
@@ -151,7 +103,6 @@ export default function EditInfo({ data }) {
                   Title
                 </InputLabel>
                 <StyledTextarea
-                //  disabled={disabled}
                   minRows={3}
                   type="text"
                   disabled={disabled}
@@ -160,7 +111,6 @@ export default function EditInfo({ data }) {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-
               <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
@@ -178,33 +128,39 @@ export default function EditInfo({ data }) {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-
-              {/* <button
-            className="login-btn"
-            type="submit"
-            style={{ float: "right" }}
-          >
-            Submit
-          </button>  */}
-          <div>
-          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
-         </div>
+              <div>
+                <Divider
+                  sx={{
+                    width: "610px",
+                    right: "30px",
+                    position: "relative",
+                    top: "20px",
+                  }}
+                />
+              </div>
               <DialogActions dividers={scroll === "paper"}>
-              <Box sx={{ width: "80%", margin:"-10px 0px 0px 70px" }}>
-                              {loading ? (
-                                <LinearProgress
-                                  variant="buffer"
-                                  value={progress}
-                                  valueBuffer={buffer}
-                                />
-                              ) : (
-                                ""
-                              )}
-                              <div className="message" style={{position:"relative",left:"80px"}}>
-                              {error==="Succesfully updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
-                            </div>
-                            </Box>
-                            <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
+                <Box sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}>
+                  {loading ? (
+                    <LinearProgress
+                      variant="buffer"
+                      value={progress}
+                      valueBuffer={buffer}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  <div
+                    className="message"
+                    style={{ position: "relative", left: "80px" }}
+                  >
+                    {error === "Succesfully updated" ? (
+                      <p style={{ color: "green" }}>{error}</p>
+                    ) : (
+                      <p style={{ color: "red" }}>{error}</p>
+                    )}
+                  </div>
+                </Box>
+                <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
                   <Button
                     onClick={handleClose}
                     color="error"
@@ -222,6 +178,6 @@ export default function EditInfo({ data }) {
           </DialogContent>
         </Dialog>
       </div>
-      </>
+    </>
   );
 }

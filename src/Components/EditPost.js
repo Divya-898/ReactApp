@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-
-import axios from "axios";
+import React, {useState } from "react";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
+
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
   Menu,
   MenuItem,
-  TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
@@ -36,7 +33,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );
 export default function EditPost({ edit, postId }) {
-  const { userPosts, loading } = useSelector((state) => state.userPosts);
+  const {loading } = useSelector((state) => state.userPosts);
   const dispatch = useDispatch();
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
@@ -44,12 +41,9 @@ export default function EditPost({ edit, postId }) {
   const [scroll, setScroll] = React.useState("paper");
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  // const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [error, setError] = useState("");
   const [values, setValue] = useState(postId);
   const [disabled, setDisabled] = useState(false);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
   const handleClickMenu = (event) => {
@@ -194,7 +188,6 @@ export default function EditPost({ edit, postId }) {
                   Cancel
                 </Button>
                 <Button
-                  //onClick={e=>handleDelete(commentId)}
                   variant="contained"
                   onClick={(e) => handleDelete(edit)}
                   color="success"

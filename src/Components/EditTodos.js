@@ -37,9 +37,6 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 export default function EditTodos({ data }) {
   const { todos, loading } = useSelector((state) => state.app);
-  const { id } = useParams();
-  // const temp = todos.find((ele) => (ele.id === id ? id : ele));
-  // console.log(temp.id);
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
@@ -47,8 +44,6 @@ export default function EditTodos({ data }) {
   const [values, setValue] = useState(data);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  // const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -127,16 +122,6 @@ export default function EditTodos({ data }) {
             }}
           >
             <MenuItem>
-              {/* <Button onClick={()=> handleClickMenu2(data.id)}> edit3</Button> */}
-              {/* <Link to={`/edit/${data.id}`} onClick={handleClickOpen("paper")}
-             >button</Link> */}
-              {/* <Link
-                to={`/edit/${data.id}`}
-                className="card-link"
-                onClick={handleClickOpen("paper")}
-              >
-                Edit
-              </Link> */}
               <Button
                 variant="contained"
                 color="success"

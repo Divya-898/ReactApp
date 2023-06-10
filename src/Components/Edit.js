@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from "react";
-
-import axios from "axios";
+import React, {useState } from "react";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
-  Menu,
-  MenuItem,
-  TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { deletePhotos, updatePhotos } from "../mainRedux/features/PhotoSlice";
@@ -47,23 +40,8 @@ function Edit({photoUrl}) {
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
     const [loading, setLoading] = useState(false);
-    const [loading1, setLoading1] = useState(true);
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState("");
-    // ({
-    //   title: "", // required
-    //   completed: "",
-  
-    // });
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const menuOpen = Boolean(anchorEl);
-    const handleClickMenu = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleCloseMenu = () => {
-      setAnchorEl(null);
-    };
-  
     const handleClickOpen1 = () => {
       setOpenBox(true);
     };
@@ -80,17 +58,6 @@ function Edit({photoUrl}) {
     const handleClickOpen = (scrollType) => () => {
       setOpen(true);
     };
-    // useEffect(() => {
-    //   axios
-    //     .get(`http://localhost:3500/todos/${todos.id}`)
-    //     .then((response) => {
-    //       setValue(response.data);
-    //       console.log(response.data);
-    //     })
-    //     //.then((result) => setValue(result))
-    //     .catch((error) => console.log("error", error));
-    // }, []);
-  
     const handleSubmit = (e, id) => {
       e.preventDefault();
       console.log("comments");
@@ -102,35 +69,10 @@ function Edit({photoUrl}) {
      payload["title"]=values.title
       if (values.thumbnailUrl) {
         dispatch(updatePhotos(payload))
-          // setTimeout(() => {
-          //   setLoading(true);
-          // }, 5000);
-        //   setLoading(true)
-        // axios
-        //   .put(`http://localhost:3500/photos/${photoUrl.id}`, payload)
-        //   .then((res) => {
-        //     console.log("hello");
-        //   });
-        //   // setTimeout(() => {
-        //   //   setLoading(true);
-    
-           
-        //   // }, 10000);
-        //   setDisabled(true);
-        //   setTimeout(() => {
-        //     setLoading(false);
-        //     setError("Succesfully updated");
-    
-        //     window.location.reload();
-        //   }, 2000);
       }
       else{
         setError("Photo is not Submitted")
       }
-        // setTimeout(()=>{
-        //     window.location.reload();
-        // }, 1000)
-      
     };
     const handleDelete = (id) => {
       if (id) {
@@ -191,7 +133,6 @@ function Edit({photoUrl}) {
                 Cancel
               </Button>
               <Button
-                //onClick={e=>handleDelete(commentId)}
                 variant="contained"
                 onClick={(e) => handleDelete(photoUrl.id)}
                 color="success"
@@ -222,70 +163,10 @@ function Edit({photoUrl}) {
               className="login-form"
               onSubmit={(e) => handleSubmit(e, photoUrl.albumId)}
             >
-              {/* <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Title
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="title"
-               value={values.title}
-              onChange={e => handleChange(e)}
-            />
-          </div>
-          <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Status
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="completed"
-               value={values.completed}
-              onChange={e => handleChange(e)}
-            />
-          </div> */}
-              {/* <div style={{ display: "flex" }}>
-                <InputLabel
-                  sx={{
-                    padding: "8px",
-                    margin: "5px 15px 0px 0px",
-                  }}
-                >
-                  PhotoUrl
-                </InputLabel>
-                <StyledTextarea
-                //  disabled={disabled}
-                  minRows={3}
-                  type="text"
-                  disabled={disabled}
-                  name="url"
-                  value={values.url}
-                  onChange={(e) => handleChange(e)}
-                />
-              </div> */}
               <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
                     padding: "8px",
-                    // margin: "5px 0px 0px 40px",
                   }}
                 >
                  Photo-Title
@@ -332,14 +213,6 @@ function Edit({photoUrl}) {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-
-              {/* <button
-            className="login-btn"
-            type="submit"
-            style={{ float: "right" }}
-          >
-            Submit
-          </button>  */}
           <div>
           <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
          </div>

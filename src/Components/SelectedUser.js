@@ -36,7 +36,7 @@ function SelectedUserName({ user }) {
 
   return (
     <div>
-      {
+      
         <>
           <CardHeader sx={{padding: "16px 9px 0px"}}
             avatar={
@@ -49,7 +49,7 @@ function SelectedUserName({ user }) {
             subheader={dateFormate}
           />
         </>
-      }
+      
     </div>
   );
 }

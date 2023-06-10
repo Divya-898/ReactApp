@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import BadgeIcon from "@mui/icons-material/Badge";
 import {
+  DialogTitle,
   Divider,
   Icon,
   IconButton,
@@ -26,23 +27,14 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   InputLabel,
   TextField,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { showUser, updateUser } from "../mainRedux/features/UserSlice";
 function UserIntro({ user }) {
   const dispatch = useDispatch();
-  // const dispatch = useSelector((state)=>state.userIntro)
-  // console.log(user)
-  //   const{user} = useSelector((state)=>state.userIntro);
-  //   if(user){
-  //   console.log(user.address)
-  // }
-  let u = [];
   const cityref = useRef("");
   const streetref = useRef("");
   const emailref = useRef("");
@@ -54,39 +46,15 @@ function UserIntro({ user }) {
   const suiteref = useRef("");
   const catchPhraseref = useRef("");
   const bsref = useRef("");
-  // const name=useRef("");
-  // const name=useRef("");
-
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [values, setValue] = useState(user);
   const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(false);
-  // ({
-  //   name: "", // required
-  //   email: "",
-  //   phone:"",
-  //   website:"",
-  //   address:{street:"",
-  //   city:"",
-  //   zipcode:"",
-  //   suite: "",
-  // },
-  // company: {
-  //   name: "",
-
-  // }
-  // required
-  // });
-  // let tempData=[]
-  // let te=["address"]
-  // tempData.push(te)
-  console.log(values);
   const handleClose = () => {
     setOpen(false);
   };
@@ -96,13 +64,7 @@ function UserIntro({ user }) {
   useEffect(() => {
     dispatch(showUser(userId));
   }, []);
-  // useEffect(()=>{
-  //   axios.get(`http://localhost:3500/users/${user.id}`)
-  //   .then(response =>{setValue(response.data)})
-  //   //.then((result) => setValue(result))
-  //   .catch((error) => console.log("error", error));
-  // },[])
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("postId", userId);
@@ -123,36 +85,9 @@ function UserIntro({ user }) {
       bs: bsref.current.value,
       name: comNameref.current.value,
     };
-    //   payload["name"] = name.current.value;
-    //   payload["email"] = email.current.value;
-    //   payload["phone"] =phone.current.value;
-    //   payload["address"] ={
-    //     "city":cityref.current.value
-    //     payload["address"] ={
-    //       "stree":cityref.current.value
-    //     // // "street":values.address.street,
-    //     // // "suite":values.address.suite,
-    //     // "zipcode":values.address.zipcode
-    // };
-    //   console.log(cityref.current.value)
-    //    payload["website"]=values.website
-    // payload["street"] =values.address.street;
-    // payload["suite"] =values.address.suite;
-    // payload["zipcode"] =values.address.zipcode;
-    // payload["company"] =values.company.name;
-    // payload["title"] = values.title;
     if (values) {
       dispatch(updateUser(payload));
-      //   setLoading(true)
-      // axios.put(`http://localhost:3500/users/${user.id}`, payload).
-      // then(res =>{})
-      // setDisabled(true)
-      //   setTimeout(() => {
-      //     setLoading(false);
-      //     setError("Succesfully updated");
 
-      //     window.location.reload();
-      //   }, 2000);
     } else {
       setError("Todo is not Submitted");
     }
@@ -196,8 +131,6 @@ function UserIntro({ user }) {
             </Button>
           </div>
           <div>
-            {/* <Button onClick={handleClickOpen('paper')} sx={{float:"right"}}>Edit</Button>  */}
-
             <Dialog
               open={open}
               onClose={handleClose}
@@ -207,7 +140,6 @@ function UserIntro({ user }) {
               PaperProps={{
                 sx: {
                   width: "50%",
-                  // height:"500px",
                   maxHeight: 640,
                 },
               }}
@@ -234,11 +166,9 @@ function UserIntro({ user }) {
                         }}
                         InputProps={{ sx: { height: 25 } }}
                         type="text"
-                        // name="name"
                         inputProps={{ readOnly: false }}
                         inputRef={nameref}
                         defaultValue={values.name}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -251,9 +181,6 @@ function UserIntro({ user }) {
                     >
                       Email
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "58px" }}>
                       <TextField
                         disabled={disabled}
@@ -277,9 +204,6 @@ function UserIntro({ user }) {
                     >
                       Street
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "55px" }}>
                       <TextField
                         disabled={disabled}
@@ -290,7 +214,6 @@ function UserIntro({ user }) {
                         type="text"
                         inputRef={streetref}
                         defaultValue={values.address.street}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -354,9 +277,6 @@ function UserIntro({ user }) {
                     >
                       Zipcode
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "38px" }}>
                       <TextField
                         disabled={disabled}
@@ -368,7 +288,6 @@ function UserIntro({ user }) {
                         inputProps={{ readOnly: false }}
                         inputRef={zipcoderef}
                         defaultValue={values.address.zipcode}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -380,9 +299,6 @@ function UserIntro({ user }) {
                     >
                       Catch-Phrase
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "-3px" }}>
                       <TextField
                         disabled={disabled}
@@ -394,7 +310,6 @@ function UserIntro({ user }) {
                         inputProps={{ readOnly: false }}
                         inputRef={catchPhraseref}
                         defaultValue={values.company.catchPhrase}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -406,9 +321,6 @@ function UserIntro({ user }) {
                     >
                       Name
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "53px" }}>
                       <TextField
                         disabled={disabled}
@@ -420,7 +332,6 @@ function UserIntro({ user }) {
                         inputProps={{ readOnly: false }}
                         inputRef={comNameref}
                         defaultValue={values.company.name}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -443,7 +354,6 @@ function UserIntro({ user }) {
                         inputProps={{ readOnly: false }}
                         inputRef={bsref}
                         defaultValue={values.company.bs}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -478,9 +388,6 @@ function UserIntro({ user }) {
                     >
                       Website
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "40px" }}>
                       <TextField
                         disabled={disabled}
@@ -496,37 +403,6 @@ function UserIntro({ user }) {
                       />
                     </div>
                   </div>
-
-                  {/* <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              ComName
-            </InputLabel>
-            {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
-                  {/* <TextField
-              sx={{
-                paddingTop: "10px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="name"
-              value={values.company.name}
-              onChange={e => handleChange(e)}
-            />
-          </div> */}
-
-                  {/* <button
-            className="login-btn"
-            type="submit"
-            style={{ float: "right" }}
-          >
-            Submit
-          </button>  */}
                   <div>
                     <Divider
                       sx={{
