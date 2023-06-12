@@ -5,6 +5,7 @@ import User from './Components/User';
 import { Route, Routes,useLocation } from 'react-router-dom';
 import EditTodos from './Components/EditTodos';
 import EditInfo from './Components/EditInfo';
+import DialogModal from './Components/SucDialog';
 function App() {
   const location = useLocation();
   const background = location.state && location.state.background;
@@ -14,7 +15,8 @@ function App() {
      <Route path="/" exact element={<UserPost/>} />
      
     <Route path="/user/:userId"  element={<User/>}>
-    <Route path="edit/:id" element={<EditInfo />} />
+    <Route path="edit/:id" element={<DialogModal />} />
+    <Route path="delete/:id" element={<DialogModal />} />
     </Route>
     </Routes>
     </div>

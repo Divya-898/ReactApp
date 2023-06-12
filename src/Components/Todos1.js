@@ -75,9 +75,9 @@ function UserTodos() {
     }
     return true;
   };
-  useEffect(() => {
-    reset(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   reset(formData);
+  // }, [formData]);
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};

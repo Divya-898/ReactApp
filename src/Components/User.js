@@ -40,6 +40,7 @@ import { createPost, showPost } from "../mainRedux/features/PostSlice";
 import { showUser } from "../mainRedux/features/UserSlice";
 import { showPhotos } from "../mainRedux/features/PhotoSlice";
 import { showAlbums } from "../mainRedux/features/AlbumSlice";
+import { useForm } from "react-hook-form";
 
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -65,6 +66,7 @@ const ExpandMore = styled((props) => {
 }));
 function User() {
   const { userId } = useParams();
+  const { register, reset } = useForm()
   const { user, loading } = useSelector((state) => state.userIntro);
   const [expanded, setExpanded] = useState(false);
   const [error, setError] = useState("");
@@ -124,15 +126,17 @@ function User() {
   useEffect(() => {
     if (userId) {
       dispatch(showUser(userId));
-      dispatch(showPost(userId));
+     
     }
     dispatch(showAlbums(userId));
   }, [dispatch, userId]);
+  useEffect(()=>{
+    dispatch(showPost(userId));
+  },[])
 
   useEffect(() => {
     if (photos && albums && photos.length > 0 && albums.length > 0) {
       let photosObj = {};
-      console.log("albums", albums);
       for (let i = 0; i < photos.length; i++) {
         let albumId = photos[i].albumId;
         if (photosObj[albumId] && photosObj[albumId].length > 0) {
@@ -154,6 +158,9 @@ function User() {
     }
   }, [albums, photos]);
 
+  useEffect(() => {
+    reset(postData);
+  }, [postData]);
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};
@@ -161,10 +168,14 @@ function User() {
     payload["title"] = postData.title;
     payload["body"] = postData.body;
     if (postData.body && postData.title) {
-      dispatch(createPost(payload));
+      
       setTimeout(() => {
-        handleClose();
-      }, 2000);
+        dispatch(createPost(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setError("Succesfully created");
+      }, 1000);
     }
   };
   function handleTodosChange(e) {
@@ -194,13 +205,13 @@ function User() {
                 ) : (
                   ""
                 )}
-                <UserAlbums commonList={commonList}></UserAlbums>
+                {/* <UserAlbums commonList={commonList}></UserAlbums> */}
                 <UserTodos></UserTodos>
-                <UserPhoto
+                {/* <UserPhoto
                   photos={photos}
                   albums={albums}
                   sx={{ borderRadius: "0px" }}
-                ></UserPhoto>
+                ></UserPhoto> */}
               </Container>
 
               <div className="cardWrapper">
@@ -267,6 +278,7 @@ function User() {
                               disabled={disabled}
                               type="text"
                               name="title"
+                              {...register("title")}
                               onChange={(e) => handleTodosChange(e)}
                             />
                           </div>
@@ -285,6 +297,7 @@ function User() {
                               minRows={3}
                               type="text"
                               name="body"
+                              {...register("body")}
                               onChange={(e) => handleTodosChange(e)}
                             />
                           </div>
@@ -343,6 +356,12 @@ function User() {
                                 type="submit"
                                 color="success"
                                 variant="contained"
+                                onClick={() =>
+                              reset({
+                                title: "",
+                                body: "",
+                              })
+                            }
                               >
                                 Create
                               </Button>
@@ -366,7 +385,7 @@ function User() {
                         }}
                         key={items.id}
                       >
-                        <EditPost edit={items.id} postId={items}></EditPost>
+                        <EditPost postId={items}></EditPost>
                         <CardHeader
                           sx={{ padding: "16px 9px 0px" }}
                           avatar={

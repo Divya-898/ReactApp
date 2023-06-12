@@ -68,7 +68,6 @@ export default function UserPost() {
                   sx={{ bgcolor: red[500], height: 50 }}
                   aria-label="recipe"
                 >
-                  {/* {post.id} */}
                   <User userId={post.userId} />
                 </Avatar>
               }

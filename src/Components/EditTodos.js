@@ -23,6 +23,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo,updateTodo, } from "../mainRedux/features/TodoSlice";
+import DialogModal from "./SucDialog";
+import { useForm } from "react-hook-form";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -37,6 +39,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 export default function EditTodos({ data }) {
   const { todos, loading } = useSelector((state) => state.app);
+  const { register, reset } = useForm();
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
@@ -72,6 +75,9 @@ export default function EditTodos({ data }) {
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
   };
+  useEffect(() => {
+    reset(values);
+  }, [reset, values]);
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
@@ -82,7 +88,15 @@ export default function EditTodos({ data }) {
     payload["title"] = values.title;
     payload["completed"] = values.completed;
     payload["id"] = id;
-    dispatch(updateTodo(payload));
+    if (values.title && values.completed) {
+      setTimeout(() => {
+        dispatch(updateTodo(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setError("Succesfully created");
+      }, 1000);
+    }
   };
   const handleDelete = (id) => {
     if (id) {
@@ -122,6 +136,7 @@ export default function EditTodos({ data }) {
             }}
           >
             <MenuItem>
+            <Link to={`edit/${data.id}`}>
               <Button
                 variant="contained"
                 color="success"
@@ -129,10 +144,10 @@ export default function EditTodos({ data }) {
                 sx={{ float: "right", padding: "0" }}
               >
                 Edit
-              </Button>{" "}
+              </Button>{" "} </Link>
             </MenuItem>
-            <MenuItem>
-              {" "}
+            <MenuItem>     
+            <Link to={`delete/${data.id}`}> 
               <Button
                 variant="contained"
                 color="error"
@@ -140,7 +155,7 @@ export default function EditTodos({ data }) {
                 sx={{ float: "right", padding: "0" }}
               >
                 delete
-              </Button>
+              </Button></Link>
             </MenuItem>
           </Menu>
         </div>
@@ -210,7 +225,9 @@ export default function EditTodos({ data }) {
             </DialogActions>
           </Dialog>
         </div>
-
+      <DialogTitle></DialogTitle>
+      
+              {/* <DialogModal open={open} handleClose={handleClose} scroll={scroll} data={data}></DialogModal> */}
         {data ? (
           <Dialog
             open={open}
@@ -248,6 +265,7 @@ export default function EditTodos({ data }) {
                     disabled={disabled}
                     name="title"
                     value={values.title}
+                    {...register("title")}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -266,6 +284,7 @@ export default function EditTodos({ data }) {
                     disabled={disabled}
                     name="completed"
                     value={values.completed}
+                    {...register("completed")}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -310,7 +329,14 @@ export default function EditTodos({ data }) {
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" color="success" variant="contained">
+                    <Button type="submit" color="success" variant="contained"
+                    onClick={() =>
+                              reset({
+                                title: "",
+                                completed: "",
+                              })
+                            }
+                    >
                       Update
                     </Button>
                   </div>
@@ -321,6 +347,7 @@ export default function EditTodos({ data }) {
         ) : (
           ""
         )}
+       
       </div>
       <Outlet></Outlet>
     </>

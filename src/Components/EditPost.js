@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -15,11 +15,12 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, updatePost } from "../mainRedux/features/PostSlice";
+import { useForm } from "react-hook-form";
 
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -32,7 +33,8 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 4px
 `
 );
-export default function EditPost({ edit, postId }) {
+export default function EditPost({postId }) {
+  const { register, reset } = useForm()
   const {loading } = useSelector((state) => state.userPosts);
   const dispatch = useDispatch();
   const { userId } = useParams();
@@ -42,10 +44,12 @@ export default function EditPost({ edit, postId }) {
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [error, setError] = useState("");
-  const [values, setValue] = useState(postId);
+  const [post, setPost] = useState(postId);
   const [disabled, setDisabled] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
+  // const { register, reset } = useForm()
+  const navigate = useNavigate()
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -65,10 +69,15 @@ export default function EditPost({ edit, postId }) {
 
   const handleClose = () => {
     setOpen(false);
-  };
+		navigate(-1);
+	}
+  
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
   };
+  useEffect(() => {
+    reset(postId);
+  }, [postId]);
 
   const handleSubmit = (e, userId) => {
     e.preventDefault();
@@ -76,13 +85,25 @@ export default function EditPost({ edit, postId }) {
     let payload = {};
     payload["userId"] = userId;
     payload["id"] = postId.id;
-    payload["title"] = values.title;
-    payload["body"] = values.body;
-    payload["title"] = values.title;
-    if (values.title && values.body) {
-      dispatch(updatePost(payload));
+    payload["title"] = post.title;
+    payload["body"] = post.body;
+    payload["title"] = post.title;
+    if (post.body && post.title) {
+        setTimeout(() => {
+        dispatch(updatePost(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setPost({title:"",body:""})
+        setError("Succesfully created");
+      }, 1000);
+      setTimeout(()=>{
+        setOpen(false);
+        setError("");
+		navigate(-1);
+      },3000)
     } else {
-      setError("Todo is not Submitted");
+      setError("Post is not Submitted");
     }
   };
 
@@ -95,7 +116,7 @@ export default function EditPost({ edit, postId }) {
   };
 
   function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
+    setPost({ ...post, [e.target.name]: e.target.value });
   }
   return (
     <>
@@ -120,6 +141,7 @@ export default function EditPost({ edit, postId }) {
             }}
           >
             <MenuItem>
+            <Link to={`edit/${postId.id}`}>
               <Button
                 variant="contained"
                 color="success"
@@ -127,10 +149,11 @@ export default function EditPost({ edit, postId }) {
                 sx={{ float: "right", padding: "0" }}
               >
                 Edit
-              </Button>{" "}
+              </Button>{" "}</Link>
             </MenuItem>
             <MenuItem>
               {" "}
+              <Link to={`delete/${postId.id}`}>
               <Button
                 variant="contained"
                 color="error"
@@ -138,7 +161,7 @@ export default function EditPost({ edit, postId }) {
                 sx={{ float: "right", padding: "0" }}
               >
                 delete
-              </Button>
+              </Button></Link>
             </MenuItem>
           </Menu>
         </div>
@@ -189,7 +212,7 @@ export default function EditPost({ edit, postId }) {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={(e) => handleDelete(edit)}
+                  onClick={(e) => handleDelete(postId.id)}
                   color="success"
                 >
                   Delete
@@ -232,7 +255,8 @@ export default function EditPost({ edit, postId }) {
                   disabled={disabled}
                   type="text"
                   name="title"
-                  value={values.title}
+                  value={post.title}
+                  // {...register("title")}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -250,7 +274,8 @@ export default function EditPost({ edit, postId }) {
                   minRows={3}
                   type="text"
                   name="body"
-                  value={values.body}
+                  value={post.body}
+                  // {...register("body")}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -279,7 +304,7 @@ export default function EditPost({ edit, postId }) {
                     className="message"
                     style={{ position: "relative", left: "80px" }}
                   >
-                    {error === "Successfully update" ? (
+                    {error === "Succesfully created" ? (
                       <p style={{ color: "green" }}>{error}</p>
                     ) : (
                       <p style={{ color: "red" }}>{error}</p>
@@ -297,6 +322,7 @@ export default function EditPost({ edit, postId }) {
                     Cancel
                   </Button>
                   <Button type="submit" color="success" variant="contained">
+                 
                     Update
                   </Button>
                 </div>
