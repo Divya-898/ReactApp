@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteAlbums, updateAlbums } from "../mainRedux/features/AlbumSlice";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -32,110 +32,83 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 4px
 `
 );
-
-
 export default function UserAlbumsPhoto({
   albumId,
   albumWidth,
   albumHeight,
   items,
 }) {
-  // console.log("album",user)
+  const navigate = useNavigate();
+   const{loading} = useSelector((state)=> state.userAlbums)
   const dispatch = useDispatch();
-  const [photo, setPhoto] = useState("");
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-  const [values, setValue] = useState(items);
+  const [album, setAlbum] = useState(items);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState("");
   const { userId } = useParams();
   const handleClose = () => {
     setOpen(false);
+    navigate(-1);
   };
 
-  const handleClickOpen1 = () => {
+  const handleOpenDelete = () => {
     setOpenBox(true);
   };
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
   };
-  const handleClose1 = (event, reason) => {
+  const handleCloseDelete = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpenBox(false);
+      navigate(-1);
     }
   };
   function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
+    setAlbum({ ...album, [e.target.name]: e.target.value });
   }
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
-    console.log("comments");
     let payload = {};
     payload["userId"] = id;
-    payload["title"] = values.title;
-    payload["completed"] = values.completed;
+    payload["title"] = album.title;
+    payload["completed"] = album.completed;
     payload["id"]=items.id
-    if (values.title) {
-      dispatch(updateAlbums(payload))
-        // setTimeout(() => {
-        //   setLoading(true);
-        // }, 5000);
-      //   setLoading(true)
-      // axios
-      //   .put(`http://localhost:3500/albums/${items.id}`, payload)
-      //   .then((res) => {
-      //     console.log("hello");
-      //   });
-      //   // setTimeout(() => {
-      //   //   setLoading(true);
-  
-         
-      //   // }, 10000);
-      //   setDisabled(true);
-      //   setTimeout(() => {
-      //     setLoading(false);
-      //     setError("Succesfully updated");
-  
-      //     window.location.reload();
-      //   }, 2000);
+    if (album.title) {
+      setTimeout(() => {
+        dispatch(updateAlbums(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setAlbum({title:"",})
+        setError("Succesfully updated");
+      }, 1000);
+      setTimeout(()=>{
+        window.location.reload();
+      },3000)
     }
     else{
-      setError("Todo is not Submitted")
+      setError("albums is not updated")
     }
-      // setTimeout(()=>{
-      //     window.location.reload();
-      // }, 1000)
     
   };
 
   const handleDelete = (id) => {
     if (id) {
-      dispatch(deleteAlbums(id))
-      // setTimeout(() => {
-      //   setLoading1(false);
-      // }, 5000);
-      // setLoading(true);
-      // axios.delete(`http://localhost:3500/albums/${items.id}`).then((res) => {
-      //   // window.location.reload();
-      // });
-      // // setTimeout(() => {
-      // //   setLoading(true);
-
-      // // }, 10000);
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   setError("Succesfully Deleted");
-
-      //   window.location.reload();
-      // }, 1000);
-    } else {
-      setError("Todos is not deleted");
+      setTimeout(()=>{
+        dispatch(deleteAlbums(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },2000)
+      } 
+     else {
+      setError("Album is not deleted");
     }
   };
 
@@ -148,12 +121,11 @@ export default function UserAlbumsPhoto({
             position: "relative",
             top: "28px",
             left: "75px",
-            // color: "white",
           }}
         >
-          
-          <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon>
-          <DeleteIcon color="error" onClick={handleClickOpen1}></DeleteIcon>
+          <Link to={`edit/${items.id}`}>
+          <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon></Link>
+          <Link to={`delete/${items.id}`}><DeleteIcon color="error" onClick={handleOpenDelete}></DeleteIcon></Link>
         </div>
         <div id="bg-image" className="lazy" style={{marginTop:"30px"}}>
         <img 
@@ -168,7 +140,7 @@ export default function UserAlbumsPhoto({
           <Dialog
             disableEscapeKeyDown
             open={openBox}
-            onClose={handleClose1}
+            onClose={handleCloseDelete}
             PaperProps={{
               sx: {
                 width: "30%",
@@ -211,7 +183,7 @@ export default function UserAlbumsPhoto({
 
               <Typography sx={{ display: "flex", marginTop: "30px" }}>
                 <Button
-                  onClick={handleClose1}
+                  onClick={handleCloseDelete}
                   variant="contained"
                   color="error"
                   sx={{ marginRight: "10px" }}
@@ -219,7 +191,6 @@ export default function UserAlbumsPhoto({
                   Cancel
                 </Button>
                 <Button
-                  //onClick={e=>handleDelete(commentId)}
                   variant="contained"
                   onClick={(e) => handleDelete(items.id)}
                   color="success"
@@ -251,46 +222,6 @@ export default function UserAlbumsPhoto({
               className="login-form"
               onSubmit={(e) => handleSubmit(e, userId)}
             >
-              {/* <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Title
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="title"
-               value={values.title}
-              onChange={e => handleChange(e)}
-            />
-          </div>
-          <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Status
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="completed"
-               value={values.completed}
-              onChange={e => handleChange(e)}
-            />
-          </div> */}
               <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
@@ -301,25 +232,14 @@ export default function UserAlbumsPhoto({
                   Title
                 </InputLabel>
                 <StyledTextarea
-                //  disabled={disabled}
                   minRows={3}
                   type="text"
                   disabled={disabled}
                   name="title"
-                  value={values.title}
+                  value={album.title}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-
-             
-
-              {/* <button
-            className="login-btn"
-            type="submit"
-            style={{ float: "right" }}
-          >
-            Submit
-          </button>  */}
           <div>
           <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
          </div>

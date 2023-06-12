@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePhotos, updatePhotos } from "../mainRedux/features/PhotoSlice";
+import { Link, useNavigate } from "react-router-dom";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -30,71 +30,89 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );;
 function Edit({photoUrl}) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-    const { userId } = useParams();
+  const {loading} = useSelector((state)=>state.userPhotos)
     const [open, setOpen] = React.useState(false);
     const [openBox, setOpenBox] = React.useState(false);
     const [scroll, setScroll] = React.useState("paper");
-    
-    const [values, setValue] = useState(photoUrl);
+    const [photos, setPhotos] = useState(photoUrl);
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState("");
-    const handleClickOpen1 = () => {
+    const handleOpenDelete = () => {
       setOpenBox(true);
     };
   
-    const handleClose1 = (event, reason) => {
+    const handleCloseDelete = (event, reason) => {
       if (reason !== "backdropClick") {
         setOpenBox(false);
+        navigate(-1);
       }
     };
   
     const handleClose = () => {
       setOpen(false);
+      navigate(-1);
     };
     const handleClickOpen = (scrollType) => () => {
       setOpen(true);
     };
     const handleSubmit = (e, id) => {
       e.preventDefault();
-      console.log("comments");
       let payload = {};
       payload["id"]=photoUrl.id
       payload["albumId"] = id;
-      payload["url"] = values.url;
-      payload["thumbnailUrl"] = values.thumbnailUrl;
-     payload["title"]=values.title
-      if (values.thumbnailUrl) {
-        dispatch(updatePhotos(payload))
+      payload["url"] = photos.url;
+      payload["thumbnailUrl"] = photos.thumbnailUrl;
+     payload["title"]=photos.title
+      if (photos.thumbnailUrl) {
+        setTimeout(() => {
+          dispatch(updatePhotos(payload));
+        }, 500);
+        setTimeout(() => {
+          setDisabled(true);
+          setPhotos({title:"",thumbnailUrl:"",url:""})
+          setError("Succesfully updated");
+        }, 1000);
+        setTimeout(()=>{
+          window.location.reload();
+        },3000)
+      } else {
+        setError("Photo is not updated");
       }
-      else{
-        setError("Photo is not Submitted")
-      }
+      
     };
     const handleDelete = (id) => {
       if (id) {
-       dispatch(deletePhotos(id))
-    }
-    else{
-      setError("Photos is not deleted")
-    }
-      
+        setTimeout(()=>{
+          dispatch(deletePhotos(id));
+        },2000)
+       
+        setTimeout(()=>{
+          setError("Succesfully Deleted")
+        },2000)
+        } 
+       else {
+        setError("Photo is not deleted");
+      }
     };
   
     function handleChange(e) {
-      setValue({ ...values, [e.target.name]: e.target.value });
+      setPhotos({ ...photos, [e.target.name]: e.target.value });
     }
   return (
   <>
         <span style={{position: "relative",
     left: "82px",
-    top: "30px"}}><ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon>
-        <DeleteIcon color="error" onClick={handleClickOpen1}></DeleteIcon></span>
+    top: "30px"}}>
+    <Link to={`edit/${photoUrl.id}`}>
+    <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon></Link>
+    <Link to={`delete/${photoUrl.id}`}> <DeleteIcon color="error" onClick={handleOpenDelete}></DeleteIcon></Link></span>
         <span>
-          <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}
+          <Dialog disableEscapeKeyDown open={openBox} onClose={handleCloseDelete}
           PaperProps={{
             sx: {
               width:"30%",
@@ -129,7 +147,7 @@ function Edit({photoUrl}) {
                             </Box>
                               
                <Typography sx={{display:"flex", marginTop:"30px"}}>         
-              <Button onClick={handleClose1} variant="contained" color="error" sx={{marginRight:"10px"}}>
+              <Button onClick={handleCloseDelete} variant="contained" color="error" sx={{marginRight:"10px"}}>
                 Cancel
               </Button>
               <Button
@@ -151,7 +169,7 @@ function Edit({photoUrl}) {
           PaperProps={{
             sx: {
               width: "50%",
-              maxHeight: 400,
+              maxHeight: 490,
             },
           }}
         >
@@ -175,7 +193,7 @@ function Edit({photoUrl}) {
                   type="text"
                   disabled={disabled}
                   name="title"
-                  value={values.title}
+                  value={photos.title}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -192,7 +210,7 @@ function Edit({photoUrl}) {
                   type="text"
                   disabled={disabled}
                   name="url"
-                  value={values.url}
+                  value={photos.url}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -209,7 +227,7 @@ function Edit({photoUrl}) {
                   type="text"
                   disabled={disabled}
                   name="thumbnailUrl"
-                  value={values.thumbnailUrl}
+                  value={photos.thumbnailUrl}
                   onChange={(e) => handleChange(e)}
                 />
               </div>

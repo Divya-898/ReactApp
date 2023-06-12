@@ -34,7 +34,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );
 export default function EditPost({postId }) {
-  const { register, reset } = useForm()
+  const navigate = useNavigate();
   const {loading } = useSelector((state) => state.userPosts);
   const dispatch = useDispatch();
   const { userId } = useParams();
@@ -48,8 +48,6 @@ export default function EditPost({postId }) {
   const [disabled, setDisabled] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
-  // const { register, reset } = useForm()
-  const navigate = useNavigate()
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -57,13 +55,14 @@ export default function EditPost({postId }) {
     setAnchorEl(null);
   };
 
-  const handleClickOpen1 = () => {
+  const handleOpenDelete = () => {
     setOpenBox(true);
   };
 
-  const handleClose1 = (event, reason) => {
+  const handleCloseDelete = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpenBox(false);
+      navigate(-1);
     }
   };
 
@@ -72,12 +71,9 @@ export default function EditPost({postId }) {
 		navigate(-1);
 	}
   
-  const handleClickOpen = (scrollType) => () => {
+  const handleClickOpen = () => () => {
     setOpen(true);
   };
-  useEffect(() => {
-    reset(postId);
-  }, [postId]);
 
   const handleSubmit = (e, userId) => {
     e.preventDefault();
@@ -95,21 +91,24 @@ export default function EditPost({postId }) {
       setTimeout(() => {
         setDisabled(true);
         setPost({title:"",body:""})
-        setError("Succesfully created");
+        setError("Succesfully updated");
       }, 1000);
       setTimeout(()=>{
-        setOpen(false);
-        setError("");
-		navigate(-1);
+        window.location.reload();
       },3000)
     } else {
-      setError("Post is not Submitted");
+      setError("Post is not updated");
     }
   };
 
   const handleDelete = (id) => {
     if (id) {
+      setTimeout(()=>{
       dispatch(deletePost(id));
+    },2000)
+    setTimeout(()=>{
+      setError("Succesfully Deleted")
+    },2000)
     } else {
       setError("Post is not deleted");
     }
@@ -145,7 +144,7 @@ export default function EditPost({postId }) {
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleClickOpen("paper")}
+                onClick={handleClickOpen()}
                 sx={{ float: "right", padding: "0" }}
               >
                 Edit
@@ -157,7 +156,7 @@ export default function EditPost({postId }) {
               <Button
                 variant="contained"
                 color="error"
-                onClick={handleClickOpen1}
+                onClick={handleOpenDelete}
                 sx={{ float: "right", padding: "0" }}
               >
                 delete
@@ -166,7 +165,7 @@ export default function EditPost({postId }) {
           </Menu>
         </div>
         <div>
-          <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}>
+          <Dialog disableEscapeKeyDown open={openBox} onClose={handleCloseDelete}>
             <DialogTitle>Delete Post</DialogTitle>
             <Divider />
             <DialogContent>
@@ -203,7 +202,7 @@ export default function EditPost({postId }) {
 
               <Typography sx={{ display: "flex", marginTop: "30px" }}>
                 <Button
-                  onClick={handleClose1}
+                  onClick={handleCloseDelete}
                   variant="contained"
                   color="error"
                   sx={{ marginRight: "10px" }}
@@ -256,7 +255,6 @@ export default function EditPost({postId }) {
                   type="text"
                   name="title"
                   value={post.title}
-                  // {...register("title")}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -275,7 +273,6 @@ export default function EditPost({postId }) {
                   type="text"
                   name="body"
                   value={post.body}
-                  // {...register("body")}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -304,7 +301,7 @@ export default function EditPost({postId }) {
                     className="message"
                     style={{ position: "relative", left: "80px" }}
                   >
-                    {error === "Succesfully created" ? (
+                    {error === "Succesfully updated" ? (
                       <p style={{ color: "green" }}>{error}</p>
                     ) : (
                       <p style={{ color: "red" }}>{error}</p>
@@ -322,7 +319,6 @@ export default function EditPost({postId }) {
                     Cancel
                   </Button>
                   <Button type="submit" color="success" variant="contained">
-                 
                     Update
                   </Button>
                 </div>

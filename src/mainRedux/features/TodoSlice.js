@@ -115,6 +115,9 @@ export const deleteTodo = createAsyncThunk(
                 state.loading = false;
                 state.todos = action.payload
             },
+            [deleteTodo.pending]:(state)=>{
+              state.loading = true;
+          },
             [deleteTodo.fulfilled]: (state, action) => {
               console.log(action)
               state.loading = false;

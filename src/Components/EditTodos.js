@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from "react";
-
-import axios from "axios";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
   Menu,
   MenuItem,
-  TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo,updateTodo, } from "../mainRedux/features/TodoSlice";
-import DialogModal from "./SucDialog";
 import { useForm } from "react-hook-form";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -38,13 +33,14 @@ const StyledTextarea = styled(TextareaAutosize)(
 );
 
 export default function EditTodos({ data }) {
-  const { todos, loading } = useSelector((state) => state.app);
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.app);
   const { register, reset } = useForm();
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-  const [values, setValue] = useState(data);
+  const [todos, setTodos] = useState(data);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
@@ -59,55 +55,71 @@ export default function EditTodos({ data }) {
     setAnchorEl(null);
   };
 
-  const handleClickOpen1 = () => {
+  const handleOpenDelete = () => {
     setOpenBox(true);
   };
 
-  const handleClose1 = (event, reason) => {
+  const handleCloseDelete = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpenBox(false);
+      navigate(-1);
     }
   };
 
   const handleClose = () => {
     setOpen(false);
+    navigate(-1);
   };
-  const handleClickOpen = (scrollType) => () => {
+  const handleClickOpen = () => () => {
     setOpen(true);
   };
   useEffect(() => {
-    reset(values);
-  }, [reset, values]);
+    reset(todos);
+  }, [reset, todos]);
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
     console.log("comments");
-    console.log("value", values.title);
+    console.log("value", todos.title);
     let payload = {};
     payload["userId"] = userId;
-    payload["title"] = values.title;
-    payload["completed"] = values.completed;
+    payload["title"] = todos.title;
+    payload["completed"] = todos.completed;
     payload["id"] = id;
-    if (values.title && values.completed) {
+    if (todos.title && todos.completed) {
       setTimeout(() => {
         dispatch(updateTodo(payload));
       }, 500);
       setTimeout(() => {
         setDisabled(true);
-        setError("Succesfully created");
+        setTodos({title:"",completed:""})
+        setError("Succesfully updated");
       }, 1000);
+      setTimeout(()=>{
+        window.location.reload();
+      },3000)
+    } else {
+      setError("Todo is not updated");
     }
+    
   };
   const handleDelete = (id) => {
     if (id) {
-      dispatch(deleteTodo(id));
-    } else {
+      setTimeout(()=>{
+        dispatch(deleteTodo(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },2000)
+      } 
+     else {
       setError("Todos is not deleted");
     }
   };
 
   function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
+    setTodos({ ...todos, [e.target.name]: e.target.value });
   }
   return (
     <>
@@ -140,7 +152,7 @@ export default function EditTodos({ data }) {
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleClickOpen("paper")}
+                onClick={handleClickOpen()}
                 sx={{ float: "right", padding: "0" }}
               >
                 Edit
@@ -151,7 +163,7 @@ export default function EditTodos({ data }) {
               <Button
                 variant="contained"
                 color="error"
-                onClick={handleClickOpen1}
+                onClick={handleOpenDelete}
                 sx={{ float: "right", padding: "0" }}
               >
                 delete
@@ -164,7 +176,7 @@ export default function EditTodos({ data }) {
           <Dialog
             disableEscapeKeyDown
             open={openBox}
-            onClose={handleClose1}
+            onClose={handleCloseDelete}
             PaperProps={{
               sx: {
                 width: "30%",
@@ -207,7 +219,7 @@ export default function EditTodos({ data }) {
 
               <Typography sx={{ display: "flex", marginTop: "30px" }}>
                 <Button
-                  onClick={handleClose1}
+                  onClick={handleCloseDelete}
                   variant="contained"
                   color="error"
                   sx={{ marginRight: "10px" }}
@@ -264,7 +276,7 @@ export default function EditTodos({ data }) {
                     type="text"
                     disabled={disabled}
                     name="title"
-                    value={values.title}
+                    value={todos.title}
                     {...register("title")}
                     onChange={(e) => handleChange(e)}
                   />
@@ -283,7 +295,7 @@ export default function EditTodos({ data }) {
                     type="text"
                     disabled={disabled}
                     name="completed"
-                    value={values.completed}
+                    value={todos.completed}
                     {...register("completed")}
                     onChange={(e) => handleChange(e)}
                   />

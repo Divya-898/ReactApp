@@ -1,27 +1,23 @@
-import React, { useEffect, useState } from "react";
-
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   InputLabel,
   LinearProgress,
   Menu,
   MenuItem,
-  TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteComment, updateComment } from "../mainRedux/features/CommentSlice";
 
 const StyledTextarea = styled(TextareaAutosize)(
@@ -35,20 +31,18 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 4px
 `
 );
-export default function EditComment({ commentId, postId, commentObj }) {
-  console.log("comments", commentId);
+export default function EditComment({postId, commentObj }) {
+  const navigate = useNavigate()
+  const {loading } = useSelector((state) => state.userComments);
   const dispatch = useDispatch();
-  const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-  const [values, setValue] = useState(commentObj);
+  const [comment, setComment] = useState(commentObj);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(true);
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(false);
   const handleClickMenu = (event) => {
@@ -58,81 +52,66 @@ export default function EditComment({ commentId, postId, commentObj }) {
     setAnchorEl(null);
   };
 
-  const handleClickOpen1 = () => {
+  const handleClickOpenDelete = () => {
     setOpenBox(true);
+    navigate(-1);
   };
 
-  const handleClose1 = (event, reason) => {
+  const handleCloseDelete = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpenBox(false);
+      navigate(-1);
     }
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleClickOpen = (scrollType) => () => {
+  const handleClickOpen = () => () => {
     setOpen(true);
   };
-  // useEffect(()=>{
-  //   axios.get(`http://localhost:3500/comments/${commentId}`)
-  //   .then(response =>{setValue(response.data)})
-  //   //.then((result) => setValue(result))
-  //   .catch((error) => console.log("error", error));
-  // },[])
-
+  
   const handleSubmit = (e, postId) => {
     e.preventDefault();
-    console.log("comments");
     let payload = {};
     payload["postId"] = postId;
-    payload["name"] = values.name;
-    payload["body"] = values.body;
-    payload["email"] = values.email;
-    payload["id"] =commentId
-    if (values.name && values.body && values.email) {
-         dispatch(updateComment(payload))
-      // setLoading(true);
-      // axios
-      //   .put(`http://localhost:3500/comments/${commentId}`, payload)
-      //   .then((res) => {
-      //     console.log("hello");
-      //   });
-      //   setDisabled(true);
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   setError("Succesfully update");
-
-      //   window.location.reload();
-      // }, 2000);
+    payload["name"] = comment.name;
+    payload["body"] = comment.body;
+    payload["email"] = comment.email;
+    payload["id"] =commentObj.id
+    if (comment.name && comment.body && comment.email) {
+      setTimeout(() => {
+        dispatch(updateComment(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+      setComment({body:""})
+        setError("Succesfully updated");
+      }, 1000);
+      setTimeout(()=>{
+        window.location.reload();
+      },3000)
     } else {
-      setError("Todo is not Submitted");
+      setError("Comment is not updated");
     }
   };
   const handleDelete = (id) => {
     if (id) {
-      dispatch(deleteComment(id))
-      // setLoading(true);
-      // // setTimeout(() => {
-      // //   setLoading1(false);
-      // // }, 5000);
-      // axios.delete(`http://localhost:3500/comments/${id}`).then((res) => {});
-      // // setTimeout(() => {
-      // //   setLoading(true);
-      // // }, 10000);
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   setError("Succesfully Deleted");
-
-      //   window.location.reload();
-      // }, 2000);
-    } else {
+      setTimeout(()=>{
+        dispatch(deleteComment(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },2000)
+      } 
+     else {
       setError("Comment is not deleted");
     }
   };
 
   function handleChange(e) {
-    setValue({ ...values, [e.target.name]: e.target.value });
+    setComment({ ...comment, [e.target.name]: e.target.value });
   }
   return (
     <>
@@ -157,24 +136,27 @@ export default function EditComment({ commentId, postId, commentObj }) {
             }}
           >
             <MenuItem>
+            <Link to={`edit/${commentObj.id}`}>
               <Button variant="contained" color="success"
                 onClick={handleClickOpen("paper")}
                 sx={{ float: "right",padding:"0" }}
               >
                 Edit
               </Button>{" "}
+              </Link>
             </MenuItem>
             <MenuItem>
+            <Link to={`delete/${commentObj.id}`}>
               {" "}
-              <Button variant="contained" color="error" onClick={handleClickOpen1} sx={{ float: "right",padding:"0" }}>
+              <Button variant="contained" color="error" onClick={handleClickOpenDelete} sx={{ float: "right",padding:"0" }}>
                 delete
-              </Button>
+              </Button></Link>
             </MenuItem>
           </Menu>
         </div>
 
         <div>
-          <Dialog disableEscapeKeyDown open={openBox} onClose={handleClose1}>
+          <Dialog disableEscapeKeyDown open={openBox} onClose={handleCloseDelete}>
             <DialogTitle>Delete Comment</DialogTitle>
             <Divider />
             <DialogContent>
@@ -205,13 +187,12 @@ export default function EditComment({ commentId, postId, commentObj }) {
                             </Box>
                               
                <Typography sx={{display:"flex", marginTop:"30px"}}>         
-              <Button onClick={handleClose1} variant="contained" color="error" sx={{marginRight:"10px"}}>
+              <Button onClick={handleCloseDelete} variant="contained" color="error" sx={{marginRight:"10px"}}>
                 Cancel
               </Button>
               <Button
-                //onClick={e=>handleDelete(commentId)}
                 variant="contained"
-                onClick={(e) => handleDelete(commentId)}
+                onClick={(e) => handleDelete(postId.id)}
                 color="success"
               >
                 Delete
@@ -241,69 +222,6 @@ export default function EditComment({ commentId, postId, commentObj }) {
               className="login-form"
               onSubmit={(e) => handleSubmit(e, postId)}
             >
-              {/* <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Name
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="name"
-               value={values.name}
-              onChange={e => handleChange(e)}
-            />
-          </div>
-          <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Email
-            </InputLabel>
-            <TextField
-              sx={{
-                paddingTop: "10px",
-                marginLeft: "5px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="email"
-               value={values.email}
-              onChange={e => handleChange(e)}
-            />
-          </div>
-
-          <div style={{ display: "flex" }}>
-            <InputLabel
-              sx={{
-                padding: "10px",
-              }}
-            >
-              Desc
-            </InputLabel>
-            {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> 
-            <TextField
-              sx={{
-                paddingTop: "10px",
-              }}
-              InputProps={{ sx: { height: 25 } }}
-              type="text"
-              name="body"
-              value={values.body}
-              onChange={e => handleChange(e)}
-            />
-          </div> */}
               <div style={{ display: "flex" }}>
                 <InputLabel
                   sx={{
@@ -318,18 +236,10 @@ export default function EditComment({ commentId, postId, commentObj }) {
                   minRows={3}
                   type="text"
                   name="body"
-                  value={values.body}
+                  value={comment.body}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-              {/* <button
-            className="login-btn"
-            type="submit"
-            style={{ float: "right" }}
-          >
-            Submit
-          </button>  */}
-         
          <div>
           <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
          </div>
@@ -349,7 +259,7 @@ export default function EditComment({ commentId, postId, commentObj }) {
                     className="message"
                     style={{ position: "relative", left: "80px" }}
                   >
-                    {error === "Succesfully update" ? (
+                    {error === "Succesfully updated" ? (
                       <p style={{ color: "green" }}>{error}</p>
                     ) : (
                       <p style={{ color: "red" }}>{error}</p>

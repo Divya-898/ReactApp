@@ -26,7 +26,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import CommentPost from "./Comments";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Profile from "./Profile";
 import UserIntro from "./UserIntro";
 import UserAlbums from "./UserAlbums";
@@ -65,9 +65,11 @@ const ExpandMore = styled((props) => {
   }),
 }));
 function User() {
+  const navigate = useNavigate();
   const { userId } = useParams();
   const { register, reset } = useForm()
-  const { user, loading } = useSelector((state) => state.userIntro);
+  const { user} = useSelector((state) => state.userIntro);
+  const { post, loading } = useSelector((state) => state.userPosts);
   const [expanded, setExpanded] = useState(false);
   const [error, setError] = useState("");
   const { userPosts } = useSelector((state) => state.userPosts);
@@ -78,6 +80,10 @@ function User() {
   const [scroll, setScroll] = React.useState("paper");
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    navigate(-1);
   };
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
@@ -90,9 +96,6 @@ function User() {
     body: "", // required
   });
   
-  const handleClose = () => {
-    setOpen(false);
-  };
   var options = { year: "numeric", month: "long", day: "numeric" };
   const currentDate = new Date();
   const dateFormate = currentDate.toLocaleDateString("en-US", options);
@@ -158,9 +161,9 @@ function User() {
     }
   }, [albums, photos]);
 
-  useEffect(() => {
-    reset(postData);
-  }, [postData]);
+  // useEffect(() => {
+  //   reset(postData);
+  // }, [postData]);
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};
@@ -175,7 +178,11 @@ function User() {
       setTimeout(() => {
         setDisabled(true);
         setError("Succesfully created");
-      }, 1000);
+      }, 1500);
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 3000);
     }
   };
   function handleTodosChange(e) {
@@ -205,13 +212,13 @@ function User() {
                 ) : (
                   ""
                 )}
-                {/* <UserAlbums commonList={commonList}></UserAlbums> */}
-                <UserTodos></UserTodos>
-                {/* <UserPhoto
+                {/* <UserAlbums commonList={commonList}></UserAlbums>
+                <UserTodos></UserTodos> */}
+                <UserPhoto
                   photos={photos}
                   albums={albums}
                   sx={{ borderRadius: "0px" }}
-                ></UserPhoto> */}
+                ></UserPhoto>
               </Container>
 
               <div className="cardWrapper">
@@ -312,30 +319,27 @@ function User() {
                             />
                           </div>
                           <DialogActions dividers={scroll === "paper"}>
-                            <Box
-                              sx={{
-                                width: "80%",
-                                margin: "-10px 0px 0px 70px",
-                              }}
-                            >
-                              {loading ? (
-                                <LinearProgress
-                                  variant="buffer"
-                                  value={progress}
-                                  valueBuffer={buffer}
-                                />
-                              ) : (
-                                ""
-                              )}
+                          <Box
+                          sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}
+                        >
+                          {loading ? (
+                            <LinearProgress
+                              variant="buffer"
+                              value={progress}
+                              valueBuffer={buffer}
+                            />
+                          ) : (
+                            ""
+                          )}
                               <div
                                 className="message"
                                 style={{ position: "relative", left: "80px" }}
                               >
-                                {error === "Succesfully Created" ? (
-                                  <p style={{ color: "green" }}>{error}</p>
-                                ) : (
-                                  <p style={{ color: "red" }}>{error}</p>
-                                )}
+                                {error === "Succesfully created" ? (
+                              <p style={{ color: "green" }}>{error}</p>
+                            ) : (
+                              <p style={{ color: "red" }}>{error}</p>
+                            )}
                               </div>
                             </Box>
                             <div

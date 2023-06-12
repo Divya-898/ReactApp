@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -21,8 +21,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createAlbums } from "../mainRedux/features/AlbumSlice";
+import { useForm } from "react-hook-form";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -35,34 +36,43 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );
 function UserAlbums({ commonList }) {
-  console.log(commonList);
+  const navigate = useNavigate();
+  const { register, reset } = useForm();
+  const { loading } = useSelector((state) => state.userAlbums);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setOpen(false)
+    navigate(-1);
+  }
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
   const { userId } = useParams();
-  const [formData, setformData] = useState({
+  const [album, setAlbum] = useState({
     title: "", // required
   });
 
   const handleChange = (e) => {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+    setAlbum({ ...album, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
-    payload["title"] = formData.title;
-    if (formData.title) {
-      dispatch(createAlbums(payload));
+    payload["title"] = album.title;
+    if (album.title) {
+      setTimeout(() => {
+        dispatch(createAlbums(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setError("Succesfully created");
+      }, 1000);
     } else {
-      setError("Todo is not Submitted");
+      setError("Album is not Created");
     }
   };
   return (
@@ -131,6 +141,7 @@ function UserAlbums({ commonList }) {
                       minRows={3}
                       type="text"
                       name="title"
+                      {...register("title")}
                       onChange={(e) => handleChange(e)}
                     />
                   </div>
@@ -163,7 +174,7 @@ function UserAlbums({ commonList }) {
                           color: "red",
                         }}
                       >
-                        {error === "Successfully created" ? (
+                        {error === "Succesfully created" ? (
                           <p style={{ color: "green" }}>{error}</p>
                         ) : (
                           <p style={{ color: "red" }}>{error}</p>
@@ -181,7 +192,13 @@ function UserAlbums({ commonList }) {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" color="success" variant="contained">
+                      <Button type="submit" color="success" variant="contained"
+                      onClick={() =>
+                              reset({
+                                title: "",
+                              })
+                            }
+                      >
                         Create
                       </Button>
                     </div>
@@ -194,18 +211,15 @@ function UserAlbums({ commonList }) {
             <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8}>
               {commonList &&
                 commonList.map((items) => {
-                  console.log(items);
                   var str = "";
                   if (items.photos) {
                     str = items.photos[0];
-                    console.log("obj", str);
                   } else {
                     str = {
                       thumbnailUrl:
                         "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pink_flower.jpg",
                     };
                   }
-                  str ? console.log("str", str) : console.log("false");
                   return (
                     <ImageListItem key={items.img} sx={{ height: "150px" }}>
                       <span style={{ marginTop: "-25px" }}></span>

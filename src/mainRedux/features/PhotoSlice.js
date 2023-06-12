@@ -122,6 +122,9 @@ const photoSlice = createSlice({
       state.loading = false;
       state.photos = action.payload;
     },
+    [deletePhotos.pending]: (state) => {
+      state.loading = true;
+    },
     [deletePhotos.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;

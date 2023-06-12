@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import { useForm } from "react-hook-form";
 import {
@@ -42,6 +42,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 function UserTodos() {
+  const navigate = useNavigate();
   const { userId } = useParams();
   const { todos, loading } = useSelector((state) => state.app);
   const dispatch = useDispatch();
@@ -57,10 +58,9 @@ function UserTodos() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   let completeButtonRef = useRef("");
-  const reload = () => window.location.reload();
   const handleClose = () => {
     setOpen(false);
-    reload();
+    navigate(-1);
   };
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
@@ -75,9 +75,11 @@ function UserTodos() {
     }
     return true;
   };
-  // useEffect(() => {
-  //   reset(formData);
-  // }, [formData]);
+
+  useEffect(() => {
+    reset(formData);
+  }, [formData]);
+
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};

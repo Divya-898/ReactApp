@@ -122,6 +122,9 @@ const postSlice = createSlice({
       state.loading = false;
       state.userPosts = action.payload;
     },
+    [deletePost.pending]: (state) => {
+      state.loading = true;
+    },
     [deletePost.fulfilled]: (state, action) => {
       console.log(action);
       state.loading = false;

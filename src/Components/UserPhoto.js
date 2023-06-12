@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Divider,
   ImageList,
@@ -28,41 +28,25 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 import Edit from "./Edit";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createPhotos } from "../mainRedux/features/PhotoSlice";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+import { useForm } from "react-hook-form";
 function UserPhoto({ photos, albums }) {
+  const{register,reset} = useForm();
   const dispatch = useDispatch();
-  const [formData, setformData] = useState({
+  const [photoData, setPhotoData] = useState({
     thumbnailUrl: "", // required
     url: "",
     title: "", // required
   });
-
+const {loading} = useSelector((state)=>state.userPhotos)
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState("paper");
 
   const [error, setError] = useState("");
 
-  const [getPhotos, setPhotos] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [albumTitle, setAlbumTitle] = useState("");
+  // const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
@@ -74,24 +58,30 @@ function UserPhoto({ photos, albums }) {
     setOpen(true);
   };
   const handleChange = (event) => {
-    setPhotos(event.target.value);
+    setAlbumTitle(event.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     let payload = {};
-    payload["albumId"] = getPhotos;
-    payload["thumbnailUrl"] = formData.thumbnailUrl;
-    payload["url"] = formData.url;
-    payload["title"] = formData.title;
+    payload["albumId"] = albumTitle;
+    payload["thumbnailUrl"] = photoData.thumbnailUrl;
+    payload["url"] = photoData.url;
+    payload["title"] = photoData.title;
 
-    if (formData.title && formData.thumbnailUrl) {
-      dispatch(createPhotos(payload));
+    if (photoData.title && photoData.thumbnailUrl) {
+      setTimeout(() => {
+        dispatch(createPhotos(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setError("Succesfully created");
+      }, 1000);
     } else {
-      setError("photos is not Submitted");
+      setError("Photo is not Created");
     }
   };
   function handleTodosChange(e) {
-    setformData({ ...formData, [e.target.name]: e.target.value });
+    setPhotoData({ ...photoData, [e.target.name]: e.target.value });
   }
 
   return (
@@ -157,6 +147,7 @@ function UserPhoto({ photos, albums }) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="title"
+                      {...register("title")}
                       onChange={(e) => handleTodosChange(e)}
                     />{" "}
                   </div>
@@ -176,6 +167,7 @@ function UserPhoto({ photos, albums }) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="url"
+                      {...register("url")}
                       onChange={(e) => handleTodosChange(e)}
                     />{" "}
                   </div>
@@ -196,6 +188,7 @@ function UserPhoto({ photos, albums }) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="thumbnailUrl"
+                      {...register("thumbnailUrl")}
                       onChange={(e) => handleTodosChange(e)}
                     />
                   </div>
@@ -250,7 +243,7 @@ function UserPhoto({ photos, albums }) {
                           color: "red",
                         }}
                       >
-                        {error === "Successfully created" ? (
+                        {error === "Succesfully created" ? (
                           <p style={{ color: "green" }}>{error}</p>
                         ) : (
                           <p style={{ color: "red" }}>{error}</p>
@@ -269,7 +262,16 @@ function UserPhoto({ photos, albums }) {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" color="success" variant="contained">
+                      <Button type="submit" color="success" variant="contained"
+                       onClick={() =>
+                              reset({
+                                title: "",
+                                thumbnailUrl:"",
+                                url:"",
+                                albumTitle:"",
+                              })
+                            }
+                      >
                         Create
                       </Button>
                     </div>

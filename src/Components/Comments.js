@@ -1,52 +1,37 @@
-import {
-  Avatar,
-  Grid,
-} from "@mui/material";
-import React, {useEffect, useState } from "react";
+import { Avatar, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
 
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import LinearProgress from "@mui/material/LinearProgress"
-import { useParams } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate, useParams } from "react-router-dom";
 import EditComment from "./EditComments";
 import { useDispatch, useSelector } from "react-redux";
-import { createComment, showComments } from "../mainRedux/features/CommentSlice";
+import {
+  createComment,
+  showComments,
+} from "../mainRedux/features/CommentSlice";
 import UserName from "./UserName";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { useForm } from "react-hook-form";
 function CommentPost({ postId, user }) {
-  const{userComments, loading} = useSelector((state)=>state.userComments);
+  const { register, reset } = useForm();
+  const { userComments, loading } = useSelector((state) => state.userComments);
   const dispatch = useDispatch();
-  console.log(userComments);
   const [disabled, setDisabled] = useState(false);
-  const [comment, setComment] = useState();
-  const [open, setOpen] = React.useState(false);
+  const [comment, setComment] = useState({ body: "" });
   const [progress, setProgress] = React.useState(0);
   const [buffer, setBuffer] = React.useState(10);
   const [error, setError] = useState("");
-  const progressRef = React.useRef(() => {});
-  const { userId } = useParams();
-  
-  const [values, setValue] = useState({
-    title: "", // required
-    body: "", // required
-  });
 
   useEffect(() => {
-    dispatch(showComments(postId))
+    dispatch(showComments(postId));
   }, []);
 
+  useEffect(() => {
+    reset(comment);
+  }, [comment]);
   const handleSubmit = (e, postId) => {
     e.preventDefault();
     console.log("postId", postId);
@@ -54,20 +39,26 @@ function CommentPost({ postId, user }) {
     payload["postId"] = postId;
     payload["name"] = user.name;
     payload["email"] = user.email;
-    payload["body"] = comment;
-    if (comment) {
-      dispatch(createComment(payload))
+    payload["body"] = comment.body;
+    if (comment.body) {
+      setTimeout(() => {
+        dispatch(createComment(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        setComment("");
+        setError("Succesfully created");
+      }, 1000);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    } else {
+      setError("Comment is not created");
     }
-    else{
-      setError("Comment is not created")
-    }
-
-      
   };
 
-
   function handleChange(e) {
-    setComment(e.target.value);
+    setComment({ ...comment, [e.target.name]: e.target.value });
   }
 
   return (
@@ -75,15 +66,14 @@ function CommentPost({ postId, user }) {
       {userComments
         ? userComments.map((post) => {
             const x = post.name;
-          
+
             const mySentence = post.name;
-            const words = (post.name ? mySentence.split(" ").slice(0, 2):"");
+            const words = post.name ? mySentence.split(" ").slice(0, 2) : "";
             for (let i = 0; i < words.length; i++) {
               words[i] = words[i][0] + words[i].substr(1);
             }
             const commentName = words.join(" ");
-      
-            
+
             return (
               <div style={{}}>
                 <div style={{ padding: 14 }} className="App">
@@ -96,13 +86,14 @@ function CommentPost({ postId, user }) {
                     <Grid item>
                       <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
                         <p>
-                          {post.name ? 
-                          post.name
-                            .split("")
-                            .slice(0, 2)
-                            .map((w) => w[0])
-                            .join("")
-                            .toUpperCase():""}
+                          {post.name
+                            ? post.name
+                                .split("")
+                                .slice(0, 2)
+                                .map((w) => w[0])
+                                .join("")
+                                .toUpperCase()
+                            : ""}
                         </p>
                       </Avatar>
                     </Grid>
@@ -127,7 +118,6 @@ function CommentPost({ postId, user }) {
                       >
                         <div style={{ float: "right" }}>
                           <EditComment
-                            commentId={post.id}
                             postId={postId}
                             commentObj={post}
                           ></EditComment>
@@ -144,7 +134,10 @@ function CommentPost({ postId, user }) {
             );
           })
         : ""}
-      <div className="post-top" style={{ PaddingTop: "5px", marginLeft: "10px" }}>
+      <div
+        className="post-top"
+        style={{ PaddingTop: "5px", marginLeft: "10px" }}
+      >
         <Grid container wrap="nowrap">
           <Grid item>
             <Avatar sx={{ bgcolor: "red", margin: "15px 0px 0px 6px" }}>
@@ -158,21 +151,33 @@ function CommentPost({ postId, user }) {
               onSubmit={(e) => handleSubmit(e, postId)}
             >
               <div style={{ display: "flex" }}>
-                  <>
-                    <input
-                      type="text"
-                      placeholder="Write a comment...."
-                      name="body"
-                      disabled={disabled}
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <Button className="commentBtn" type="submit" sx= {{marginTop: "15px" ,"&:hover": {backgroundColor: "transparent"}}}>
-                      <PlayArrowIcon  />
-                    </Button>{" "}
-                  </>
-                
+                <>
+                  <input
+                    type="text"
+                    placeholder="Write a comment...."
+                    name="body"
+                    {...register("body")}
+                    disabled={disabled}
+                    onChange={(e) => handleChange(e)}
+                  />
+                  <Button
+                    className="commentBtn"
+                    type="submit"
+                    sx={{
+                      marginTop: "15px",
+                      "&:hover": { backgroundColor: "transparent" },
+                    }}
+                    onClick={() =>
+                      reset({
+                        body: "",
+                      })
+                    }
+                  >
+                    <PlayArrowIcon />
+                  </Button>{" "}
+                </>
               </div>
-              <Box sx={{ width: "80%", margin:"5px 0px 0px 20px"}}>
+              <Box sx={{ width: "80%", margin: "5px 0px 0px 20px" }}>
                 {loading ? (
                   <LinearProgress
                     variant="buffer"
@@ -182,9 +187,16 @@ function CommentPost({ postId, user }) {
                 ) : (
                   ""
                 )}
-                <div className="message" style={{position:"relative",left:"80px"}}>
-                {error==="Successfully created" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
-                            </div>
+                <div
+                  className="message"
+                  style={{ position: "relative", left: "80px" }}
+                >
+                  {error === "Succesfully created" ? (
+                    <p style={{ color: "green" }}>{error}</p>
+                  ) : (
+                    <p style={{ color: "red" }}>{error}</p>
+                  )}
+                </div>
               </Box>
             </form>
           </Grid>
@@ -195,90 +207,3 @@ function CommentPost({ postId, user }) {
 }
 
 export default CommentPost;
-{
-  /* <Button onClick={handleOpen}>Open modal</Button> */
-}
-{
-  /* <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography> 
-          <FormControl>
-          <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  
-                }}
-              >
-                Title
-              </InputLabel>
-          <TextField
-                required
-                id="title"
-                name="title"
-                label="Title"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
-              />
-   <TextField type="text" size='small' defaultValue="Normal" />
-   <TextField type="text" size='small' defaultValue="Small" />
-</FormControl>
-        </Box>
-      </Modal> */
-}
-{
-  /* <IconButton sx={{ "&:hover": { backgroundColor: "transparent","align-items": "none"}}} key={post.id}>
-              <CardHeader
-                sx={{ padding: "0px",position: "relative",
-  top: "-12px" }}
-                avatar={
-                  <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                    <p>
-                      {post.name
-                        .split("")
-                        .slice(0, 2)
-                        .map((w) => w[0])
-                        .join("").toUpperCase()}
-                    </p>
-                  </Avatar>
-                }
-              />
-              {/* <span>Name:{post.name}</span> */
-}
-{
-  /*<Paper
-                sx={{
-                  whiteSpace: "normal,color rgb(5, 5, 5)",
-                  direction: "ltr",
-                  borderRadius:"18px",
-                  display: "block",
-                  fontFamily: "system-ui, -apple-system, system-ui, sans-serif",
-                  fontSize: "12px",
-                  lineHeight: "16.08px",
-                  overflowWrap: "break-word",
-                  "-webkit-font-smoothing": "antialiased",
-                  backgroundColor: "#f0f2f5",
-                  boxShadow: "none",
-                  padding: "10px 2px 10px 10px",
-                  marginBottom:"-8px"
-                }}
-              >
-                <span className="commentName">
-                  <span>{commentName}</span>
-                </span>
-                <span className="commentBody"> {post.body}</span>
-              </Paper>
-            </IconButton> */
-}

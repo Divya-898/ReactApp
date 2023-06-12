@@ -124,8 +124,10 @@ export const deleteAlbums = createAsyncThunk(
                 state.loading = false;
                 state.albums = action.payload
             },
+            [deleteAlbums.pending]:(state, action)=>{
+              state.loading = true;
+          },
             [deleteAlbums.fulfilled]: (state, action) => {
-              console.log(action)
               state.loading = false;
               state.albums =  state.albums.filter((ele)=>ele.id !== action.payload);
              console.log(state.albums)
