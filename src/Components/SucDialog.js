@@ -41,7 +41,7 @@ export default function DialogModal({open, handleClose, scroll, data, footer}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const handleSubmit = (e, id) => {
-    e.preventDefault();
+    e.preventdefault();
     console.log("comments");
     console.log("value", values.title);
     let payload = {};

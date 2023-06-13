@@ -124,7 +124,7 @@ function User() {
       dispatch(showPhotos(common));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [str, common]);
+  }, [str]);
 
   useEffect(() => {
     if (userId) {
@@ -165,7 +165,7 @@ function User() {
   //   reset(postData);
   // }, [postData]);
   const handleSubmit = (e, userId) => {
-    e.preventDefault();
+    e.preventdefault();
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = postData.title;
@@ -203,22 +203,22 @@ function User() {
                   height: "470px",
                   margin: "10px 0",
                   padding: "10px 15px",
-                  "flex-basis": "38%",
-                  "margin-right": "40px",
+                  "flexBasis": "38%",
+                  "marginRight": "40px",
                 }}
               >
-                {user && user.address && user.company ? (
+                {/* {user && user.address && user.company ? (
                   <UserIntro user={user}></UserIntro>
                 ) : (
                   ""
-                )}
-                {/* <UserAlbums commonList={commonList}></UserAlbums>
-                <UserTodos></UserTodos> */}
-                <UserPhoto
+                )} */}
+                {/* <UserAlbums commonList={commonList}></UserAlbums> */}
+                <UserTodos></UserTodos>
+                {/* <UserPhoto
                   photos={photos}
                   albums={albums}
                   sx={{ borderRadius: "0px" }}
-                ></UserPhoto>
+                ></UserPhoto> */}
               </Container>
 
               <div className="cardWrapper">
@@ -378,7 +378,7 @@ function User() {
                 </Card>
                 {userPosts &&
                   userPosts.map((items) => (
-                    <>
+                    
                       <Card
                         sx={{
                           maxWidth: 554,
@@ -456,7 +456,7 @@ function User() {
                           ""
                         )}
                       </Card>
-                    </>
+                  
                   ))}
               </div>
             </Container>

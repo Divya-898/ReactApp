@@ -30,7 +30,7 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { showUser, updateUser } from "../mainRedux/features/UserSlice";
 function UserIntro({ user }) {
@@ -61,12 +61,9 @@ function UserIntro({ user }) {
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
   };
-  useEffect(() => {
-    dispatch(showUser(userId));
-  }, []);
   
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventdefault();
     console.log("postId", userId);
     let payload = {};
     payload["id"] = user.id;
@@ -86,10 +83,27 @@ function UserIntro({ user }) {
       name: comNameref.current.value,
     };
     if (values) {
-      dispatch(updateUser(payload));
-
+      setTimeout(() => {
+        dispatch(updateUser(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        emailref.current.value="";
+        nameref.current.value=""
+        phoneref.current.value=""
+        websiteref.current.value=""
+        streetref.current.value=""
+        streetref.current.value=""
+        cityref.current.value=""
+        suiteref.current.value=""
+        zipcoderef.current.value=""
+        catchPhraseref.current.value=""
+        bsref.current.value=""
+        comNameref.current.value=""
+        setError("Succesfully created");
+      }, 1000);
     } else {
-      setError("Todo is not Submitted");
+      setError("User is not Updated");
     }
   };
   function handleChange(e) {
@@ -119,6 +133,7 @@ function UserIntro({ user }) {
             >
               Intro
             </h1>
+            <Link to={`edit/${user.id}`}>
             <Button
               onClick={handleClickOpen("paper")}
               sx={{
@@ -129,6 +144,7 @@ function UserIntro({ user }) {
             >
               <ModeEditIcon />
             </Button>
+            </Link>
           </div>
           <div>
             <Dialog
@@ -225,9 +241,6 @@ function UserIntro({ user }) {
                     >
                       City
                     </InputLabel>
-                    {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
                     <div style={{ marginLeft: "70px" }}>
                       <TextField
                         disabled={disabled}
@@ -236,11 +249,9 @@ function UserIntro({ user }) {
                         }}
                         InputProps={{ sx: { height: 25 } }}
                         type="text"
-                        // name="city"
                         inputProps={{ readOnly: false }}
                         inputRef={cityref}
                         defaultValue={values.address.city}
-                        // onChange={e => handleChange(e)}
                       />
                     </div>
                   </div>
@@ -428,7 +439,7 @@ function UserIntro({ user }) {
                         className="message"
                         style={{ position: "relative", left: "80px" }}
                       >
-                        {error === "Succesfully updated" ? (
+                        {error === "Succesfully created" ? (
                           <p style={{ color: "green" }}>{error}</p>
                         ) : (
                           <p style={{ color: "red" }}>{error}</p>

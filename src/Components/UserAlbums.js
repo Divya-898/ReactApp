@@ -208,7 +208,7 @@ function UserAlbums({ commonList }) {
             </Dialog>
           </div>
           {commonList ? (
-            <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8}>
+            <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8} key={commonList}>
               {commonList &&
                 commonList.map((items) => {
                   var str = "";
@@ -221,7 +221,8 @@ function UserAlbums({ commonList }) {
                     };
                   }
                   return (
-                    <ImageListItem key={items.img} sx={{ height: "150px" }}>
+                    <span key={items.id}>
+                    <ImageListItem sx={{ height: "150px" }}>
                       <span style={{ marginTop: "-25px" }}></span>
                       <UserAlbumsPhoto
                         albumId={str}
@@ -232,6 +233,7 @@ function UserAlbums({ commonList }) {
                       ></UserAlbumsPhoto>
                       <ImageListItemBar title={items.title} />
                     </ImageListItem>
+                    </span>
                   );
                 })}
             </ImageList>

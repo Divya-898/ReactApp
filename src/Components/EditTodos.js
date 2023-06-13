@@ -79,13 +79,12 @@ export default function EditTodos({ data }) {
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
-    console.log("comments");
-    console.log("value", todos.title);
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = todos.title;
-    payload["completed"] = todos.completed;
+    payload["completed"] = (todos.completed)
     payload["id"] = id;
+    console.log(payload)
     if (todos.title && todos.completed) {
       setTimeout(() => {
         dispatch(updateTodo(payload));
@@ -96,7 +95,7 @@ export default function EditTodos({ data }) {
         setError("Succesfully updated");
       }, 1000);
       setTimeout(()=>{
-        window.location.reload();
+        // window.location.reload();
       },3000)
     } else {
       setError("Todo is not updated");
@@ -273,7 +272,7 @@ export default function EditTodos({ data }) {
                   </InputLabel>
                   <StyledTextarea
                     minRows={3}
-                    type="text"
+                    type="checkbox"
                     disabled={disabled}
                     name="title"
                     value={todos.title}

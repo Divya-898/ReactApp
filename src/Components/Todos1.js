@@ -47,7 +47,7 @@ function UserTodos() {
   const { todos, loading } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const { register, reset } = useForm();
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
@@ -58,14 +58,34 @@ function UserTodos() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   let completeButtonRef = useRef("");
+  var str2bool = (value) => {
+    if (value && typeof value === "string") {
+         if (value.toLowerCase() === "true") return true;
+         if (value.toLowerCase() === "false") return false;
+    }
+    return value;
+ }
   const handleClose = () => {
     setOpen(false);
     navigate(-1);
   };
+  if (todos) {
+    console.log("todos", todos);
+  }
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleChange = (event, data) => {
+    if(data)
+    {
+      setChecked(event.target.checked);
+    }
+    // console.log(data);
+    // // if(data === true){
+    // setChecked(str2bool(event.target.checked));
+    // }
+    // else{
+    //   setChecked(event.target.checked);
+    // }
   };
   const IsParsable = (data) => {
     try {
@@ -266,45 +286,51 @@ function UserTodos() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <Grid container columnSpacing={{ sm: 1 }}>
-                {todos.map((data1) => (
-                  <>
-                    <Grid item>
-                      <Item
-                        sx={{
-                          boxShadow: "none",
-                          "text-align": "start",
-                          width: "250px",
-                          padding: "10px 0px 0px 20px",
-                        }}
-                      >
-                        {data1.title}
-                      </Item>
-                    </Grid>
-                    <Grid item>
-                      <item>
-                        <Checkbox
-                          disableTouchRipple
-                          Default
-                          Read-Only
-                          sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                          checked={
-                            IsParsable(data1.completed)
-                              ? JSON.parse(data1.completed)
-                              : ""
-                          }
-                          onChange={handleChange}
-                        />
-                      </item>
-                    </Grid>
-                    <Grid item>
-                      <item>
-                        <EditTodos data={data1}></EditTodos>
-                      </item>
-                    </Grid>
-                  </>
-                ))}
-              </Grid>
+
+              {todos.map((data1) => (
+                <Grid container columnSpacing={{ sm: 1 }} key={data1.id}>
+                  <Grid>
+                    <Item
+                      sx={{
+                        boxShadow: "none",
+                        textAlign: "start",
+                        width: "250px",
+                        padding: "10px 0px 0px 20px",
+                      }}
+                    >
+                      {data1.title}
+                    </Item>
+                  </Grid>
+                  <Grid>
+                    <Item
+                      sx={{
+                        boxShadow: "none",
+                      }}
+                    >
+                      <Checkbox
+                        disableTouchRipple
+                        sx={{ "&:hover": { backgroundColor: "transparent" } }}
+                        defaultChecked={ IsParsable(data1.completed)
+                            ? (JSON.parse(data1.completed))
+                            : ""}
+                        // checked={(data1.completed === "true" || "false")? Boolean(data1.completed) :(data1.completed)}
+                        // value={data1.completed === false ? false : true}
+                        onChange={(e) => handleChange(e, data1.completed)}
+                      />
+                    </Item>
+                  </Grid>
+                  <Grid>
+                    <Item
+                      sx={{
+                        boxShadow: "none",
+                      }}
+                    >
+                      <EditTodos data={data1}></EditTodos>
+                    </Item>
+                  </Grid>
+                </Grid>
+              ))}
+              {/* </Grid> */}
             </>
           ) : (
             ""

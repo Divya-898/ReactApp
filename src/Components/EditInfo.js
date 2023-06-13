@@ -28,10 +28,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 export default function EditInfo({ data }) {
   console.log("data", data);
   const { userId } = useParams();
-  const { id } = useParams();
-  console.log(id);
   const [open, setOpen] = React.useState(false);
-  const [openBox, setOpenBox] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [values, setValue] = useState(data);
   const [progress, setProgress] = useState(0);
@@ -51,9 +48,7 @@ export default function EditInfo({ data }) {
   }
 
   const handleSubmit = (e, id) => {
-    e.preventDefault();
-    console.log("comments");
-    console.log("value", values.title);
+    e.preventdefault();
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = values.title;

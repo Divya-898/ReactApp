@@ -31,7 +31,9 @@ import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { createPhotos } from "../mainRedux/features/PhotoSlice";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 function UserPhoto({ photos, albums }) {
+  const navigate = useNavigate()
   const{register,reset} = useForm();
   const dispatch = useDispatch();
   const [photoData, setPhotoData] = useState({
@@ -53,6 +55,7 @@ const {loading} = useSelector((state)=>state.userPhotos)
 
   const handleClose = () => {
     setOpen(false);
+    navigate(-1);
   };
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -209,7 +212,7 @@ const {loading} = useSelector((state)=>state.userPhotos)
                     >
                       {albums &&
                         albums.map((items) => (
-                          <MenuItem value={items.id}>{items.title}</MenuItem>
+                          <MenuItem value={items.id} key={items.id}>{items.title}</MenuItem>
                         ))}
                     </Select>
                   </div>
@@ -284,8 +287,8 @@ const {loading} = useSelector((state)=>state.userPhotos)
           <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8}>
             {photos &&
               photos.map((item) => (
-                <>
-                  <ImageListItem key={item.img} sx={{ height: "150px" }}>
+               
+                  <ImageListItem  sx={{ height: "150px" }}key={item.id} >
                     <span style={{ marginTop: "-25px" }}>
                       <Edit photoUrl={item}></Edit>
                     </span>
@@ -298,7 +301,7 @@ const {loading} = useSelector((state)=>state.userPhotos)
                       loading="lazy"
                     />
                   </ImageListItem>
-                </>
+                  
               ))}
           </ImageList>
         </Paper>
