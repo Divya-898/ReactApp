@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import { useForm } from "react-hook-form";
 import {
@@ -13,6 +13,8 @@ import {
   Grid,
   InputLabel,
   LinearProgress,
+  Menu,
+  MenuItem,
   TextareaAutosize,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -21,7 +23,13 @@ import React, { useEffect, useRef, useState } from "react";
 import EditTodos from "./EditTodos";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodo, showTodo } from "../mainRedux/features/TodoSlice";
+import { createTodo, showTodo, updateTodo } from "../mainRedux/features/TodoSlice";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DialogModal from "./SucDialog";
+import { compose } from "redux";
+import Form from "./EditFormTodos";
+import EditFormTodos from "./EditFormTodos";
+import CreateFormTodos from "./CreateFormTodos";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -51,27 +59,37 @@ function UserTodos() {
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openBox, setOpenBox] = React.useState(false);
+  const [editTodo, setEditTodo] = useState();
+  const [open, setOpen] = React.useState(false);
+  const menuOpen = Boolean(anchorEl);
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickOpen = (data) => {
+    setOpen(true);
+    setEditTodo(data)
+  };
+ 
+  const handleOpenDelete = () => {
+    setOpenBox(true);
+  };
   const [formData, setformData] = useState({
     title: "", // required
     completed: "", // required
   });
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  let completeButtonRef = useRef("");
-  var str2bool = (value) => {
-    if (value && typeof value === "string") {
-         if (value.toLowerCase() === "true") return true;
-         if (value.toLowerCase() === "false") return false;
-    }
-    return value;
- }
+  
+  const handleOpen = () => setOpenBox(true);
   const handleClose = () => {
     setOpen(false);
-    navigate(-1);
+    window.location.reload();
   };
-  if (todos) {
-    console.log("todos", todos);
-  }
+  
   const [scroll, setScroll] = React.useState("paper");
   const [error, setError] = useState("");
   const handleChange = (event, data) => {
@@ -79,13 +97,6 @@ function UserTodos() {
     {
       setChecked(event.target.checked);
     }
-    // console.log(data);
-    // // if(data === true){
-    // setChecked(str2bool(event.target.checked));
-    // }
-    // else{
-    //   setChecked(event.target.checked);
-    // }
   };
   const IsParsable = (data) => {
     try {
@@ -96,11 +107,11 @@ function UserTodos() {
     return true;
   };
 
-  useEffect(() => {
-    reset(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   reset(formData);
+  // }, [formData]);
 
-  const handleSubmit = (e, userId) => {
+  const handleSubmit1 = (e, userId) => {
     e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
@@ -116,9 +127,43 @@ function UserTodos() {
       }, 1000);
     }
   };
+
+  const handleSubmit = (e, id) => {
+    e.preventDefault();
+    let payload = {};
+    payload["userId"] = userId;
+    payload["title"] = editTodo.title;
+    payload["completed"] = (editTodo.completed)
+    payload["id"] = id;
+    console.log(payload)
+    if (editTodo.title && editTodo.completed) {
+      setTimeout(() => {
+        dispatch(updateTodo(payload));
+      }, 500);
+      setTimeout(() => {
+        setDisabled(true);
+        // setTodos({title:"",completed:""})
+        setError("Succesfully updated");
+      }, 1000);
+      setTimeout(()=>{
+        window.location.reload();
+      },3000)
+    } else {
+      setError("Todo is not updated");
+    }
+  };
+  function handleChange2(e) {
+    setEditTodo({ ...editTodo, [e.target.name]: e.target.value });
+  }
   function handleTodosChange(e) {
     setformData({ ...formData, [e.target.name]: e.target.value });
   }
+
+  const temp = (<EditFormTodos loading={loading} buffer={buffer} progress={progress}
+    editTodo={editTodo} handleSubmit={handleSubmit} error={error} scroll={scroll} handleChange={handleChange2}></EditFormTodos>)
+
+  const create = (<CreateFormTodos loading={loading} buffer={buffer} progress={progress}
+    handleSubmit={handleSubmit1} error={error} scroll={scroll} handleChange={handleTodosChange}></CreateFormTodos>)
   useEffect(() => {
     dispatch(showTodo(userId));
   }, []);
@@ -131,7 +176,7 @@ function UserTodos() {
           "& > :not(style)": {
             m: 1,
             width: "422px",
-            maxHeight: 400,
+            maxHeight: 420,
             overflow: "auto",
           },
         }}
@@ -153,7 +198,7 @@ function UserTodos() {
                 </Button>
               </div>
               <div>
-                <Dialog
+                {/* <Dialog
                   open={open}
                   scroll={scroll}
                   aria-describedby="scroll-dialog-description"
@@ -223,7 +268,7 @@ function UserTodos() {
                           }}
                         />
                       </div>
-                      <DialogActions dividers={scroll === "paper"}>
+                      <DialogActions dividers={true ? 1 : undefined}>
                         <Box
                           sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}
                         >
@@ -259,7 +304,6 @@ function UserTodos() {
                           }}
                         >
                           <Button
-                            ref={completeButtonRef}
                             onClick={handleClose}
                             color="error"
                             variant="contained"
@@ -284,10 +328,11 @@ function UserTodos() {
                       </DialogActions>
                     </form>
                   </DialogContent>
-                </Dialog>
+                </Dialog> */}
               </div>
 
               {todos.map((data1) => (
+                <> 
                 <Grid container columnSpacing={{ sm: 1 }} key={data1.id}>
                   <Grid>
                     <Item
@@ -310,11 +355,9 @@ function UserTodos() {
                       <Checkbox
                         disableTouchRipple
                         sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                        defaultChecked={ IsParsable(data1.completed)
+                        checked={ IsParsable(data1.completed)
                             ? (JSON.parse(data1.completed))
                             : ""}
-                        // checked={(data1.completed === "true" || "false")? Boolean(data1.completed) :(data1.completed)}
-                        // value={data1.completed === false ? false : true}
                         onChange={(e) => handleChange(e, data1.completed)}
                       />
                     </Item>
@@ -325,10 +368,68 @@ function UserTodos() {
                         boxShadow: "none",
                       }}
                     >
-                      <EditTodos data={data1}></EditTodos>
+                    <div>
+          <Button
+            // id="basic-button"
+            // aria-controls={menuOpen ? "basic-menu" : undefined}
+            // aria-haspopup="true"
+            aria-expanded={menuOpen ? "true" : undefined}
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={handleCloseMenu}
+            sx={{ width: "120px", height: "40" }}
+            // onClick={handleClickMenu}
+          >
+            <div>
+              <MoreVertIcon sx={{ float: "right" }} />
+            </div>
+          </Button> 
+
+          <Menu
+          //  aria-expanded={menuOpen ? "true" : undefined}
+          //   id="basic-menu"
+          //   anchorEl={anchorEl}
+          //   open={menuOpen}
+          //   onClose={handleCloseMenu}
+            sx={{ width: "120px", height: "40" }}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+           {/* <div>
+              <MoreVertIcon sx={{ float: "right" }} />
+            </div> */}
+            <MenuItem>
+            <Link to={`todos/${data1.id}`}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handleClickOpen(data1)}
+                sx={{ float: "right", padding: "0" }}
+              >
+                Edit
+              </Button>{" "} </Link>
+            </MenuItem>
+             <MenuItem>     
+            <Link to={`delete/${data1.id}`}> 
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleOpenDelete}
+                sx={{ float: "right", padding: "0" }}
+              >
+                delete
+              </Button></Link>
+            </MenuItem>
+          </Menu>
+        </div>
+
+                      {/* <EditTodos data={data1}></EditTodos> */}
                     </Item>
                   </Grid>
                 </Grid>
+                </>
               ))}
               {/* </Grid> */}
             </>
@@ -336,6 +437,10 @@ function UserTodos() {
             ""
           )}
         </Paper>
+        {editTodo ? <DialogModal open={true} handleClose={handleClose} scroll={scroll} 
+      temp={temp} name="Update Todos"></DialogModal>:<DialogModal open={openBox} handleClose={handleClose} scroll={scroll} temp={create} name="Create Todos"></DialogModal>}
+      {/* <DialogModal open={handleOpen} handleClose={handleClose} scroll={scroll} 
+      temp={create}></DialogModal>} */}
       </Box>
     </div>
   );

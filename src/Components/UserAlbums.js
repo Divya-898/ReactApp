@@ -223,7 +223,7 @@ function UserAlbums({ commonList }) {
                   return (
                     <span key={items.id}>
                     <ImageListItem sx={{ height: "150px" }}>
-                      <span style={{ marginTop: "-25px" }}></span>
+                      <span style={{ marginTop: "-55px" }}></span>
                       <UserAlbumsPhoto
                         albumId={str}
                         key={items.id}

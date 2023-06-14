@@ -30,10 +30,11 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { showUser, updateUser } from "../mainRedux/features/UserSlice";
 function UserIntro({ user }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const cityref = useRef("");
   const streetref = useRef("");
@@ -57,6 +58,7 @@ function UserIntro({ user }) {
   const [disabled, setDisabled] = useState(false);
   const handleClose = () => {
     setOpen(false);
+    navigate(-1)
   };
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -139,10 +141,11 @@ function UserIntro({ user }) {
               sx={{
                 "&:hover": {
                   backgroundColor: "#FFF",
+                 
                 },
               }}
             >
-              <ModeEditIcon />
+              <ModeEditIcon sx={{ marginTop:"30px"}}/>
             </Button>
             </Link>
           </div>

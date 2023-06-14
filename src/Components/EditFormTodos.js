@@ -1,64 +1,27 @@
+import { Box, Button, DialogActions, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
 import React, { useState } from 'react'
-
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { Button } from '@mui/base';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { updateTodo } from '../mainRedux/features/TodoSlice';
 import { styled } from "@mui/material/styles";
-import {
-  Box,
- 
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  InputLabel,
-  LinearProgress,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
-import Form from './EditFormTodos';
 const StyledTextarea = styled(TextareaAutosize)(
-  ({ theme }) => `
-  width: 320px;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5;
-  margin:10px;
-  border-radius: 4px
-`
-);
-
-export default function DialogModal({open ,handleClose, scroll,temp,name}) {
+    ({ theme }) => `
+    width: 320px;
+    font-family: IBM Plex Sans, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin:10px;
+    border-radius: 4px
+  `
+  );
+function EditFormTodos({open ,handleClose, scroll, editTodo, handleSubmit, 
+    handleChange,error,loading,buffer,progress,todos}) {
+      const [editOpen, setEditOpen] = useState(open);
+      const handleClose2 = ()=>{
+        // setEditOpen(true)
+         window.location.reload()
+      }
   return (
-    <>
-      
-
- <Dialog
-            open={open}
-            onClose={handleClose}
-            scroll={scroll}
-            aria-labelledby="scroll-dialog-title"
-            aria-describedby="scroll-dialog-description"
-            PaperProps={{
-              sx: {
-                width: "50%",
-                maxHeight: 350,
-              },
-            }}
-          >
-            <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
-             {name}
-            </DialogTitle>
-            <DialogContent dividers={scroll === "paper"}>
-            {temp}
-              {/* <form
+    <div>
+      <form
                 className="login-form"
                 onSubmit={(e) => handleSubmit(e, editTodo.id)}
               >
@@ -134,7 +97,7 @@ export default function DialogModal({open ,handleClose, scroll,temp,name}) {
                   </Box>
                    <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
                     <Button
-                      onClick={handleClose}
+                      onClick={handleClose2}
                       color="error"
                       variant="contained"
                       sx={{ marginRight: "10px" }}
@@ -146,30 +109,9 @@ export default function DialogModal({open ,handleClose, scroll,temp,name}) {
                     </Button>
                   </div>
                 </DialogActions>
-              </form> */}
-            </DialogContent>
-          </Dialog> 
-      {/* <Dialog
-        fullScreen={fullScreen}
-        open={modalOpen}
-        onClose={modalClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title" variant='h6'>
-          {header}
-        </DialogTitle>
-        <Divider />
-        <DialogContent
-          sx={{ width: "520px" }}
-        >
-          {body}
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          {footer}
-        </DialogActions>
-      </Dialog> */} 
-    </>
+              </form>
+    </div>
   )
 }
 
+export default EditFormTodos

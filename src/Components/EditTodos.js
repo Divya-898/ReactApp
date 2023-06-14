@@ -20,6 +20,7 @@ import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo,updateTodo, } from "../mainRedux/features/TodoSlice";
 import { useForm } from "react-hook-form";
+import DialogModal from "./SucDialog";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -73,10 +74,7 @@ export default function EditTodos({ data }) {
   const handleClickOpen = () => () => {
     setOpen(true);
   };
-  useEffect(() => {
-    reset(todos);
-  }, [reset, todos]);
-
+ 
   const handleSubmit = (e, id) => {
     e.preventDefault();
     let payload = {};
@@ -100,8 +98,10 @@ export default function EditTodos({ data }) {
     } else {
       setError("Todo is not updated");
     }
-    
   };
+  // if(data){
+  //   console.log(todos)
+  // }
   const handleDelete = (id) => {
     if (id) {
       setTimeout(()=>{
@@ -123,55 +123,9 @@ export default function EditTodos({ data }) {
   return (
     <>
       <div>
+        
         <div>
-          <Button
-            id="basic-button"
-            aria-controls={menuOpen ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={menuOpen ? "true" : undefined}
-            onClick={handleClickMenu}
-          >
-            <div>
-              <MoreVertIcon sx={{ float: "right" }} />
-            </div>
-          </Button>
 
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleCloseMenu}
-            sx={{ width: "120px", height: "40" }}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem>
-            <Link to={`edit/${data.id}`}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleClickOpen()}
-                sx={{ float: "right", padding: "0" }}
-              >
-                Edit
-              </Button>{" "} </Link>
-            </MenuItem>
-            <MenuItem>     
-            <Link to={`delete/${data.id}`}> 
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleOpenDelete}
-                sx={{ float: "right", padding: "0" }}
-              >
-                delete
-              </Button></Link>
-            </MenuItem>
-          </Menu>
-        </div>
-
-        <div>
           <Dialog
             disableEscapeKeyDown
             open={openBox}
@@ -236,10 +190,13 @@ export default function EditTodos({ data }) {
             </DialogActions>
           </Dialog>
         </div>
-      <DialogTitle></DialogTitle>
-      
-              {/* <DialogModal open={open} handleClose={handleClose} scroll={scroll} data={data}></DialogModal> */}
-        {data ? (
+      {/* <DialogTitle></DialogTitle> */}
+      {data.title && data.completed ? <DialogModal open={open} handleClose={handleClose} scroll={scroll} data={data} error={error} 
+      handleSubmit={handleSubmit} handleChange={handleChange} 
+      loading={loading} buffer={buffer} progress={progress} 
+      todos={todos}></DialogModal>:""}
+              {/*  */}
+        {/* {data ? (
           <Dialog
             open={open}
             onClose={handleClose}
@@ -357,7 +314,7 @@ export default function EditTodos({ data }) {
           </Dialog>
         ) : (
           ""
-        )}
+        )} */}
        
       </div>
       <Outlet></Outlet>

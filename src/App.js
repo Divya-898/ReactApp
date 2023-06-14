@@ -11,11 +11,11 @@ function App() {
   const background = location.state && location.state.background;
   return (
     <div className="App">
-     <Routes  location={background || location}>
+   <Routes  location={background || location}> 
      <Route path="/" exact element={<UserPost/>} />
      
     <Route path="/user/:userId"  element={<User/>}>
-    <Route path="edit/:id" element={<DialogModal />} />
+    <Route path="todos/:id" element={<DialogModal />} />
     <Route path="delete/:id" element={<DialogModal />} />
     </Route>
     </Routes>

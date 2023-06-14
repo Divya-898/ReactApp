@@ -65,8 +65,6 @@ function CommentPost({ postId, user }) {
     <>
       {userComments
         ? userComments.map((post) => {
-            const x = post.name;
-
             const mySentence = post.name;
             const words = post.name ? mySentence.split(" ").slice(0, 2) : "";
             for (let i = 0; i < words.length; i++) {
@@ -75,7 +73,7 @@ function CommentPost({ postId, user }) {
             const commentName = words.join(" ");
 
             return (
-              <div style={{}}>
+              <div key={post.id}>
                 <div style={{ padding: 14 }} className="App">
                   <Grid
                     container
@@ -109,7 +107,7 @@ function CommentPost({ postId, user }) {
                           fontSize: "12px",
                           lineHeight: "16.08px",
                           overflowWrap: "break-word",
-                          "-webkit-font-smoothing": "antialiased",
+                          WebkitFontSmoothing: "antialiased",
                           backgroundColor: "#f0f2f5",
                           boxShadow: "none",
                           padding: "10px 2px 10px 10px",

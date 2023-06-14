@@ -119,7 +119,7 @@ export default function UserAlbumsPhoto({
           style={{
             display: "flex",
             position: "relative",
-            top: "28px",
+            top: "60px",
             left: "75px",
           }}
         >

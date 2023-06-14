@@ -83,7 +83,6 @@ function User() {
   };
   const handleClose = () => {
     setOpen(false);
-    navigate(-1);
   };
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
@@ -165,7 +164,7 @@ function User() {
   //   reset(postData);
   // }, [postData]);
   const handleSubmit = (e, userId) => {
-    e.preventdefault();
+    e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = postData.title;
@@ -207,12 +206,12 @@ function User() {
                   "marginRight": "40px",
                 }}
               >
-                {/* {user && user.address && user.company ? (
+                {user && user.address && user.company ? (
                   <UserIntro user={user}></UserIntro>
                 ) : (
                   ""
-                )} */}
-                {/* <UserAlbums commonList={commonList}></UserAlbums> */}
+                )}
+                <UserAlbums commonList={commonList}></UserAlbums>
                 <UserTodos></UserTodos>
                 {/* <UserPhoto
                   photos={photos}

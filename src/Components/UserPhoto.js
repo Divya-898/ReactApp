@@ -19,7 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import { trackWindowScroll } from "react-lazy-load-image-component";
+import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import InputLabel from "@mui/material/InputLabel";
@@ -293,7 +293,7 @@ const {loading} = useSelector((state)=>state.userPhotos)
                       <Edit photoUrl={item}></Edit>
                     </span>
                     <ImageListItemBar title={item.title} position="bottom" />
-                    <img
+                     <LazyLoadImage
                       src={item.thumbnailUrl}
                       width="100px"
                       height="100px"
