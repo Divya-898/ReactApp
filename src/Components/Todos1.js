@@ -3,6 +3,8 @@ import Paper from "@mui/material/Paper";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import { useForm } from "react-hook-form";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Button,
   Dialog,
@@ -23,13 +25,14 @@ import React, { useEffect, useRef, useState } from "react";
 import EditTodos from "./EditTodos";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodo, showTodo, updateTodo } from "../mainRedux/features/TodoSlice";
+import { createTodo, deleteTodo, showTodo, updateTodo } from "../mainRedux/features/TodoSlice";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DialogModal from "./SucDialog";
 import { compose } from "redux";
 import Form from "./EditFormTodos";
 import EditFormTodos from "./EditFormTodos";
 import CreateFormTodos from "./CreateFormTodos";
+import DeleteDialog from "./DeleteDialog";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -63,10 +66,20 @@ function UserTodos() {
   const [openBox, setOpenBox] = React.useState(false);
   const [editTodo, setEditTodo] = useState();
   const [open, setOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteData, setDeleteData]= useState(false)
   const menuOpen = Boolean(anchorEl);
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+//delete handler
+const handleDeleteOpen= (data) =>{
+  setDeleteOpen(true);
+  setDeleteData(data);
+}
+const handleDeleteClose = ()=>{
+  setDeleteOpen(false);
+}
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
@@ -76,8 +89,8 @@ function UserTodos() {
     setEditTodo(data)
   };
  
-  const handleOpenDelete = () => {
-    setOpenBox(true);
+  const handleCLoseCreate = () => {
+    setOpenBox(false);
   };
   const [formData, setformData] = useState({
     title: "", // required
@@ -125,8 +138,31 @@ function UserTodos() {
         setDisabled(true);
         setError("Succesfully created");
       }, 1000);
+      setTimeout(()=>{
+        window.location.reload();
+      },3000)
     }
   };
+
+  const handleDelete = (id) => {
+    if (id) {
+      setTimeout(()=>{
+        dispatch(deleteTodo(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },1000)
+      setTimeout(()=>{
+        window.location.reload();
+       
+      },2000)
+      } 
+     else {
+      setError("Todos is not deleted");
+    }
+  };
+
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
@@ -159,11 +195,11 @@ function UserTodos() {
     setformData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  const temp = (<EditFormTodos loading={loading} buffer={buffer} progress={progress}
-    editTodo={editTodo} handleSubmit={handleSubmit} error={error} scroll={scroll} handleChange={handleChange2}></EditFormTodos>)
+  const temp = (<EditFormTodos handleClose={handleClose}
+    editTodo={editTodo} handleSubmit={handleSubmit} error={error}  handleChange={handleChange2}></EditFormTodos>)
 
-  const create = (<CreateFormTodos loading={loading} buffer={buffer} progress={progress}
-    handleSubmit={handleSubmit1} error={error} scroll={scroll} handleChange={handleTodosChange}></CreateFormTodos>)
+  const create = (<CreateFormTodos 
+    handleSubmit={handleSubmit1} error={error} handleChange={handleTodosChange}></CreateFormTodos>)
   useEffect(() => {
     dispatch(showTodo(userId));
   }, []);
@@ -186,6 +222,8 @@ function UserTodos() {
             <>
               <div style={{ display: "flex" }}>
                 <h1 style={{ padding: "10px", width: "390px" }}>Todos</h1>
+                
+              <Link to={`todos`}>
                 <Button
                   onClick={handleOpen}
                   sx={{
@@ -194,8 +232,10 @@ function UserTodos() {
                     },
                   }}
                 >
-                  <AddCircleIcon />
+                <AddCircleIcon/>
+                
                 </Button>
+                </Link>
               </div>
               <div>
                 {/* <Dialog
@@ -362,71 +402,85 @@ function UserTodos() {
                       />
                     </Item>
                   </Grid>
-                  <Grid>
+                  <Grid sx={{
+                        boxShadow: "none",
+                        width:"0px"
+                      }}>
                     <Item
                       sx={{
                         boxShadow: "none",
+                        
                       }}
                     >
-                    <div>
-          <Button
-            // id="basic-button"
-            // aria-controls={menuOpen ? "basic-menu" : undefined}
-            // aria-haspopup="true"
+                    
+          {/* <Button
+            id="basic-button"
+            aria-controls={menuOpen ? "basic-menu" : undefined}
+            aria-haspopup="true"
             aria-expanded={menuOpen ? "true" : undefined}
+            onClick={handleClickMenu}
+          >
+            <div>
+              <MoreVertIcon sx={{ float: "right" }} />
+            </div>
+          </Button> */}
+
+          {/* <Menu
             id="basic-menu"
             anchorEl={anchorEl}
             open={menuOpen}
             onClose={handleCloseMenu}
             sx={{ width: "120px", height: "40" }}
-            // onClick={handleClickMenu}
-          >
-            <div>
-              <MoreVertIcon sx={{ float: "right" }} />
-            </div>
-          </Button> 
-
-          <Menu
-          //  aria-expanded={menuOpen ? "true" : undefined}
-          //   id="basic-menu"
-          //   anchorEl={anchorEl}
-          //   open={menuOpen}
-          //   onClose={handleCloseMenu}
-            sx={{ width: "120px", height: "40" }}
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}
-          >
-           {/* <div>
-              <MoreVertIcon sx={{ float: "right" }} />
-            </div> */}
-            <MenuItem>
+          > */}
+            {/* <MenuItem> */}
+            <div style={{marginLeft:"20px"}}>
             <Link to={`todos/${data1.id}`}>
               <Button
-                variant="contained"
-                color="success"
+                
                 onClick={() => handleClickOpen(data1)}
-                sx={{ float: "right", padding: "0" }}
+                sx={{ float: "right", padding: "8px 0px 0px 0px" ,boxShadow:"none", position:"relative",left:"30px"}}
               >
-                Edit
+               <ModeEditIcon sx={{}}/>
               </Button>{" "} </Link>
-            </MenuItem>
-             <MenuItem>     
-            <Link to={`delete/${data1.id}`}> 
+              </div>
+              </Item></Grid>
+              <Grid sx={{
+                        boxShadow: "none",
+                        // width:"40px",
+                        marginLeft:"22px"
+                      }}><Item sx={{
+                        boxShadow: "none",
+                        
+                      }}>
+              <Link to={`todos/${data1.id}/delete`}> 
               <Button
-                variant="contained"
-                color="error"
-                onClick={handleOpenDelete}
-                sx={{ float: "right", padding: "0" }}
+                
+                onClick={() => handleDeleteOpen(data1)}
+                sx={{  }}
               >
-                delete
+               <DeleteIcon color="error"/>
               </Button></Link>
-            </MenuItem>
-          </Menu>
-        </div>
+              
+             
+            {/* </MenuItem> */}
+            {/* <MenuItem>  */}   
+            
+            {/* </MenuItem> */}
+          {/* </Menu> */} 
+       
 
                       {/* <EditTodos data={data1}></EditTodos> */}
                     </Item>
+                    {/* <Item sx={{
+                        boxShadow: "none",
+                        padding:"0px",
+
+                      }} >
+                   
+                    </Item> */}
                   </Grid>
                 </Grid>
                 </>
@@ -437,11 +491,15 @@ function UserTodos() {
             ""
           )}
         </Paper>
-        {editTodo ? <DialogModal open={true} handleClose={handleClose} scroll={scroll} 
-      temp={temp} name="Update Todos"></DialogModal>:<DialogModal open={openBox} handleClose={handleClose} scroll={scroll} temp={create} name="Create Todos"></DialogModal>}
+        {editTodo ? <DialogModal open={open} handleClose={handleClose} 
+      temp={temp} name="Update Todos"></DialogModal>:<DialogModal open={openBox} 
+      handleClose={handleCLoseCreate}  temp={create} name="Create Todos"></DialogModal>}
       {/* <DialogModal open={handleOpen} handleClose={handleClose} scroll={scroll} 
       temp={create}></DialogModal>} */}
       </Box>
+      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
+      handleDelete={handleDelete} deleteData={deleteData}
+      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this todo ?"/>:""}
     </div>
   );
 }

@@ -26,7 +26,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import CommentPost from "./Comments";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Profile from "./Profile";
 import UserIntro from "./UserIntro";
 import UserAlbums from "./UserAlbums";
@@ -36,12 +36,18 @@ import UserTodos from "./Todos1";
 import EditPost from "./EditPost";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, showPost } from "../mainRedux/features/PostSlice";
+import { createPost, deletePost, showPost } from "../mainRedux/features/PostSlice";
 import { showUser } from "../mainRedux/features/UserSlice";
 import { showPhotos } from "../mainRedux/features/PhotoSlice";
 import { showAlbums } from "../mainRedux/features/AlbumSlice";
 import { useForm } from "react-hook-form";
-
+import PostEditForm from "./PostCreateForm";
+import DialogModal from "./SucDialog";
+import PostCreateForm from "./PostCreateForm";
+import PostEditForm2 from "./PostEditForm2";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteDialog from "./DeleteDialog";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -77,7 +83,29 @@ function User() {
   const { albums } = useSelector((state) => state.userAlbums);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const[postEdit, setPostEdit] = useState();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteData, setDeleteData]= useState(false)
+  // const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
+  const handleDeleteOpen= (data) =>{
+    setDeleteOpen(true);
+    setDeleteData(data);
+  }
+  const handleDeleteClose = ()=>{
+    setDeleteOpen(false);
+  }
+//edit open
+const handleOpenEdit = (data)=>{
+  setOpenEdit(true);
+  setPostEdit(data);
+  console.log("data",data)
+}
+const handleCloseEdit = (data)=>{
+  setOpenEdit(false);
+  // setPostEdit(data);
+}
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
   };
@@ -95,6 +123,9 @@ function User() {
     body: "", // required
   });
   
+//call edit post
+const temp = (<PostCreateForm handleClose={handleClose}/>)
+const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/> )
   var options = { year: "numeric", month: "long", day: "numeric" };
   const currentDate = new Date();
   const dateFormate = currentDate.toLocaleDateString("en-US", options);
@@ -124,6 +155,8 @@ function User() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [str]);
+
+
 
   useEffect(() => {
     if (userId) {
@@ -160,35 +193,58 @@ function User() {
     }
   }, [albums, photos]);
 
+  const handleDelete = (id) => {
+    if (id) {
+      setTimeout(()=>{
+      dispatch(deletePost(id));
+    },2000)
+    setTimeout(()=>{
+      setError("Succesfully Deleted")
+    },2000)
+    } else {
+      setError("Post is not deleted");
+    }
+  };
+
+
   // useEffect(() => {
   //   reset(postData);
   // }, [postData]);
-  const handleSubmit = (e, userId) => {
-    e.preventDefault();
-    let payload = {};
-    payload["userId"] = userId;
-    payload["title"] = postData.title;
-    payload["body"] = postData.body;
-    if (postData.body && postData.title) {
+  // const handleSubmit = (e, userId) => {
+  //   e.preventDefault();
+  //   let payload = {};
+  //   payload["userId"] = userId;
+  //   payload["title"] = postData.title;
+  //   payload["body"] = postData.body;
+  //   if (postData.body && postData.title) {
       
-      setTimeout(() => {
-        dispatch(createPost(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        setError("Succesfully created");
-      }, 1500);
-      setTimeout(() => {
-        window.location.reload();
+  //     setTimeout(() => {
+  //       dispatch(createPost(payload));
+  //     }, 500);
+  //     setTimeout(() => {
+  //       setDisabled(true);
+  //       setError("Succesfully created");
+  //     }, 1500);
+  //     setTimeout(() => {
+  //       window.location.reload();
        
-      }, 3000);
-    }
-  };
-  function handleTodosChange(e) {
-    setPostData({ ...postData, [e.target.name]: e.target.value });
-  }
+  //     }, 3000);
+  //   }
+  // };
+  // function handleTodosChange(e) {
+  //   setPostData({ ...postData, [e.target.name]: e.target.value });
+  // }
+
+  
   return (
     <>
+   {postEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
+      temp={edit} name="Update Post"/>:<DialogModal open={open} handleClose={handleClose} 
+      temp={temp} name="Create Post"/>}
+
+{deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
+      handleDelete={handleDelete} deleteData={deleteData}
+      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this Post ?"/>:""}
       {user ? (
         <>
           <PrimarySearchAppBar user={user}></PrimarySearchAppBar>
@@ -240,13 +296,15 @@ function User() {
                       )
                     }
                   />
+                  <Link to={`post`}>
                   <input
                     className="commentInput"
                     type="text"
                     placeholder="What's on you mind?"
                     onClick={handleClickOpen("paper")}
                   />
-                  <div>
+                  </Link>
+                  {/* <div>
                     <Dialog
                       open={open}
                       onClose={handleClose}
@@ -373,7 +431,7 @@ function User() {
                         </form>
                       </DialogContent>
                     </Dialog>
-                  </div>
+                  </div> */}
                 </Card>
                 {userPosts &&
                   userPosts.map((items) => (
@@ -388,7 +446,24 @@ function User() {
                         }}
                         key={items.id}
                       >
-                        <EditPost postId={items}></EditPost>
+                      <Link to={`post/${items.id}`}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={()=>handleOpenEdit(items)}
+                sx={{ float: "right", padding: "0" }}
+              >
+                Edit
+              </Button>{" "}</Link>
+              <Link to={`todos/${items.id}/delete`}> 
+              <Button
+                
+                onClick={() => handleDeleteOpen(items)}
+                sx={{  }}
+              >
+               <DeleteIcon color="error"/>
+              </Button></Link>
+                        {/* <EditPost postId={items}></EditPost> */}
                         <CardHeader
                           sx={{ padding: "16px 9px 0px" }}
                           avatar={

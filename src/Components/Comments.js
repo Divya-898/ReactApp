@@ -1,20 +1,25 @@
 import { Avatar, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import EditComment from "./EditComments";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createComment,
+  deleteComment,
   showComments,
 } from "../mainRedux/features/CommentSlice";
 import UserName from "./UserName";
 import { useForm } from "react-hook-form";
+import EditFormComments from "./EditFormComments";
+import DialogModal from "./SucDialog";
+import DeleteDialog from "./DeleteDialog";
 function CommentPost({ postId, user }) {
   const { register, reset } = useForm();
   const { userComments, loading } = useSelector((state) => state.userComments);
@@ -24,6 +29,27 @@ function CommentPost({ postId, user }) {
   const [progress, setProgress] = React.useState(0);
   const [buffer, setBuffer] = React.useState(10);
   const [error, setError] = useState("");
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const[commentEdit, setCommentEdit] = useState();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteData, setDeleteData]= useState(false)
+  const handleDeleteOpen= (data) =>{
+    setDeleteOpen(true);
+    setDeleteData(data);
+  }
+  const handleDeleteClose = ()=>{
+    setDeleteOpen(false);
+  }
+
+  const handleOpenEdit = (data)=>{
+    setOpenEdit(true);
+    setCommentEdit(data);
+  }
+  const handleCloseEdit = (data)=>{
+    setOpenEdit(false);
+    
+  }
+  const edit = (<EditFormComments commentEdit={commentEdit} handleClose={handleCloseEdit}/> )
 
   useEffect(() => {
     dispatch(showComments(postId));
@@ -61,8 +87,25 @@ function CommentPost({ postId, user }) {
     setComment({ ...comment, [e.target.name]: e.target.value });
   }
 
+  const handleDelete = (id) => {
+    if (id) {
+      setTimeout(()=>{
+      dispatch(deleteComment(id));
+    },2000)
+    setTimeout(()=>{
+      setError("Succesfully Deleted")
+    },2000)
+    } else {
+      setError("Comment is not deleted");
+    }
+  };
   return (
     <>
+    {commentEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
+      temp={edit} name="Update Post"/>:""}
+      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
+      handleDelete={handleDelete} deleteData={deleteData}
+      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this Comment ?"/>:""}
       {userComments
         ? userComments.map((post) => {
             const mySentence = post.name;
@@ -115,10 +158,27 @@ function CommentPost({ postId, user }) {
                         }}
                       >
                         <div style={{ float: "right" }}>
-                          <EditComment
+                        <Link to={`post/${post.id}`}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={()=>handleOpenEdit(post)}
+                sx={{ float: "right", padding: "0" }}
+              >
+                Edit
+              </Button>{" "}</Link>
+              <Link to={`todos/${post.id}/delete`}> 
+              <Button
+                
+                onClick={() => handleDeleteOpen(post)}
+                sx={{  }}
+              >
+               <DeleteIcon color="error"/>
+              </Button></Link>
+                          {/* <EditComment
                             postId={postId}
                             commentObj={post}
-                          ></EditComment>
+                          ></EditComment> */}
                         </div>
                         <h4 style={{ margin: 0, textAlign: "left" }}>
                           {commentName}

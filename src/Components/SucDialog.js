@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import Form from './EditFormTodos';
+
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -35,7 +36,9 @@ const StyledTextarea = styled(TextareaAutosize)(
 `
 );
 
-export default function DialogModal({open ,handleClose, scroll,temp,name}) {
+export default function DialogModal({open ,handleClose,temp,name}) {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       
@@ -43,20 +46,20 @@ export default function DialogModal({open ,handleClose, scroll,temp,name}) {
  <Dialog
             open={open}
             onClose={handleClose}
-            scroll={scroll}
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
+            fullScreen={fullScreen}
             PaperProps={{
               sx: {
                 width: "50%",
-                maxHeight: 350,
+                // maxHeight: 350,
               },
             }}
           >
             <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
              {name}
             </DialogTitle>
-            <DialogContent dividers={scroll === "paper"}>
+            <DialogContent dividers={"true"}>
             {temp}
               {/* <form
                 className="login-form"

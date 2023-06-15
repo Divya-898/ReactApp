@@ -1,7 +1,8 @@
 import { Box, Button, DialogActions, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from "@mui/material/styles";
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const StyledTextarea = styled(TextareaAutosize)(
     ({ theme }) => `
     width: 320px;
@@ -14,8 +15,11 @@ const StyledTextarea = styled(TextareaAutosize)(
   `
   );
 
-function CreateFormTodos({open ,handleClose, scroll, editTodo, handleSubmit, 
-  handleChange,error,loading,buffer,progress,todos}) {
+function CreateFormTodos({handleClose, handleSubmit, 
+  handleChange,error,}) {
+    const { loading } = useSelector((state) => state.app);
+    const [progress, setProgress] = useState(0);
+const [buffer, setBuffer] = useState(10);
     const {userId} = useParams();
   return (
     <div>

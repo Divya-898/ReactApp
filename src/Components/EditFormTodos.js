@@ -1,6 +1,7 @@
 import { Box, Button, DialogActions, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
 import React, { useState } from 'react'
 import { styled } from "@mui/material/styles";
+import { useSelector } from 'react-redux';
 const StyledTextarea = styled(TextareaAutosize)(
     ({ theme }) => `
     width: 320px;
@@ -13,12 +14,10 @@ const StyledTextarea = styled(TextareaAutosize)(
   `
   );
 function EditFormTodos({open ,handleClose, scroll, editTodo, handleSubmit, 
-    handleChange,error,loading,buffer,progress,todos}) {
-      const [editOpen, setEditOpen] = useState(open);
-      const handleClose2 = ()=>{
-        // setEditOpen(true)
-         window.location.reload()
-      }
+    handleChange,error,}) {
+      const { loading } = useSelector((state) => state.app);
+      const [progress, setProgress] = useState(0);
+  const [buffer, setBuffer] = useState(10);
   return (
     <div>
       <form
@@ -97,7 +96,7 @@ function EditFormTodos({open ,handleClose, scroll, editTodo, handleSubmit,
                   </Box>
                    <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>
                     <Button
-                      onClick={handleClose2}
+                      onClick={handleClose}
                       color="error"
                       variant="contained"
                       sx={{ marginRight: "10px" }}

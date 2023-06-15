@@ -1,44 +1,13 @@
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import BadgeIcon from "@mui/icons-material/Badge";
-import {
-  DialogTitle,
-  Divider,
-  Icon,
-  IconButton,
-  LinearProgress,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import AddIcCallIcon from "@mui/icons-material/AddIcCall";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import CloudSyncIcon from "@mui/icons-material/CloudSync";
-import AddBusinessIcon from "@mui/icons-material/AddBusiness";
-import FactoryIcon from "@mui/icons-material/Factory";
-import React, { useEffect, useRef, useState } from "react";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { Box, Button, DialogActions, DialogContent, Divider, InputLabel, LinearProgress, TextField, Typography } from '@mui/material'
+import React, { useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+import { updateUser } from '../mainRedux/features/UserSlice';
+import { useDispatch } from 'react-redux';
 
-import axios from "axios";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  InputLabel,
-  TextField,
-} from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch} from "react-redux";
-import { showUser, updateUser } from "../mainRedux/features/UserSlice";
-import UserEdit from "./UserEdit";
-import DialogModal from "./SucDialog";
-function UserIntro({ user }) {
-  const navigate = useNavigate()
-  const dispatch = useDispatch();
-  const cityref = useRef("");
+function UserEdit({user}) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const cityref = useRef("");
   const streetref = useRef("");
   const emailref = useRef("");
   const nameref = useRef("");
@@ -91,19 +60,6 @@ function UserIntro({ user }) {
         dispatch(updateUser(payload));
       }, 500);
       setTimeout(() => {
-        setDisabled(true);
-        emailref.current.value="";
-        nameref.current.value=""
-        phoneref.current.value=""
-        websiteref.current.value=""
-        streetref.current.value=""
-        streetref.current.value=""
-        cityref.current.value=""
-        suiteref.current.value=""
-        zipcoderef.current.value=""
-        catchPhraseref.current.value=""
-        bsref.current.value=""
-        comNameref.current.value=""
         setError("Succesfully created");
       }, 1000);
     } else {
@@ -113,62 +69,10 @@ function UserIntro({ user }) {
   function handleChange(e) {
     setValue({ ...values, [e.target.name]: e.target.value });
   }
-  const temp =(<UserEdit user={user}/>)
+
   return (
     <div>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          "& > :not(style)": {
-            m: 1,
-            width: "422px",
-            height: "490px",
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-          },
-        }}
-      >
-        <Paper elevation={3}>
-          <div style={{ display: "flex" }}>
-            <h1
-              style={{ padding: "20px", width: "390px" }}
-              className="profileName"
-            >
-              Intro
-            </h1>
-            <Link to={`edit`}>
-            <Button
-              onClick={handleClickOpen("paper")}
-              sx={{
-                "&:hover": {
-                  backgroundColor: "#FFF",
-                },
-              }}
-            >
-              <ModeEditIcon sx={{ marginTop:"30px"}}/>
-            </Button>
-            </Link>
-          </div>
-          <DialogModal open={open}  handleClose={handleClose} name="User Update" temp={temp}/>
-          {/* <div>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              scroll={scroll}
-              aria-labelledby="scroll-dialog-title"
-              aria-describedby="scroll-dialog-description"
-              PaperProps={{
-                sx: {
-                  width: "50%",
-                  maxHeight: 640,
-                },
-              }}
-            >
-              <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
-                Update User
-              </DialogTitle>
-              <DialogContent dividers={scroll === "paper"}>
+       <DialogContent>
                 <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                   <div style={{ display: "flex" }}>
                     <InputLabel
@@ -271,7 +175,7 @@ function UserIntro({ user }) {
                     {/* <input type="text" name="body"
               value={values.body}
               onChange={e => setValue(e.target.value)}/> */}
-                    {/* <div style={{ marginLeft: "60px" }}>
+                    <div style={{ marginLeft: "60px" }}>
                       <TextField
                         disabled={disabled}
                         sx={{
@@ -422,8 +326,8 @@ function UserIntro({ user }) {
                   <div>
                     <Divider
                       sx={{
-                        width: "610px",
-                        right: "30px",
+                        width: "650px",
+                        // right: "30px",
                         position: "relative",
                         top: "10px",
                       }}
@@ -455,7 +359,7 @@ function UserIntro({ user }) {
                       sx={{
                         paddingTop: "10px",
                         display: "flex",
-                        margin: "20px",
+                        // margin: "20px",
                       }}
                     >
                       <Button
@@ -473,160 +377,8 @@ function UserIntro({ user }) {
                   </DialogActions>
                 </form>
               </DialogContent>
-            </Dialog> */}
-          {/* </div> */} 
-          {user ? (
-            <Box
-              sx={{
-                paddingLeft: "10px",
-                color: "rgb(5,5,5)",
-                display: "block",
-                fontFamily:
-                  "system-ui, -apple-system,system-ui,SFNSText-Regular, sans-serif",
-                fontSize: "15px",
-                fontWeight: "400px",
-                height: "39.9688px",
-              }}
-            >
-              <div>
-                <IconButton
-                  sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                >
-                  <BadgeIcon></BadgeIcon>
-                  <span
-                    style={{
-                      color: "rgb(5,5,5)",
-                      fontSize: "16px",
-                      padding: "10px 10px 5px",
-                    }}
-                  >
-                    {user.name}
-                  </span>
-                </IconButton>
-                <br></br>
-                <IconButton
-                  sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                >
-                  <EmailIcon></EmailIcon>{" "}
-                  <a
-                    href="mailto:name@email.com"
-                    style={{ fontSize: "16px", padding: "10px 10px 5px" }}
-                  >
-                    {user.email}
-                  </a>
-                </IconButton>
-                <br></br>
-                {user.address ? (
-                  <IconButton
-                    sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                  >
-                    <AddLocationAltIcon></AddLocationAltIcon>
-                    <span
-                      style={{
-                        color: "rgb(5,5,5)",
-                        fontSize: "16px",
-                        padding: "10px 6px 5px",
-                      }}
-                    >
-                      {user.address.street}, {user.address.suite},{" "}
-                      {user.address.city},{user.address.zipcode}
-                    </span>
-                  </IconButton>
-                ) : (
-                  ""
-                )}
-                <br></br>
-                <IconButton
-                  sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                >
-                  <AddIcCallIcon />
-                  <span
-                    style={{
-                      color: "rgb(5,5,5)",
-                      fontSize: "16px",
-                      padding: "10px 10px 5px",
-                    }}
-                  >
-                    {user.phone}
-                  </span>
-                </IconButton>
-                <br></br>
-                {user.company ? (
-                  <>
-                    {" "}
-                    <IconButton
-                      sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                    >
-                      <CloudSyncIcon />
-                      <span
-                        style={{
-                          color: "rgb(5,5,5)",
-                          fontSize: "16px",
-                          padding: "10px 10px 5px",
-                        }}
-                      >
-                        {user.website}
-                      </span>
-                    </IconButton>
-                    <br></br>
-                    <IconButton
-                      sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                    >
-                      <FactoryIcon />
-                      <span
-                        style={{
-                          color: "rgb(5,5,5)",
-                          fontSize: "16px",
-                          padding: "10px 10px 5px",
-                        }}
-                      >
-                        {user.company.name}
-                      </span>
-                    </IconButton>
-                    <br></br>
-                    <IconButton
-                      sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                    >
-                      <BadgeIcon></BadgeIcon>
-                      <span
-                        style={{
-                          color: "rgb(5,5,5)",
-                          fontSize: "16px",
-                          padding: "10px 10px 5px",
-                        }}
-                      >
-                        {user.company.catchPhrase}
-                      </span>
-                    </IconButton>
-                    <br></br>
-                    <IconButton
-                      sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                    >
-                      <AddBusinessIcon />
-                      <span
-                        style={{
-                          color: "rgb(5,5,5)",
-                          fontSize: "16px",
-                          padding: "10px 10px 5px",
-                        }}
-                      >
-                        {user.company.bs}
-                      </span>
-                    </IconButton>
-                    <br></br>
-                  </>
-                ) : (
-                  ""
-                )}
-              </div>
-            </Box>
-          ) : (
-            ""
-          )}
-        </Paper>
-      </Box>
     </div>
-  );
+  )
 }
 
-export default UserIntro;
+export default UserEdit
