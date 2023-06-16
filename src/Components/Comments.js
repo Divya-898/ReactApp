@@ -157,24 +157,26 @@ function CommentPost({ postId, user }) {
                           marginBottom: "-8px",
                         }}
                       >
-                        <div style={{ float: "right" }}>
+                        <div style={{  }}>
                         <Link to={`post/${post.id}`}>
               <Button
-                variant="contained"
-                color="success"
+                // variant="contained"
+                
                 onClick={()=>handleOpenEdit(post)}
                 sx={{ float: "right", padding: "0" }}
               >
-                Edit
+                {/* Edit */}
+                <ModeEditIcon color="success"/>
               </Button>{" "}</Link>
               <Link to={`todos/${post.id}/delete`}> 
-              <Button
+              {/* <Button
                 
                 onClick={() => handleDeleteOpen(post)}
-                sx={{  }}
-              >
-               <DeleteIcon color="error"/>
-              </Button></Link>
+                sx={{float:"right" , width:"100px"}}
+              > */}
+               <DeleteIcon color="error"  sx={{float:"right",position:"relative",left:"20px" }} onClick={() => handleDeleteOpen(post)}/>
+               </Link>
+              {/* </Button></Link> */}
                           {/* <EditComment
                             postId={postId}
                             commentObj={post}

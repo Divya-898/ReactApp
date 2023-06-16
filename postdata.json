@@ -575,12 +575,6 @@
       "id": 100,
       "title": "at nam consequatur ea labore ea harum",
       "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
-    },
-    {
-      "userId": "1",
-      "title": "14 jun",
-      "body": "12",
-      "id": 104
     }
   ],
   "comments": [
@@ -2277,7 +2271,7 @@
   "albums": [
     {
       "userId": "1",
-      "title": "sant qui excepturi placeat culpa",
+      "title": "sant qui excepturi placeat culpan",
       "id": 2
     },
     {
@@ -2291,9 +2285,9 @@
       "id": 4
     },
     {
-      "userId": 1,
-      "id": 5,
-      "title": "eaque aut omnis a"
+      "userId": "1",
+      "title": "aaque aut omnis a",
+      "id": 5
     },
     {
       "userId": 1,
@@ -2772,8 +2766,8 @@
     },
     {
       "userId": "1",
-      "title": "sunt qui excepturi ",
-      "id": 1
+      "title": "sunshine",
+      "id": 101
     }
   ],
   "photos": [
@@ -37365,17 +37359,6 @@
       "thumbnailUrl": "https://via.placeholder.com/150/6dd9cb"
     },
     {
-      "thumbnailUrl": "https://t4.ftcdn.net/jpg/02/74/99/01/360_F_274990113_ffVRBygLkLCZAATF9lWymzE6bItMVuH1.jpg",
-      "id": 5001
-    },
-    {
-      "albumId": 1,
-      "id": 1,
-      "title": "non sunt voluptatem placeat consequuntur rem incidunt",
-      "url": "https://via.placeholder.com/600/8e973b",
-      "thumbnailUrl": "https://images.all-free-download.com/images/graphiclarge/homemade_burger_560254.jpg"
-    },
-    {
       "id": 5002,
       "albumId": 2,
       "url": "https://freepngimg.com/thumb/doraemon/71299-nobi-youtube-nobita-television-doraemon-free-photo-png-thumb.png",
@@ -37399,9 +37382,23 @@
     {
       "id": 5005,
       "albumId": 2,
-      "url": "https://w7.pngwing.com/pngs/333/408/png-transparent-mowgli-illustration-mowgli-the-jungle-book-baloo-the-second-jungle-book-shere-khan-adult-cartoon-mowgli-baloo-the-second-jungle-book-thumbnail.png",
-      "thumbnailUrl": "https://w7.pngwing.com/pngs/333/408/png-transparent-mowgli-illustration-mowgli-the-jungle-book-baloo-the-second-jungle-book-shere-khan-adult-cartoon-mowgli-baloo-the-second-jungle-book-thumbnail.png",
-      "title": "mogli"
+      "url": "https://img.freepik.com/premium-photo/cartoon-character-with-glasses-red-shirt-that-says-i-m-boy_771335-49728.jpg",
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/cartoon-character-with-glasses-red-shirt-that-says-i-m-boy_771335-49728.jpg",
+      "title": "jungle mogli"
+    },
+    {
+      "albumId": 2,
+      "thumbnailUrl": "https://thumbs.dreamstime.com/b/pink-flower-wreath-clipart-circular-transparent-jpg-png-floral-wedding-208788619.jpg",
+      "url": "https://thumbs.dreamstime.com/b/pink-flower-wreath-clipart-circular-transparent-jpg-png-floral-wedding-208788619.jpg",
+      "title": "dummy",
+      "id": 5006
+    },
+    {
+      "albumId": 2,
+      "thumbnailUrl": "https://img.freepik.com/premium-photo/cartoon-character-with-glasses-red-shirt-that-says-i-m-boy_771335-49728.jpg",
+      "url": "https://img.freepik.com/premium-photo/cartoon-character-with-glasses-red-shirt-that-says-i-m-boy_771335-49728.jpg",
+      "title": "dummy image",
+      "id": 5007
     }
   ],
   "users": [
@@ -37413,9 +37410,9 @@
       "website": "hildegard.com",
       "address": {
         "street": "Kulas Light",
-        "city": "Gwenborough",
+        "city": "Gwenborougt",
         "suite": "Apt. 557",
-        "zipcode": "92998-3874"
+        "zipcode": "92998-3872"
       },
       "company": {
         "catchPhrase": "Multi-layered client-server neural-net",

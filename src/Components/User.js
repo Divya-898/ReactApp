@@ -244,7 +244,7 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
 
 {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
       handleDelete={handleDelete} deleteData={deleteData}
-      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this Post ?"/>:""}
+      handleDeleteOpen={deleteOpen} error={error} title="would you like to delete this Post ?"/>:""}
       {user ? (
         <>
           <PrimarySearchAppBar user={user}></PrimarySearchAppBar>
@@ -296,13 +296,15 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
                       )
                     }
                   />
-                  <Link to={`post`}>
+                  <Link to={`post`} style={{width:"100%"}}>
+                  <div style={{width:"100%"}}>
                   <input
                     className="commentInput"
                     type="text"
                     placeholder="What's on you mind?"
                     onClick={handleClickOpen("paper")}
                   />
+                  </div>
                   </Link>
                   {/* <div>
                     <Dialog
@@ -446,23 +448,30 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
                         }}
                         key={items.id}
                       >
+                      <div style={{position:"relative", top:"10px", left:"10px"}}>
+                      <div>
                       <Link to={`post/${items.id}`}>
               <Button
-                variant="contained"
-                color="success"
                 onClick={()=>handleOpenEdit(items)}
                 sx={{ float: "right", padding: "0" }}
               >
-                Edit
+                <ModeEditIcon  color="success"/>
               </Button>{" "}</Link>
+              </div>
+              <div style={{marginLeft:"40px"}}>
               <Link to={`todos/${items.id}/delete`}> 
-              <Button
+              {/* <Button
                 
                 onClick={() => handleDeleteOpen(items)}
-                sx={{  }}
-              >
-               <DeleteIcon color="error"/>
-              </Button></Link>
+                sx={{ '&:hover': {
+        background: 'none',
+    },float: "right", padding: "0", position:"relative",left:"40px"}}
+              > */}
+               <DeleteIcon color="error"  onClick={() => handleDeleteOpen(items)} sx={{float: "right", padding: "0", position:"relative",left:"20px"}}/>
+              {/* </Button> */}
+              </Link>
+              </div>
+              </div>
                         {/* <EditPost postId={items}></EditPost> */}
                         <CardHeader
                           sx={{ padding: "16px 9px 0px" }}

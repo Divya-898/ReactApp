@@ -114,8 +114,8 @@ export default function UserAlbumsPhoto({
 
   return (
     <>
-      <div className="container">
-        <div
+      
+       {/*<div
           style={{
             display: "flex",
             position: "relative",
@@ -126,8 +126,8 @@ export default function UserAlbumsPhoto({
           <Link to={`edit/${items.id}`}>
           <ModeEditIcon color="success" onClick={handleClickOpen("paper")}></ModeEditIcon></Link>
           <Link to={`delete/${items.id}`}><DeleteIcon color="error" onClick={handleOpenDelete}></DeleteIcon></Link>
-        </div>
-        <div id="bg-image" className="lazy" style={{marginTop:"30px"}}>
+        {/* </div> */}
+        
         <img 
           src={albumId.thumbnailUrl}
           alt=""
@@ -135,8 +135,12 @@ export default function UserAlbumsPhoto({
           height={albumHeight}
           style={{ borderRadius: "10px" }}
         ></img>
-        </div>
-        <div>
+      
+        
+        </>
+  )}
+
+{/* <div>
           <Dialog
             disableEscapeKeyDown
             open={openBox}
@@ -200,8 +204,8 @@ export default function UserAlbumsPhoto({
               </Typography>
             </DialogActions>
           </Dialog>
-        </div>
-        <Dialog
+        </div> */}
+        {/* <Dialog
           open={open}
           onClose={handleClose}
           scroll={scroll}
@@ -274,8 +278,8 @@ export default function UserAlbumsPhoto({
               </DialogActions>
             </form>
           </DialogContent>
-        </Dialog>
-      </div>
+        </Dialog> */}
+      {/* </div> */}
 
       {/* <Grid item xs={6}>
           <Item>2</Item>
@@ -293,11 +297,11 @@ export default function UserAlbumsPhoto({
   </Grid>
   
 </Grid> */}
-    </>
-  );
-}
-//  <ImageList sx={{ width: 400, height: 450,padding: "11px" }} cols={3} rowHeight={164}>
-// {photo && photo.map((item) => (
+//     </>
+//   );
+// }
+{/* //  <ImageList sx={{ width: 400, height: 450,padding: "11px" }} cols={3} rowHeight={164}>
+// {photo && photo.map((item) => ( */}
 //     <ImageListItem key={item.id}>
 //       <img
 //         src={item.thumbnailUrl}

@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Divider,
   ImageList,
@@ -29,9 +31,13 @@ import Select from "@mui/material/Select";
 
 import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { createPhotos } from "../mainRedux/features/PhotoSlice";
+import { createPhotos, deletePhotos } from "../mainRedux/features/PhotoSlice";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import CreatePhotos from "./CreatePhotos";
+import DialogModal from "./SucDialog";
+import PhotoEdit from "./PhotoEdit";
+import DeleteDialog from "./DeleteDialog";
 function UserPhoto({ photos, albums }) {
   const navigate = useNavigate()
   const{register,reset} = useForm();
@@ -52,12 +58,32 @@ const {loading} = useSelector((state)=>state.userPhotos)
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [disabled, setDisabled] = useState(false);
+  const [openEdit, setOpenEdit] =useState(false);
+  const[photoEdit, setPhotoEdit] = useState();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteData, setDeleteData]= useState(false)
+  const handleDeleteOpen= (data) =>{
+    setDeleteOpen(true);
+    setDeleteData(data);
+  }
+  const handleDeleteClose = ()=>{
+    setDeleteOpen(false);
+  }
+
+  const handleOpenEdit = (data)=>{
+    setOpenEdit(true);
+    setPhotoEdit(data);
+  }
+  const handleCloseEdit = (data)=>{
+    setOpenEdit(false);
+    
+  }
 
   const handleClose = () => {
     setOpen(false);
     navigate(-1);
   };
-  const handleClickOpen = (scrollType) => () => {
+  const handleClickOpen = () => () => {
     setOpen(true);
   };
   const handleChange = (event) => {
@@ -83,12 +109,37 @@ const {loading} = useSelector((state)=>state.userPhotos)
       setError("Photo is not Created");
     }
   };
+  const handleDelete = (id) => {
+    if (id) {
+      setTimeout(()=>{
+        dispatch(deletePhotos(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },2000)
+      } 
+     else {
+      setError("Photo is not deleted");
+    }
+  };
   function handleTodosChange(e) {
     setPhotoData({ ...photoData, [e.target.name]: e.target.value });
   }
-
+  const create =(<CreatePhotos open={open} handleClose={handleClose} albums={albums}/>)
+  const edit = (<PhotoEdit open={openEdit} photoEdit={photoEdit} handleClose={handleCloseEdit}/> )
   return (
     <div>
+    {/* <DialogModal open={open} handleClose={handleClose} 
+      temp={create} name="Update photos"/> */}
+      {photoEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
+      temp={edit} name="Update Photos"/>:<DialogModal open={open} handleClose={handleClose} 
+      temp={create} name="Create Photo"/>}
+      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
+      handleDelete={handleDelete} deleteData={deleteData}
+      handleDeleteOpen={handleDeleteOpen} error={error} title="would you like to delete this photo ?"/>:""}
+      {/* <DialogModal open={open} handleClose={handleClose} 
+      temp={create} name="Create Album"/>} */}
       <Box
         sx={{
           display: "flex",
@@ -104,6 +155,7 @@ const {loading} = useSelector((state)=>state.userPhotos)
         >
           <div style={{ display: "flex" }}>
             <h1 style={{ padding: "10px", width: "390px" }}>Photos</h1>
+            <Link to={`todos`}>
             <Button
               onClick={handleClickOpen("paper")}
               sx={{
@@ -114,8 +166,9 @@ const {loading} = useSelector((state)=>state.userPhotos)
             >
               <AddCircleIcon />
             </Button>
+            </Link>
           </div>
-          <div>
+          {/* <div>
             <Dialog
               open={open}
               onClose={handleClose}
@@ -282,21 +335,38 @@ const {loading} = useSelector((state)=>state.userPhotos)
                 </form>
               </DialogContent>
             </Dialog>
-          </div>
+          </div> */}
 
           <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8}>
             {photos &&
               photos.map((item) => (
                
                   <ImageListItem  sx={{ height: "150px" }}key={item.id} >
-                    <span style={{ marginTop: "-25px" }}>
-                      <Edit photoUrl={item}></Edit>
+                    <span>
+                     <div style={{position:"relative",top:"30px",zIndex:"1"}}>
+                    <Link to={`post/${item.id}`}>
+              <Button
+                onClick={()=>handleOpenEdit(item)}
+                sx={{ float: "right", padding: "0" }}
+              >
+                <ModeEditIcon color="success"/>
+              </Button>{" "}</Link>
+              <Link to={`todos/${item.id}/delete`}> 
+              <Button
+                
+                onClick={() => handleDeleteOpen(item)}
+                sx={{ float: "right",padding: "0", marginLeft:"40px" }}
+              >
+               <DeleteIcon color="error"/>
+              </Button></Link> 
+              </div>
+                      {/* <Edit photoUrl={item}></Edit> */}
                     </span>
                     <ImageListItemBar title={item.title} position="bottom" />
                      <LazyLoadImage
                       src={item.thumbnailUrl}
-                      width="100px"
-                      height="100px"
+                      width="130px"
+                      height="110px"
                       alt={item.title}
                       loading="lazy"
                     />

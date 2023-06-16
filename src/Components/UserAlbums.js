@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import UserPhoto from "./UserAlbumsPhoto";
 import UserAlbumsPhoto from "./UserAlbumsPhoto";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Button,
   Dialog,
@@ -22,8 +24,12 @@ import {
 import { styled } from "@mui/material/styles";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { createAlbums } from "../mainRedux/features/AlbumSlice";
+import { createAlbums, deleteAlbums } from "../mainRedux/features/AlbumSlice";
 import { useForm } from "react-hook-form";
+import EditAlbums from "./EditAlbums";
+import DialogModal from "./SucDialog";
+import DeleteDialog from "./DeleteDialog";
+import CreateAlbum from "./CreateAlbum";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;
@@ -54,7 +60,42 @@ function UserAlbums({ commonList }) {
   const [album, setAlbum] = useState({
     title: "", // required
   });
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const[albumEdit, setAlbumEdit] = useState();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteData, setDeleteData]= useState(false)
+  const handleDeleteOpen= (data) =>{
+    setDeleteOpen(true);
+    setDeleteData(data);
+  }
+  const handleDeleteClose = ()=>{
+    setDeleteOpen(false);
+  }
 
+  const handleOpenEdit = (data)=>{
+    setOpenEdit(true);
+    setAlbumEdit(data);
+  }
+  const handleCloseEdit = (data)=>{
+    setOpenEdit(false);
+    
+  }
+  const handleDelete = (id) => {
+    if (id) {
+      setTimeout(()=>{
+        dispatch(deleteAlbums(id));
+      },2000)
+     
+      setTimeout(()=>{
+        setError("Succesfully Deleted")
+      },2000)
+      } 
+     else {
+      setError("Album is not deleted");
+    }
+  };
+  const edit = (<EditAlbums albumEdit={albumEdit} handleClose={handleCloseEdit}/> )
+  const create =(<CreateAlbum handleClose={handleClose}/>)
   const handleChange = (e) => {
     setAlbum({ ...album, [e.target.name]: e.target.value });
   };
@@ -77,6 +118,14 @@ function UserAlbums({ commonList }) {
   };
   return (
     <div>
+    {albumEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
+      temp={edit} name="Update Albums"/>:<DialogModal open={open} handleClose={handleClose} 
+      temp={create} name="Create Album"/>}
+      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
+      handleDelete={handleDelete} deleteData={deleteData}
+      handleDeleteOpen={handleDeleteOpen} error={error} title="would you like to delete this Album ?"/>:""}
+      {/* <DialogModal open={open} handleClose={handleClose} 
+      temp={temp} name="Create Post"/>} */}
       <Box
         sx={{
           display: "flex",
@@ -105,7 +154,7 @@ function UserAlbums({ commonList }) {
           </div>
 
           <div>
-            <Dialog
+            {/* <Dialog
               open={open}
               onClose={handleClose}
               scroll={scroll}
@@ -205,7 +254,7 @@ function UserAlbums({ commonList }) {
                   </DialogActions>
                 </form>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
           </div>
           {commonList ? (
             <ImageList sx={{ height: 370, padding: "0 8px" }} cols={3} gap={8} key={commonList}>
@@ -222,8 +271,25 @@ function UserAlbums({ commonList }) {
                   }
                   return (
                     <span key={items.id}>
+                    <div style={{position:"relative",top:"6px",zIndex:"1", left:"10px"}}>
+                    <Link to={`post/${items.id}`}>
+              <Button
+                onClick={()=>handleOpenEdit(items)}
+                sx={{ float: "right", padding: "0" }}
+              >
+                <ModeEditIcon color="success"/>
+              </Button>{" "}</Link>
+              <Link to={`todos/${items.id}/delete`}> 
+              <Button
+                
+                onClick={() => handleDeleteOpen(items)}
+                sx={{ float: "right",padding: "0" }}
+              >
+               <DeleteIcon color="error" sx={{position:"relative", zIndex:"1",left:"40px"}}/>
+              </Button></Link>
+              </div>
                     <ImageListItem sx={{ height: "150px" }}>
-                      <span style={{ marginTop: "-55px" }}></span>
+                     
                       <UserAlbumsPhoto
                         albumId={str}
                         key={items.id}
@@ -231,7 +297,7 @@ function UserAlbums({ commonList }) {
                         albumHeight={"100px"}
                         items={items}
                       ></UserAlbumsPhoto>
-                      <ImageListItemBar title={items.title} />
+                      <ImageListItemBar title={items.title} sx={{ width: "130px" }}/>
                     </ImageListItem>
                     </span>
                   );
