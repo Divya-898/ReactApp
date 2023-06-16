@@ -18,7 +18,10 @@ import { Link, useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteComment, updateComment } from "../mainRedux/features/CommentSlice";
+import {
+  deleteComment,
+  updateComment,
+} from "../mainRedux/features/CommentSlice";
 
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
@@ -31,9 +34,9 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 4px
 `
 );
-export default function EditComment({postId, commentObj }) {
-  const navigate = useNavigate()
-  const {loading } = useSelector((state) => state.userComments);
+export default function EditComment({ postId, commentObj }) {
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.userComments);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [openBox, setOpenBox] = React.useState(false);
@@ -70,7 +73,7 @@ export default function EditComment({postId, commentObj }) {
   const handleClickOpen = () => () => {
     setOpen(true);
   };
-  
+
   const handleSubmit = (e, postId) => {
     e.preventDefault();
     let payload = {};
@@ -78,34 +81,33 @@ export default function EditComment({postId, commentObj }) {
     payload["name"] = comment.name;
     payload["body"] = comment.body;
     payload["email"] = comment.email;
-    payload["id"] =commentObj.id
+    payload["id"] = commentObj.id;
     if (comment.name && comment.body && comment.email) {
       setTimeout(() => {
         dispatch(updateComment(payload));
       }, 500);
       setTimeout(() => {
         setDisabled(true);
-      setComment({body:""})
+        setComment({ body: "" });
         setError("Succesfully updated");
       }, 1000);
-      setTimeout(()=>{
+      setTimeout(() => {
         window.location.reload();
-      },3000)
+      }, 3000);
     } else {
       setError("Comment is not updated");
     }
   };
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(()=>{
+      setTimeout(() => {
         dispatch(deleteComment(id));
-      },2000)
-     
-      setTimeout(()=>{
-        setError("Succesfully Deleted")
-      },2000)
-      } 
-     else {
+      }, 2000);
+
+      setTimeout(() => {
+        setError("Succesfully Deleted");
+      }, 2000);
+    } else {
       setError("Comment is not deleted");
     }
   };
@@ -136,27 +138,39 @@ export default function EditComment({postId, commentObj }) {
             }}
           >
             <MenuItem>
-            <Link to={`edit/${commentObj.id}`}>
-              <Button variant="contained" color="success"
-                onClick={handleClickOpen("paper")}
-                sx={{ float: "right",padding:"0" }}
-              >
-                Edit
-              </Button>{" "}
+              <Link to={`edit/${commentObj.id}`}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleClickOpen("paper")}
+                  sx={{ float: "right", padding: "0" }}
+                >
+                  Edit
+                </Button>{" "}
               </Link>
             </MenuItem>
             <MenuItem>
-            <Link to={`delete/${commentObj.id}`}>
-              {" "}
-              <Button variant="contained" color="error" onClick={handleClickOpenDelete} sx={{ float: "right",padding:"0" }}>
-                delete
-              </Button></Link>
+              <Link to={`delete/${commentObj.id}`}>
+                {" "}
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={handleClickOpenDelete}
+                  sx={{ float: "right", padding: "0" }}
+                >
+                  delete
+                </Button>
+              </Link>
             </MenuItem>
           </Menu>
         </div>
 
         <div>
-          <Dialog disableEscapeKeyDown open={openBox} onClose={handleCloseDelete}>
+          <Dialog
+            disableEscapeKeyDown
+            open={openBox}
+            onClose={handleCloseDelete}
+          >
             <DialogTitle>Delete Comment</DialogTitle>
             <Divider />
             <DialogContent>
@@ -168,36 +182,48 @@ export default function EditComment({postId, commentObj }) {
               </Box>
             </DialogContent>
             <Typography>
-              <Divider/>
+              <Divider />
             </Typography>
             <DialogActions>
-            <Box sx={{ width: "80%", margin:"-30px 0px 0px 70px" }}>
-                              {loading ? (
-                                <LinearProgress
-                                  variant="buffer"
-                                  value={progress}
-                                  valueBuffer={buffer}
-                                />
-                              ) : (
-                                ""
-                              )}
-                              <div className="message" style={{position:"relative",width:"100px"}}>
-                              {error==="Succesfully Deleted" ? <p style={{color:"green",width:"150px"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
-                            </div>
-                            </Box>
-                              
-               <Typography sx={{display:"flex", marginTop:"30px"}}>         
-              <Button onClick={handleCloseDelete} variant="contained" color="error" sx={{marginRight:"10px"}}>
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                onClick={(e) => handleDelete(postId.id)}
-                color="success"
-              >
-                Delete
-              </Button>
-              </Typography>   
+              <Box sx={{ width: "80%", margin: "-30px 0px 0px 70px" }}>
+                {loading ? (
+                  <LinearProgress
+                    variant="buffer"
+                    value={progress}
+                    valueBuffer={buffer}
+                  />
+                ) : (
+                  ""
+                )}
+                <div
+                  className="message"
+                  style={{ position: "relative", width: "100px" }}
+                >
+                  {error === "Succesfully Deleted" ? (
+                    <p style={{ color: "green", width: "150px" }}>{error}</p>
+                  ) : (
+                    <p style={{ color: "red" }}>{error}</p>
+                  )}
+                </div>
+              </Box>
+
+              <Typography sx={{ display: "flex", marginTop: "30px" }}>
+                <Button
+                  onClick={handleCloseDelete}
+                  variant="contained"
+                  color="error"
+                  sx={{ marginRight: "10px" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={(e) => handleDelete(postId.id)}
+                  color="success"
+                >
+                  Delete
+                </Button>
+              </Typography>
             </DialogActions>
           </Dialog>
         </div>
@@ -232,7 +258,7 @@ export default function EditComment({postId, commentObj }) {
                   Desc
                 </InputLabel>
                 <StyledTextarea
-                 disabled={disabled}
+                  disabled={disabled}
                   minRows={3}
                   type="text"
                   name="body"
@@ -240,11 +266,17 @@ export default function EditComment({postId, commentObj }) {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-         <div>
-          <Divider sx={{width:'610px',right:"30px",position:"relative",top:"20px"}}/>
-         </div>
+              <div>
+                <Divider
+                  sx={{
+                    width: "610px",
+                    right: "30px",
+                    position: "relative",
+                    top: "20px",
+                  }}
+                />
+              </div>
               <DialogActions dividers={scroll === "paper"}>
-              
                 <Box sx={{ width: "80%", margin: "0px 0px 0px 70px" }}>
                   {loading ? (
                     <LinearProgress

@@ -2,10 +2,9 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
-function DeleteDialog({handleDeleteClose, handleDeleteOpen, error,handleDelete,deleteData,title}) {
-    const { loading } = useSelector((state) => state.app);
-      const [progress, setProgress] = useState(0);
-  const [buffer, setBuffer] = useState(10);
+function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handleDelete,deleteData,title,content}) {
+      const [progress] = useState(0);
+  const [buffer] = useState(10);
   return (
     <div>
           <Dialog
@@ -18,11 +17,11 @@ function DeleteDialog({handleDeleteClose, handleDeleteOpen, error,handleDelete,d
               },
             }}
           >
-            <DialogTitle>Delete Todos</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
             <Divider />
             <DialogContent>
               <Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
-                <Typography> {title} </Typography>
+                <Typography> {content} </Typography>
               </Box>
             </DialogContent>
             <Typography>

@@ -1,15 +1,9 @@
 import { Box, Button, DialogActions, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
 import React, { useState } from 'react'
 import { styled } from "@mui/material/styles";
-import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-  import MoreVertIcon from "@mui/icons-material/MoreVert";
-  import { useDispatch } from "react-redux";
-import { updatePost } from '../mainRedux/features/PostSlice';
-import { updateComment } from '../mainRedux/features/CommentSlice';
-import { updateAlbums } from '../mainRedux/features/AlbumSlice';
-import { deletePhotos, updatePhotos } from '../mainRedux/features/PhotoSlice';
- 
+import { useDispatch } from "react-redux";
+import { updatePhotos } from '../mainRedux/features/PhotoSlice';
 const StyledTextarea = styled(TextareaAutosize)(
     ({ theme }) => `
     width: 320px;
@@ -22,23 +16,15 @@ const StyledTextarea = styled(TextareaAutosize)(
   `
   );
 function PhotoEdit({photoEdit,handleClose}) {
-    const navigate = useNavigate();
     const {loading } = useSelector((state) => state.userPosts);
     const dispatch = useDispatch();
-    const { userId } = useParams();
-    const [open, setOpen] = React.useState(false);
-    const [openBox, setOpenBox] = React.useState(false);
     const [scroll, setScroll] = React.useState("paper");
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
     const [error, setError] = useState("");
     const [photo, setPhoto] = useState(photoEdit);
     const [disabled, setDisabled] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const menuOpen = Boolean(anchorEl);
-    const handleClickOpen = (scrollType) => () => {
-        setOpen(true);
-      };
+   
       const handleSubmit = (e, id) => {
         e.preventDefault();
         let payload = {};

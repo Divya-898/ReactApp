@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -12,19 +11,7 @@ import { red } from "@mui/material/colors";
 import UserName from "./UserName";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-
-import {
-  Button,
-  Container,
-  Divider,
-  InputLabel,
-  LinearProgress,
-} from "@mui/material";
+import { Button, Container } from "@mui/material";
 import CommentPost from "./Comments";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Profile from "./Profile";
@@ -33,33 +20,17 @@ import UserAlbums from "./UserAlbums";
 import UserPhoto from "./UserPhoto";
 import PrimarySearchAppBar from "./Navbar";
 import UserTodos from "./Todos1";
-import EditPost from "./EditPost";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, deletePost, showPost } from "../mainRedux/features/PostSlice";
 import { showUser } from "../mainRedux/features/UserSlice";
 import { showPhotos } from "../mainRedux/features/PhotoSlice";
 import { showAlbums } from "../mainRedux/features/AlbumSlice";
-import { useForm } from "react-hook-form";
-import PostEditForm from "./PostCreateForm";
 import DialogModal from "./SucDialog";
 import PostCreateForm from "./PostCreateForm";
 import PostEditForm2 from "./PostEditForm2";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteDialog from "./DeleteDialog";
-const StyledTextarea = styled(TextareaAutosize)(
-  ({ theme }) => `
-  width: 320px;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5;
-  margin:10px;
-  border-radius: 4px
-`
-);
-
+import { deletePost, showPost } from "../mainRedux/features/PostSlice";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -73,59 +44,54 @@ const ExpandMore = styled((props) => {
 function User() {
   const navigate = useNavigate();
   const { userId } = useParams();
-  const { register, reset } = useForm()
-  const { user} = useSelector((state) => state.userIntro);
-  const { post, loading } = useSelector((state) => state.userPosts);
+  const { user } = useSelector((state) => state.userIntro);
+  const [commonList, setCommonList] = useState("");
+  const [common, setCommonPh] = useState("");
+  const [com, setCom] = useState();
+  const { loading } = useSelector((state) => state.userPosts);
   const [expanded, setExpanded] = useState(false);
   const [error, setError] = useState("");
   const { userPosts } = useSelector((state) => state.userPosts);
   const { photos } = useSelector((state) => state.userPhotos);
   const { albums } = useSelector((state) => state.userAlbums);
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const[postEdit, setPostEdit] = useState();
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [postEdit, setPostEdit] = useState();
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deleteData, setDeleteData]= useState(false)
-  // const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
-  const handleDeleteOpen= (data) =>{
+  const [deleteData, setDeleteData] = useState(false);
+
+  const handleDeleteOpen = (data) => {
     setDeleteOpen(true);
     setDeleteData(data);
-  }
-  const handleDeleteClose = ()=>{
+  };
+  const handleDeleteClose = () => {
     setDeleteOpen(false);
-  }
-//edit open
-const handleOpenEdit = (data)=>{
-  setOpenEdit(true);
-  setPostEdit(data);
-  console.log("data",data)
-}
-const handleCloseEdit = (data)=>{
-  setOpenEdit(false);
-  // setPostEdit(data);
-}
-  const handleClickOpen = (scrollType) => () => {
+    navigate(-1)
+  };
+
+  const handleOpenEdit = (data) => {
+    setOpenEdit(true);
+    setPostEdit(data);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+    navigate(-1);
+  };
+  const handleClickOpen = () => () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    navigate(-1);
   };
-  const [progress, setProgress] = useState(0);
-  const [buffer, setBuffer] = useState(10);
-  const [commonList, setCommonList] = useState("");
-  const [common, setCommonPh] = useState("");
-  const [disabled, setDisabled] = useState(false);
-  const [com, setCom] = useState();
-  const [postData, setPostData] = useState({
-    title: "", // required
-    body: "", // required
-  });
-  
-//call edit post
-const temp = (<PostCreateForm handleClose={handleClose}/>)
-const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/> )
+
+  //call edit post
+  const temp = <PostCreateForm handleClose={handleClose} />;
+  const edit = (
+    <PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit} />
+  );
+
   var options = { year: "numeric", month: "long", day: "numeric" };
   const currentDate = new Date();
   const dateFormate = currentDate.toLocaleDateString("en-US", options);
@@ -155,19 +121,15 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [str]);
-
-
-
   useEffect(() => {
     if (userId) {
       dispatch(showUser(userId));
-     
     }
     dispatch(showAlbums(userId));
   }, [dispatch, userId]);
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(showPost(userId));
-  },[])
+  }, []);
 
   useEffect(() => {
     if (photos && albums && photos.length > 0 && albums.length > 0) {
@@ -195,56 +157,49 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
 
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(()=>{
-      dispatch(deletePost(id));
-    },2000)
-    setTimeout(()=>{
-      setError("Succesfully Deleted")
-    },2000)
+      setTimeout(() => {
+        dispatch(deletePost(id));
+      }, 2000);
+      setTimeout(() => {
+        setError("Succesfully Deleted");
+      }, 2000);
     } else {
       setError("Post is not deleted");
     }
   };
 
-
-  // useEffect(() => {
-  //   reset(postData);
-  // }, [postData]);
-  // const handleSubmit = (e, userId) => {
-  //   e.preventDefault();
-  //   let payload = {};
-  //   payload["userId"] = userId;
-  //   payload["title"] = postData.title;
-  //   payload["body"] = postData.body;
-  //   if (postData.body && postData.title) {
-      
-  //     setTimeout(() => {
-  //       dispatch(createPost(payload));
-  //     }, 500);
-  //     setTimeout(() => {
-  //       setDisabled(true);
-  //       setError("Succesfully created");
-  //     }, 1500);
-  //     setTimeout(() => {
-  //       window.location.reload();
-       
-  //     }, 3000);
-  //   }
-  // };
-  // function handleTodosChange(e) {
-  //   setPostData({ ...postData, [e.target.name]: e.target.value });
-  // }
-
-  
   return (
     <>
-   {postEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
-      temp={edit} name="Update Post"/>:<DialogModal open={open} handleClose={handleClose} 
-      temp={temp} name="Create Post"/>}
+      {postEdit ? (
+        <DialogModal
+          open={openEdit}
+          handleClose={handleCloseEdit}
+          temp={edit}
+          name="Update Post"
+        />
+      ) : (
+        <DialogModal
+          open={open}
+          handleClose={handleClose}
+          temp={temp}
+          name="Create Post"
+        />
+      )}
 
-{deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
-      handleDelete={handleDelete} deleteData={deleteData}
-      handleDeleteOpen={deleteOpen} error={error} title="would you like to delete this Post ?"/>:""}
+      {deleteData ? (
+        <DeleteDialog
+          handleDeleteClose={handleDeleteClose}
+          loading={loading}
+          handleDelete={handleDelete}
+          deleteData={deleteData}
+          handleDeleteOpen={deleteOpen}
+          error={error}
+          content="would you like to delete this Post ?"
+          title="Delete Post"
+        />
+      ) : (
+        ""
+      )}
       {user ? (
         <>
           <PrimarySearchAppBar user={user}></PrimarySearchAppBar>
@@ -253,15 +208,7 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
             style={{ maxWidth: "inherit", backgroundColor: "#f0f2f5" }}
           >
             <Container style={{ display: "flex", width: "999px" }}>
-              <Container
-                style={{
-                  height: "470px",
-                  margin: "10px 0",
-                  padding: "10px 15px",
-                  "flexBasis": "38%",
-                  "marginRight": "40px",
-                }}
-              >
+              <Container className="userAddress">
                 {user && user.address && user.company ? (
                   <UserIntro user={user}></UserIntro>
                 ) : (
@@ -269,11 +216,11 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
                 )}
                 <UserAlbums commonList={commonList}></UserAlbums>
                 <UserTodos></UserTodos>
-                {/* <UserPhoto
+                <UserPhoto
                   photos={photos}
                   albums={albums}
                   sx={{ borderRadius: "0px" }}
-                ></UserPhoto> */}
+                ></UserPhoto>
               </Container>
 
               <div className="cardWrapper">
@@ -296,250 +243,124 @@ const edit = (<PostEditForm2 postEdit={postEdit} handleClose={handleCloseEdit}/>
                       )
                     }
                   />
-                  <Link to={`post`} style={{width:"100%"}}>
-                  <div style={{width:"100%"}}>
-                  <input
-                    className="commentInput"
-                    type="text"
-                    placeholder="What's on you mind?"
-                    onClick={handleClickOpen("paper")}
-                  />
-                  </div>
+                  <Link to={`post`} style={{ width: "100%" }}>
+                    <div style={{ width: "100%" }}>
+                      <input
+                        className="commentInput"
+                        type="text"
+                        placeholder="What's on you mind?"
+                        onClick={handleClickOpen("paper")}
+                      />
+                    </div>
                   </Link>
-                  {/* <div>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      scroll={scroll}
-                      aria-labelledby="scroll-dialog-title"
-                      aria-describedby="scroll-dialog-description"
-                      PaperProps={{
-                        sx: {
-                          width: "50%",
-                          maxHeight: 350,
-                        },
-                      }}
-                    >
-                      <DialogTitle
-                        id="scroll-dialog-title"
-                        sx={{ color: "black" }}
-                      >
-                        Create Post
-                      </DialogTitle>
-                      <DialogContent dividers={scroll === "paper"}>
-                        <form
-                          className="login-form"
-                          onSubmit={(e) => handleSubmit(e, userId)}
-                        >
-                          <div style={{ display: "flex" }}>
-                            <InputLabel
-                              sx={{
-                                padding: "8px",
-                                margin: "5px",
-                              }}
-                            >
-                              Title
-                            </InputLabel>
-                            <StyledTextarea
-                              disabled={disabled}
-                              type="text"
-                              name="title"
-                              {...register("title")}
-                              onChange={(e) => handleTodosChange(e)}
-                            />
-                          </div>
-
-                          <div style={{ display: "flex" }}>
-                            <InputLabel
-                              sx={{
-                                padding: "8px",
-                                margin: "5px 0px 0px 1px",
-                              }}
-                            >
-                              Desc
-                            </InputLabel>
-                            <StyledTextarea
-                              disabled={disabled}
-                              minRows={3}
-                              type="text"
-                              name="body"
-                              {...register("body")}
-                              onChange={(e) => handleTodosChange(e)}
-                            />
-                          </div>
-                          <div>
-                            <Divider
-                              sx={{
-                                width: "610px",
-                                right: "30px",
-                                position: "relative",
-                                top: "20px",
-                              }}
-                            />
-                          </div>
-                          <DialogActions dividers={scroll === "paper"}>
-                          <Box
-                          sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}
-                        >
-                          {loading ? (
-                            <LinearProgress
-                              variant="buffer"
-                              value={progress}
-                              valueBuffer={buffer}
-                            />
-                          ) : (
-                            ""
-                          )}
-                              <div
-                                className="message"
-                                style={{ position: "relative", left: "80px" }}
-                              >
-                                {error === "Succesfully created" ? (
-                              <p style={{ color: "green" }}>{error}</p>
-                            ) : (
-                              <p style={{ color: "red" }}>{error}</p>
-                            )}
-                              </div>
-                            </Box>
-                            <div
-                              style={{
-                                margin: "40px 0px 0px 0px",
-                                display: "flex",
-                              }}
-                            >
-                              <Button
-                                onClick={handleClose}
-                                color="error"
-                                variant="contained"
-                                sx={{ marginRight: "10px" }}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                type="submit"
-                                color="success"
-                                variant="contained"
-                                onClick={() =>
-                              reset({
-                                title: "",
-                                body: "",
-                              })
-                            }
-                              >
-                                Create
-                              </Button>
-                            </div>
-                          </DialogActions>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
-                  </div> */}
                 </Card>
                 {userPosts &&
                   userPosts.map((items) => (
-                    
-                      <Card
-                        sx={{
-                          maxWidth: 554,
-                          marginBottom: "15px",
-                          marginLeft: "40px",
-                          backgroundColor: "#ffffff",
-                          borderRadius: "10px",
+                    <Card
+                      sx={{
+                        maxWidth: 554,
+                        marginBottom: "15px",
+                        marginLeft: "40px",
+                        backgroundColor: "#ffffff",
+                        borderRadius: "10px",
+                      }}
+                      key={items.id}
+                    >
+                      <div
+                        style={{
+                          position: "relative",
+                          top: "10px",
+                          left: "10px",
                         }}
-                        key={items.id}
                       >
-                      <div style={{position:"relative", top:"10px", left:"10px"}}>
-                      <div>
-                      <Link to={`post/${items.id}`}>
-              <Button
-                onClick={()=>handleOpenEdit(items)}
-                sx={{ float: "right", padding: "0" }}
-              >
-                <ModeEditIcon  color="success"/>
-              </Button>{" "}</Link>
-              </div>
-              <div style={{marginLeft:"40px"}}>
-              <Link to={`todos/${items.id}/delete`}> 
-              {/* <Button
-                
-                onClick={() => handleDeleteOpen(items)}
-                sx={{ '&:hover': {
-        background: 'none',
-    },float: "right", padding: "0", position:"relative",left:"40px"}}
-              > */}
-               <DeleteIcon color="error"  onClick={() => handleDeleteOpen(items)} sx={{float: "right", padding: "0", position:"relative",left:"20px"}}/>
-              {/* </Button> */}
-              </Link>
-              </div>
-              </div>
-                        {/* <EditPost postId={items}></EditPost> */}
-                        <CardHeader
-                          sx={{ padding: "16px 9px 0px" }}
-                          avatar={
-                            <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-                              <p>{UserName(user.name)}</p>
-                            </Avatar>
-                          }
-                          action={
-                            <IconButton aria-label="settings"></IconButton>
-                          }
-                          title={user.name}
-                          subheader={dateFormate}
-                        />
-                        <CardContent>
-                          <Typography variant="body2">
-                            <b>
-                              {/* {items.title} */}
-                              {items.title != null
-                                ? items.title.charAt(0).toUpperCase() +
-                                  items.title.slice(1).toLowerCase()
-                                : ""}
-                            </b>
-                          </Typography>
-                          <Typography variant="body2">
-                            {items.body != null
-                              ? items.body.charAt(0).toUpperCase() +
-                                items.body.slice(1).toLowerCase()
-                              : ""}
-                          </Typography>
-                        </CardContent>
-
                         <div>
-                          {commonList ? (
-                            <img
-                              src={commonList[0].photos[0].thumbnailUrl}
-                              alt=""
-                              width="550px"
-                            ></img>
-                          ) : (
-                            ""
-                          )}
+                          <Link to={`post/${items.id}`}>
+                            <Button
+                              onClick={() => handleOpenEdit(items)}
+                              sx={{ float: "right", padding: "0" }}
+                            >
+                              <ModeEditIcon color="success" />
+                            </Button>{" "}
+                          </Link>
                         </div>
-                        <CardActions disableSpacing>
-                          <Typography>Comments:</Typography>
-                          <ExpandMore
-                            onClick={() => handleExpandClick(items.id)}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                          >
-                            <ExpandMoreIcon />
-                          </ExpandMore>
-                        </CardActions>
-                        {items.id === com ? (
-                          <Collapse in={items.id === com}>
-                            <CardContent sx={{ padding: "0px" }}>
-                              <CommentPost
-                                postId={items.id}
-                                user={user}
-                                items={items}
-                              ></CommentPost>
-                            </CardContent>
-                          </Collapse>
+                        <div style={{ marginLeft: "40px" }}>
+                          <Link to={`post/${items.id}/delete`}>
+                            <DeleteIcon
+                              color="error"
+                              onClick={() => handleDeleteOpen(items)}
+                              sx={{
+                                float: "right",
+                                padding: "0",
+                                position: "relative",
+                                left: "20px",
+                              }}
+                            />
+                          </Link>
+                        </div>
+                      </div>
+                      <CardHeader
+                        sx={{ padding: "16px 9px 0px" }}
+                        avatar={
+                          <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
+                            <p>{UserName(user.name)}</p>
+                          </Avatar>
+                        }
+                        action={<IconButton aria-label="settings"></IconButton>}
+                        title={user.name}
+                        subheader={dateFormate}
+                      />
+                      <CardContent>
+                        <Typography variant="body2">
+                          <b>
+                            {items.title != null
+                              ? items.title.charAt(0).toUpperCase() +
+                                items.title.slice(1).toLowerCase()
+                              : ""}
+                          </b>
+                        </Typography>
+                        <Typography variant="body2">
+                          {items.body != null
+                            ? items.body.charAt(0).toUpperCase() +
+                              items.body.slice(1).toLowerCase()
+                            : ""}
+                        </Typography>
+                      </CardContent>
+
+                      <div>
+                        {commonList ? (
+                          <img
+                            src={commonList[0].photos[0].thumbnailUrl}
+                            alt=""
+                            width="550px"
+                          ></img>
                         ) : (
                           ""
                         )}
-                      </Card>
-                  
+                      </div>
+                      <CardActions disableSpacing>
+                        <Typography>Comments:</Typography>
+                        <ExpandMore
+                          onClick={() => handleExpandClick(items.id)}
+                          aria-expanded={expanded}
+                          aria-label="show more"
+                        >
+                          <ExpandMoreIcon />
+                        </ExpandMore>
+                      </CardActions>
+                      {items.id === com ? (
+                        <Collapse in={items.id === com}>
+                          <CardContent sx={{ padding: "0px" }}>
+                            <CommentPost
+                              postId={items.id}
+                              user={user}
+                              items={items}
+                            ></CommentPost>
+                          </CardContent>
+                        </Collapse>
+                      ) : (
+                        ""
+                      )}
+                    </Card>
                   ))}
               </div>
             </Container>

@@ -42,8 +42,6 @@ export const updateUser = createAsyncThunk(
     }
   );
 
-//d
-
     const userSlice = createSlice({
         name:"user",
         initialState: {

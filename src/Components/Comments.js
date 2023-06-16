@@ -7,8 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import EditComment from "./EditComments";
+import { Link} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createComment,
@@ -30,26 +29,27 @@ function CommentPost({ postId, user }) {
   const [buffer, setBuffer] = React.useState(10);
   const [error, setError] = useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
-  const[commentEdit, setCommentEdit] = useState();
+  const [commentEdit, setCommentEdit] = useState();
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deleteData, setDeleteData]= useState(false)
-  const handleDeleteOpen= (data) =>{
+  const [deleteData, setDeleteData] = useState(false);
+  const handleDeleteOpen = (data) => {
     setDeleteOpen(true);
     setDeleteData(data);
-  }
-  const handleDeleteClose = ()=>{
+  };
+  const handleDeleteClose = () => {
     setDeleteOpen(false);
-  }
+  };
 
-  const handleOpenEdit = (data)=>{
+  const handleOpenEdit = (data) => {
     setOpenEdit(true);
     setCommentEdit(data);
-  }
-  const handleCloseEdit = (data)=>{
+  };
+  const handleCloseEdit = (data) => {
     setOpenEdit(false);
-    
-  }
-  const edit = (<EditFormComments commentEdit={commentEdit} handleClose={handleCloseEdit}/> )
+  };
+  const edit = (
+    <EditFormComments commentEdit={commentEdit} handleClose={handleCloseEdit} />
+  );
 
   useEffect(() => {
     dispatch(showComments(postId));
@@ -89,23 +89,41 @@ function CommentPost({ postId, user }) {
 
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(()=>{
-      dispatch(deleteComment(id));
-    },2000)
-    setTimeout(()=>{
-      setError("Succesfully Deleted")
-    },2000)
+      setTimeout(() => {
+        dispatch(deleteComment(id));
+      }, 2000);
+      setTimeout(() => {
+        setError("Succesfully Deleted");
+      }, 2000);
     } else {
       setError("Comment is not deleted");
     }
   };
   return (
     <>
-    {commentEdit ? <DialogModal open={openEdit} handleClose={handleCloseEdit} 
-      temp={edit} name="Update Post"/>:""}
-      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
-      handleDelete={handleDelete} deleteData={deleteData}
-      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this Comment ?"/>:""}
+      {commentEdit ? (
+        <DialogModal
+          open={openEdit}
+          handleClose={handleCloseEdit}
+          temp={edit}
+          name="Update Post"
+        />
+      ) : (
+        ""
+      )}
+      {deleteData ? (
+        <DeleteDialog
+          handleDeleteClose={handleDeleteClose}
+          handleDelete={handleDelete}
+          deleteData={deleteData}
+          handleDeleteOpen={deleteOpen}
+          error={error}
+          content="would you like to delete this Comment ?"
+          title="Delete Comment"
+        />
+      ) : (
+        ""
+      )}
       {userComments
         ? userComments.map((post) => {
             const mySentence = post.name;
@@ -149,38 +167,32 @@ function CommentPost({ postId, user }) {
                             "system-ui, -apple-system, system-ui, sans-serif",
                           fontSize: "12px",
                           lineHeight: "16.08px",
-                          overflowWrap: "break-word",
-                          WebkitFontSmoothing: "antialiased",
                           backgroundColor: "#f0f2f5",
                           boxShadow: "none",
                           padding: "10px 2px 10px 10px",
                           marginBottom: "-8px",
                         }}
                       >
-                        <div style={{  }}>
-                        <Link to={`post/${post.id}`}>
-              <Button
-                // variant="contained"
-                
-                onClick={()=>handleOpenEdit(post)}
-                sx={{ float: "right", padding: "0" }}
-              >
-                {/* Edit */}
-                <ModeEditIcon color="success"/>
-              </Button>{" "}</Link>
-              <Link to={`todos/${post.id}/delete`}> 
-              {/* <Button
-                
-                onClick={() => handleDeleteOpen(post)}
-                sx={{float:"right" , width:"100px"}}
-              > */}
-               <DeleteIcon color="error"  sx={{float:"right",position:"relative",left:"20px" }} onClick={() => handleDeleteOpen(post)}/>
-               </Link>
-              {/* </Button></Link> */}
-                          {/* <EditComment
-                            postId={postId}
-                            commentObj={post}
-                          ></EditComment> */}
+                        <div style={{}}>
+                          <Link to={`comment/${post.id}`}>
+                            <Button
+                              onClick={() => handleOpenEdit(post)}
+                              sx={{ float: "right", padding: "0" }}
+                            >
+                              <ModeEditIcon color="success" />
+                            </Button>{" "}
+                          </Link>
+                          <Link to={`comment/${post.id}/delete`}>
+                            <DeleteIcon
+                              color="error"
+                              sx={{
+                                float: "right",
+                                position: "relative",
+                                left: "20px",
+                              }}
+                              onClick={() => handleDeleteOpen(post)}
+                            />
+                          </Link>
                         </div>
                         <h4 style={{ margin: 0, textAlign: "left" }}>
                           {commentName}

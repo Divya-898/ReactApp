@@ -134,16 +134,20 @@ padding: 15px;
   justify-content: center;
   align-items: center;
 }
-/* .modal {
-  width: 350px;
-  height: 200px;
-  background-color: white;
-  border-radius: 5px;
-} */
-/* .MuiCheckbox-colorPrimary.Mui-checked {
-  color: #e82997 !important;
-  position: relative;
-  } */
+.userAddress{
+  height: 470px;
+  margin: 10px 0;
+  padding: 10px 15px;
+  flex-basis: 38%;
+  margin-right: 40px;
+}
+.mainWrapper{
+  max-width: inherit; 
+  background-color:  #f0f2f5
+}
+
+
+
   .css-6hp17o-MuiList-root-MuiMenu-list {
      list-style: none;
      margin: 0;

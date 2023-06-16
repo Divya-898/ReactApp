@@ -1,13 +1,23 @@
-import { Box, Button, DialogActions, DialogContent, Divider, InputLabel, LinearProgress, TextField, Typography } from '@mui/material'
-import React, { useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
-import { updateUser } from '../mainRedux/features/UserSlice';
-import { useDispatch } from 'react-redux';
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  Divider,
+  InputLabel,
+  LinearProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useRef, useState } from "react";
+import { updateUser } from "../mainRedux/features/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-function UserEdit({user}) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const cityref = useRef("");
+function UserEdit({ user, handleClose }) {
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.userIntro);
+  const cityref = useRef("");
   const streetref = useRef("");
   const emailref = useRef("");
   const nameref = useRef("");
@@ -19,22 +29,13 @@ function UserEdit({user}) {
   const catchPhraseref = useRef("");
   const bsref = useRef("");
   const { userId } = useParams();
-  const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [values, setValue] = useState(user);
-  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
-    navigate(-1)
-  };
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-  };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("postId", userId);
@@ -72,313 +73,310 @@ function UserEdit({user}) {
 
   return (
     <div>
-       <DialogContent>
-                <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Title
-                    </InputLabel>
-                    <div style={{ marginLeft: "64px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                          marginLeft: "5px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={nameref}
-                        defaultValue={values.name}
-                      />
-                    </div>
-                  </div>
+        <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Title
+            </InputLabel>
+            <div style={{ marginLeft: "64px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                  marginLeft: "5px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={nameref}
+                defaultValue={values.name}
+              />
+            </div>
+          </div>
 
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Email
-                    </InputLabel>
-                    <div style={{ marginLeft: "58px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={emailref}
-                        defaultValue={values.email}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Street
-                    </InputLabel>
-                    <div style={{ marginLeft: "55px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputRef={streetref}
-                        defaultValue={values.address.street}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      City
-                    </InputLabel>
-                    <div style={{ marginLeft: "70px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={cityref}
-                        defaultValue={values.address.city}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Suite
-                    </InputLabel>
-                    {/* <input type="text" name="body"
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Email
+            </InputLabel>
+            <div style={{ marginLeft: "58px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={emailref}
+                defaultValue={values.email}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Street
+            </InputLabel>
+            <div style={{ marginLeft: "55px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputRef={streetref}
+                defaultValue={values.address.street}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              City
+            </InputLabel>
+            <div style={{ marginLeft: "70px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={cityref}
+                defaultValue={values.address.city}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Suite
+            </InputLabel>
+            {/* <input type="text" name="body"
               value={values.body}
               onChange={e => setValue(e.target.value)}/> */}
-                    <div style={{ marginLeft: "60px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={suiteref}
-                        defaultValue={values.address.suite}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Zipcode
-                    </InputLabel>
-                    <div style={{ marginLeft: "38px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={zipcoderef}
-                        defaultValue={values.address.zipcode}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Catch-Phrase
-                    </InputLabel>
-                    <div style={{ marginLeft: "-3px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={catchPhraseref}
-                        defaultValue={values.company.catchPhrase}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Name
-                    </InputLabel>
-                    <div style={{ marginLeft: "53px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={comNameref}
-                        defaultValue={values.company.name}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Services
-                    </InputLabel>
-                    <div style={{ marginLeft: "33px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={bsref}
-                        defaultValue={values.company.bs}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Phone
-                    </InputLabel>
-                    <div style={{ marginLeft: "50px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={phoneref}
-                        defaultValue={values.phone}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <InputLabel
-                      sx={{
-                        padding: "10px",
-                      }}
-                    >
-                      Website
-                    </InputLabel>
-                    <div style={{ marginLeft: "40px" }}>
-                      <TextField
-                        disabled={disabled}
-                        sx={{
-                          paddingTop: "10px",
-                        }}
-                        InputProps={{ sx: { height: 25 } }}
-                        type="text"
-                        inputProps={{ readOnly: false }}
-                        inputRef={websiteref}
-                        defaultValue={values.website}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Divider
-                      sx={{
-                        width: "650px",
-                        // right: "30px",
-                        position: "relative",
-                        top: "10px",
-                      }}
-                    />
-                  </div>
-                  <DialogActions dividers={scroll === "paper"}>
-                    <Box sx={{ width: "80%", margin: "-10px 0px 20px 70px" }}>
-                      {loading ? (
-                        <LinearProgress
-                          variant="buffer"
-                          value={progress}
-                          valueBuffer={buffer}
-                        />
-                      ) : (
-                        ""
-                      )}
-                      <div
-                        className="message"
-                        style={{ position: "relative", left: "80px" }}
-                      >
-                        {error === "Succesfully created" ? (
-                          <p style={{ color: "green" }}>{error}</p>
-                        ) : (
-                          <p style={{ color: "red" }}>{error}</p>
-                        )}
-                      </div>
-                    </Box>
-                    <Typography
-                      sx={{
-                        paddingTop: "10px",
-                        display: "flex",
-                        // margin: "20px",
-                      }}
-                    >
-                      <Button
-                        onClick={handleClose}
-                        color="error"
-                        sx={{ marginRight: "10px" }}
-                        variant="contained"
-                      >
-                        Cancel
-                      </Button>
-                      <Button type="submit" color="success" variant="contained">
-                        Update
-                      </Button>
-                    </Typography>
-                  </DialogActions>
-                </form>
-              </DialogContent>
+            <div style={{ marginLeft: "60px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={suiteref}
+                defaultValue={values.address.suite}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Zipcode
+            </InputLabel>
+            <div style={{ marginLeft: "38px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={zipcoderef}
+                defaultValue={values.address.zipcode}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Catch-Phrase
+            </InputLabel>
+            <div style={{ marginLeft: "-3px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={catchPhraseref}
+                defaultValue={values.company.catchPhrase}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Name
+            </InputLabel>
+            <div style={{ marginLeft: "53px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={comNameref}
+                defaultValue={values.company.name}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Services
+            </InputLabel>
+            <div style={{ marginLeft: "33px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={bsref}
+                defaultValue={values.company.bs}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Phone
+            </InputLabel>
+            <div style={{ marginLeft: "50px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={phoneref}
+                defaultValue={values.phone}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex" }}>
+            <InputLabel
+              sx={{
+                padding: "10px",
+              }}
+            >
+              Website
+            </InputLabel>
+            <div style={{ marginLeft: "40px" }}>
+              <TextField
+                disabled={disabled}
+                sx={{
+                  paddingTop: "10px",
+                }}
+                InputProps={{ sx: { height: 25 } }}
+                type="text"
+                inputProps={{ readOnly: false }}
+                inputRef={websiteref}
+                defaultValue={values.website}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          </div>
+          <div>
+            <Divider
+              sx={{
+                width: "650px",
+                right: "30px",
+                position: "relative",
+                top: "10px",
+              }}
+            />
+          </div>
+          <DialogActions dividers={scroll === "paper"}>
+            <Box sx={{ width: "80%", margin: "-10px 0px 20px 70px" }}>
+              {loading ? (
+                <LinearProgress
+                  variant="buffer"
+                  value={progress}
+                  valueBuffer={buffer}
+                />
+              ) : (
+                ""
+              )}
+              <div
+                className="message"
+                style={{ position: "relative", left: "80px" }}
+              >
+                {error === "Succesfully created" ? (
+                  <p style={{ color: "green" }}>{error}</p>
+                ) : (
+                  <p style={{ color: "red" }}>{error}</p>
+                )}
+              </div>
+            </Box>
+            <Typography
+              sx={{
+                paddingTop: "10px",
+                display: "flex",
+              }}
+            >
+              <Button
+                onClick={handleClose}
+                color="error"
+                sx={{ marginRight: "10px" }}
+                variant="contained"
+              >
+                Cancel
+              </Button>
+              <Button type="submit" color="success" variant="contained">
+                Update
+              </Button>
+            </Typography>
+          </DialogActions>
+        </form>
     </div>
-  )
+  );
 }
 
-export default UserEdit
+export default UserEdit;

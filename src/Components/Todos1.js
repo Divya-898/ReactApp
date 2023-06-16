@@ -20,31 +20,14 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useEffect, useRef, useState } from "react";
-
-import EditTodos from "./EditTodos";
+import React, { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { createTodo, deleteTodo, showTodo, updateTodo } from "../mainRedux/features/TodoSlice";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { deleteTodo, showTodo } from "../mainRedux/features/TodoSlice";
 import DialogModal from "./SucDialog";
-import { compose } from "redux";
-import Form from "./EditFormTodos";
 import EditFormTodos from "./EditFormTodos";
 import CreateFormTodos from "./CreateFormTodos";
 import DeleteDialog from "./DeleteDialog";
-const StyledTextarea = styled(TextareaAutosize)(
-  ({ theme }) => `
-  width: 320px;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5;
-  margin:10px;
-  border-radius: 4px
-`
-);
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -55,59 +38,45 @@ const Item = styled(Paper)(({ theme }) => ({
 function UserTodos() {
   const navigate = useNavigate();
   const { userId } = useParams();
-  const { todos, loading } = useSelector((state) => state.app);
+  const { todos } = useSelector((state) => state.app);
   const dispatch = useDispatch();
-  const { register, reset } = useForm();
   const [checked, setChecked] = React.useState(false);
-  const [progress, setProgress] = useState(0);
-  const [buffer, setBuffer] = useState(10);
-  const [disabled, setDisabled] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [openBox, setOpenBox] = React.useState(false);
   const [editTodo, setEditTodo] = useState();
   const [open, setOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deleteData, setDeleteData]= useState(false)
-  const menuOpen = Boolean(anchorEl);
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [deleteData, setDeleteData] = useState(false);
+
+  //delete handler
+  const handleDeleteOpen = (data) => {
+    setDeleteOpen(true);
+    setDeleteData(data);
   };
-//delete handler
-const handleDeleteOpen= (data) =>{
-  setDeleteOpen(true);
-  setDeleteData(data);
-}
-const handleDeleteClose = ()=>{
-  setDeleteOpen(false);
-}
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
   };
 
   const handleClickOpen = (data) => {
     setOpen(true);
-    setEditTodo(data)
+    setEditTodo(data);
   };
- 
+
   const handleCLoseCreate = () => {
     setOpenBox(false);
+    navigate(-1);
   };
-  const [formData, setformData] = useState({
-    title: "", // required
-    completed: "", // required
-  });
-  
-  const handleOpen = () => setOpenBox(true);
+
+  const handleOpen = () => {
+    setOpenBox(true);
+  };
   const handleClose = () => {
     setOpen(false);
-    window.location.reload();
+    navigate(-1);
   };
-  
-  const [scroll, setScroll] = React.useState("paper");
+
   const [error, setError] = useState("");
   const handleChange = (event, data) => {
-    if(data)
-    {
+    if (data) {
       setChecked(event.target.checked);
     }
   };
@@ -120,86 +89,33 @@ const handleDeleteClose = ()=>{
     return true;
   };
 
-  // useEffect(() => {
-  //   reset(formData);
-  // }, [formData]);
-
-  const handleSubmit1 = (e, userId) => {
-    e.preventDefault();
-    let payload = {};
-    payload["userId"] = userId;
-    payload["title"] = formData.title;
-    payload["completed"] = formData.completed;
-    if (formData.title && formData.completed) {
-      setTimeout(() => {
-        dispatch(createTodo(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        setError("Succesfully created");
-      }, 1000);
-      setTimeout(()=>{
-        window.location.reload();
-      },3000)
-    }
-  };
-
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(()=>{
+      setTimeout(() => {
         dispatch(deleteTodo(id));
-      },2000)
-     
-      setTimeout(()=>{
-        setError("Succesfully Deleted")
-      },1000)
-      setTimeout(()=>{
+      }, 2000);
+
+      setTimeout(() => {
+        setError("Succesfully Deleted");
+      }, 1000);
+      setTimeout(() => {
         window.location.reload();
-       
-      },2000)
-      } 
-     else {
+      }, 2000);
+    } else {
       setError("Todos is not deleted");
     }
   };
 
+  const temp = (
+    <EditFormTodos
+      handleClose={handleClose}
+      editTodo={editTodo}
+    ></EditFormTodos>
+  );
 
-  const handleSubmit = (e, id) => {
-    e.preventDefault();
-    let payload = {};
-    payload["userId"] = userId;
-    payload["title"] = editTodo.title;
-    payload["completed"] = (editTodo.completed)
-    payload["id"] = id;
-    console.log(payload)
-    if (editTodo.title && editTodo.completed) {
-      setTimeout(() => {
-        dispatch(updateTodo(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        // setTodos({title:"",completed:""})
-        setError("Succesfully updated");
-      }, 1000);
-      setTimeout(()=>{
-        window.location.reload();
-      },3000)
-    } else {
-      setError("Todo is not updated");
-    }
-  };
-  function handleChange2(e) {
-    setEditTodo({ ...editTodo, [e.target.name]: e.target.value });
-  }
-  function handleTodosChange(e) {
-    setformData({ ...formData, [e.target.name]: e.target.value });
-  }
-
-  const temp = (<EditFormTodos handleClose={handleClose}
-    editTodo={editTodo} handleSubmit={handleSubmit} error={error}  handleChange={handleChange2}></EditFormTodos>)
-
-  const create = (<CreateFormTodos 
-    handleSubmit={handleSubmit1} error={error} handleChange={handleTodosChange}></CreateFormTodos>)
+  const create = (
+    <CreateFormTodos handleClose={handleCLoseCreate}></CreateFormTodos>
+  );
   useEffect(() => {
     dispatch(showTodo(userId));
   }, []);
@@ -212,7 +128,7 @@ const handleDeleteClose = ()=>{
           "& > :not(style)": {
             m: 1,
             width: "422px",
-            maxHeight: 420,
+            maxHeight: 440,
             overflow: "auto",
           },
         }}
@@ -222,323 +138,142 @@ const handleDeleteClose = ()=>{
             <>
               <div style={{ display: "flex" }}>
                 <h1 style={{ padding: "10px", width: "390px" }}>Todos</h1>
-                
-              <Link to={`todos`}>
-                <Button
-                  onClick={handleOpen}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "#FFF",
-                    },
-                  }}
-                >
-                <AddCircleIcon/>
-                
-                </Button>
+                <Link to={`todos`}>
+                  <Button
+                    onClick={handleOpen}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#FFF",
+                      },
+                    }}
+                  >
+                    <AddCircleIcon sx={{ marginTop: "30px" }} />
+                  </Button>
                 </Link>
               </div>
-              <div>
-                {/* <Dialog
-                  open={open}
-                  scroll={scroll}
-                  aria-describedby="scroll-dialog-description"
-                  PaperProps={{
-                    sx: {
-                      width: "50%",
-                      maxHeight: 400,
-                    },
-                  }}
-                  onClose={handleClose}
-                >
-                  <div
-                    className="fixed inset-0 bg-black/30"
-                    aria-hidden="true"
-                  />
-                  <DialogTitle id="scroll-dialog-title" sx={{ color: "black" }}>
-                    Create Todos
-                  </DialogTitle>
-                  <DialogContent dividers={scroll === "paper"}>
-                    <form
-                      className="login-form"
-                      onSubmit={(e) => handleSubmit(e, userId)}
-                    >
-                      <div style={{ display: "flex" }}>
-                        <InputLabel
-                          sx={{
-                            padding: "8px",
-                            margin: "5px 15px 0px 0px",
-                          }}
-                        >
-                          Title
-                        </InputLabel>
-                        <StyledTextarea
-                          disabled={disabled}
-                          minRows={3}
-                          type="text"
-                          name="title"
-                          {...register("title")}
-                          onChange={(e) => handleTodosChange(e)}
-                        />
-                      </div>
-
-                      <div style={{ display: "flex" }}>
-                        <InputLabel
-                          sx={{
-                            padding: "8px",
-                            margin: "5px 0px 0px 1px",
-                          }}
-                        >
-                          Status
-                        </InputLabel>
-                        <StyledTextarea
-                          disabled={disabled}
-                          type="text"
-                          name="completed"
-                          {...register("completed")}
-                          onChange={(e) => handleTodosChange(e)}
-                        />
-                      </div>
-                      <div>
-                        <Divider
-                          sx={{
-                            width: "610px",
-                            right: "30px",
-                            position: "relative",
-                            top: "20px",
-                          }}
-                        />
-                      </div>
-                      <DialogActions dividers={true ? 1 : undefined}>
-                        <Box
-                          sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}
-                        >
-                          {loading ? (
-                            <LinearProgress
-                              variant="buffer"
-                              value={progress}
-                              valueBuffer={buffer}
-                            />
-                          ) : (
-                            ""
-                          )}
-                          <div
-                            className="message"
-                            style={{
-                              position: "relative",
-                              left: "80px",
-                              color: "red",
-                            }}
-                          >
-                            {error === "Succesfully created" ? (
-                              <p style={{ color: "green" }}>{error}</p>
-                            ) : (
-                              <p style={{ color: "red" }}>{error}</p>
-                            )}
-                          </div>
-                        </Box>
-
-                        <div
-                          style={{
-                            margin: "40px 0px 0px 0px",
-                            display: "flex",
-                          }}
-                        >
-                          <Button
-                            onClick={handleClose}
-                            color="error"
-                            variant="contained"
-                            sx={{ marginRight: "10px" }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            type="submit"
-                            color="success"
-                            variant="contained"
-                            onClick={() =>
-                              reset({
-                                title: "",
-                                completed: "",
-                              })
-                            }
-                          >
-                            Create
-                          </Button>
-                        </div>
-                      </DialogActions>
-                    </form>
-                  </DialogContent>
-                </Dialog> */}
-              </div>
-
+              <div></div>
               {todos.map((data1) => (
-                <> 
-                <Grid container columnSpacing={{ sm: 1 }} key={data1.id}>
-                  <Grid>
-                    <Item
+                <>
+                  <Grid container columnSpacing={{ sm: 1 }} key={data1.id}>
+                    <Grid>
+                      <Item
+                        sx={{
+                          boxShadow: "none",
+                          textAlign: "start",
+                          width: "250px",
+                          padding: "10px 0px 0px 20px",
+                        }}
+                      >
+                        {data1.title}
+                      </Item>
+                    </Grid>
+                    <Grid>
+                      <Item
+                        sx={{
+                          boxShadow: "none",
+                        }}
+                      >
+                        <Checkbox
+                          disableTouchRipple
+                          sx={{ "&:hover": { backgroundColor: "transparent" } }}
+                          checked={
+                            IsParsable(data1.completed)
+                              ? JSON.parse(data1.completed)
+                              : ""
+                          }
+                          onChange={(e) => handleChange(e, data1.completed)}
+                        />
+                      </Item>
+                    </Grid>
+                    <Grid
                       sx={{
                         boxShadow: "none",
-                        textAlign: "start",
-                        width: "250px",
-                        padding: "10px 0px 0px 20px",
+                        width: "0px",
                       }}
                     >
-                      {data1.title}
-                    </Item>
-                  </Grid>
-                  <Grid>
-                    <Item
+                      <Item
+                        sx={{
+                          boxShadow: "none",
+                        }}
+                      >
+                        <div style={{ marginLeft: "20px" }}>
+                          <Link to={`todos/${data1.id}`}>
+                            <Button
+                              onClick={() => handleClickOpen(data1)}
+                              sx={{
+                                float: "right",
+                                padding: "8px 0px 0px 0px",
+                                boxShadow: "none",
+                                position: "relative",
+                                left: "30px",
+                              }}
+                            >
+                              <ModeEditIcon sx={{}} />
+                            </Button>{" "}
+                          </Link>
+                        </div>
+                      </Item>
+                    </Grid>
+                    <Grid
                       sx={{
                         boxShadow: "none",
+                        marginLeft: "22px",
                       }}
                     >
-                      <Checkbox
-                        disableTouchRipple
-                        sx={{ "&:hover": { backgroundColor: "transparent" } }}
-                        checked={ IsParsable(data1.completed)
-                            ? (JSON.parse(data1.completed))
-                            : ""}
-                        onChange={(e) => handleChange(e, data1.completed)}
-                      />
-                    </Item>
+                      <Item
+                        sx={{
+                          boxShadow: "none",
+                        }}
+                      >
+                        <Link to={`todos/${data1.id}/delete`}>
+                          <Button
+                            onClick={() => handleDeleteOpen(data1)}
+                            sx={{}}
+                          >
+                            <DeleteIcon color="error" />
+                          </Button>
+                        </Link>
+                      </Item>
+                    </Grid>
                   </Grid>
-                  <Grid sx={{
-                        boxShadow: "none",
-                        width:"0px"
-                      }}>
-                    <Item
-                      sx={{
-                        boxShadow: "none",
-                        
-                      }}
-                    >
-                    
-          {/* <Button
-            id="basic-button"
-            aria-controls={menuOpen ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={menuOpen ? "true" : undefined}
-            onClick={handleClickMenu}
-          >
-            <div>
-              <MoreVertIcon sx={{ float: "right" }} />
-            </div>
-          </Button> */}
-
-          {/* <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleCloseMenu}
-            sx={{ width: "120px", height: "40" }}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          > */}
-            {/* <MenuItem> */}
-            <div style={{marginLeft:"20px"}}>
-            <Link to={`todos/${data1.id}`}>
-              <Button
-                
-                onClick={() => handleClickOpen(data1)}
-                sx={{ float: "right", padding: "8px 0px 0px 0px" ,boxShadow:"none", position:"relative",left:"30px"}}
-              >
-               <ModeEditIcon sx={{}}/>
-              </Button>{" "} </Link>
-              </div>
-              </Item></Grid>
-              <Grid sx={{
-                        boxShadow: "none",
-                        // width:"40px",
-                        marginLeft:"22px"
-                      }}><Item sx={{
-                        boxShadow: "none",
-                        
-                      }}>
-              <Link to={`todos/${data1.id}/delete`}> 
-              <Button
-                
-                onClick={() => handleDeleteOpen(data1)}
-                sx={{  }}
-              >
-               <DeleteIcon color="error"/>
-              </Button></Link>
-              
-             
-            {/* </MenuItem> */}
-            {/* <MenuItem>  */}   
-            
-            {/* </MenuItem> */}
-          {/* </Menu> */} 
-       
-
-                      {/* <EditTodos data={data1}></EditTodos> */}
-                    </Item>
-                    {/* <Item sx={{
-                        boxShadow: "none",
-                        padding:"0px",
-
-                      }} >
-                   
-                    </Item> */}
-                  </Grid>
-                </Grid>
                 </>
               ))}
-              {/* </Grid> */}
             </>
           ) : (
             ""
           )}
         </Paper>
-        {editTodo ? <DialogModal open={open} handleClose={handleClose} 
-      temp={temp} name="Update Todos"></DialogModal>:<DialogModal open={openBox} 
-      handleClose={handleCLoseCreate}  temp={create} name="Create Todos"></DialogModal>}
-      {/* <DialogModal open={handleOpen} handleClose={handleClose} scroll={scroll} 
-      temp={create}></DialogModal>} */}
+        {editTodo ? (
+          <DialogModal
+            open={open}
+            handleClose={handleClose}
+            temp={temp}
+            name="Update Todos"
+          ></DialogModal>
+        ) : (
+          <DialogModal
+            open={openBox}
+            handleClose={handleCLoseCreate}
+            temp={create}
+            name="Create Todos"
+          ></DialogModal>
+        )}
       </Box>
-      {deleteData ? <DeleteDialog handleDeleteClose={handleDeleteClose} 
-      handleDelete={handleDelete} deleteData={deleteData}
-      handleDeleteOpen={handleDeleteClose} error={error} title="would you like to delete this todo ?"/>:""}
+      {deleteData ? (
+        <DeleteDialog
+          handleDeleteClose={handleDeleteClose}
+          handleDelete={handleDelete}
+          deleteData={deleteData}
+          handleDeleteOpen={deleteOpen}
+          error={error}
+          content="would you like to delete this todo ?"
+          title="Delete Todo"
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
 
 export default UserTodos;
-//get api for the post
-// const getData = useCallback(() => {
-//   fetch(`http://localhost:3500/todos?userId=${userId}`)
-//     .then((response) => response.json())
-//     .then((result) => setTodos(result))
-//     .catch((error) => console.log("error", error));
-//   //console.log(match)
-// });
-
-//post api for post request
-// setTimeout(() => {
-//   setLoading1(false);
-// }, 5000);
-
-// setLoading(true);
-//   fetch(`http://localhost:3500/todos`, {
-//     method: "POST",
-//     headers: {'Content-Type' : 'application/json'},
-//     body: JSON.stringify(payload),
-//   })
-//     .then((res) => res.json())
-//     setDisabled(true)
-//     // setTimeout(() => {
-//     //   setLoading(true);
-
-//     // }, 1000);
-//     setTimeout(() => {
-//       // setLoading(false);
-//       setError("Successfully created");
-
-//       window.location.reload();
-//     }, 2000);
-// }
-// else{
-//   setError("Todo is not Submitted")
-// }
-// .then((data) => setFormData(data));
