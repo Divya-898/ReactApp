@@ -15,10 +15,10 @@ import {
 } from "@mui/material";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteAlbums } from "../mainRedux/features/AlbumSlice";
 import EditAlbums from "./EditAlbums";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 import DeleteDialog from "./DeleteDialog";
 import CreateAlbum from "./CreateAlbum";
 
@@ -30,8 +30,9 @@ function UserAlbums({ commonList }) {
   const handleClose = () => {
     setOpen(false);
     navigate(-1);
+    window.location.reload();
   };
-  const [error, setError] = useState("");
+  const {loading,error } = useSelector((state) => state.userPosts);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [albumEdit, setAlbumEdit] = useState();
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -42,7 +43,8 @@ function UserAlbums({ commonList }) {
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
-    navigate(-1)
+    navigate(-1);
+    window.location.reload();
   };
 
   const handleOpenEdit = (data) => {
@@ -51,18 +53,12 @@ function UserAlbums({ commonList }) {
   };
   const handleCloseEdit = (data) => {
     setOpenEdit(false);
+    navigate(-1);
+    window.location.reload();
   };
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(() => {
         dispatch(deleteAlbums(id));
-      }, 2000);
-
-      setTimeout(() => {
-        setError("Succesfully Deleted");
-      }, 2000);
-    } else {
-      setError("Album is not deleted");
     }
   };
   const edit = (
@@ -76,14 +72,14 @@ function UserAlbums({ commonList }) {
         <DialogModal
           open={openEdit}
           handleClose={handleCloseEdit}
-          temp={edit}
+          formData={edit}
           name="Update Albums"
         />
       ) : (
         <DialogModal
           open={open}
           handleClose={handleClose}
-          temp={create}
+          formData={create}
           name="Create Album"
         />
       )}

@@ -45,10 +45,9 @@ export const updateUser = createAsyncThunk(
     const userSlice = createSlice({
         name:"user",
         initialState: {
-            user: [],
-            
+            user: [],      
         loading: false,
-        error: null,
+        error: "",
         },
         extraReducers: {
             [showUser.pending]:(state, action)=>{
@@ -69,13 +68,15 @@ export const updateUser = createAsyncThunk(
             [updateUser.fulfilled]:(state, action)=>{
                 state.loading = false;
                 state.user = action.payload;
+                state.error="Succesfully Updated";
                 // state.user=state.user.map((ele)=>
                 // (ele.id === action.payload.id ? action.payload : ele)  
                 // )   
             },
             [updateUser.rejected]:(state, action)=>{
                 state.loading = false;
-                state.user = action.payload
+                state.user = action.payload;
+                state.error="Not Updated";
             },
             
         }

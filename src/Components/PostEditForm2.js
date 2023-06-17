@@ -24,7 +24,7 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 function PostEditForm2({postEdit, handleClose}) {
     const navigate = useNavigate();
-  const {loading } = useSelector((state) => state.userPosts);
+  const {loading,error } = useSelector((state) => state.userPosts);
   const dispatch = useDispatch();
   const { userId } = useParams();
   const [open, setOpen] = React.useState(false);
@@ -32,7 +32,7 @@ function PostEditForm2({postEdit, handleClose}) {
   const [scroll, setScroll] = React.useState("paper");
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [post, setPost] = useState(postEdit);
   const [disabled, setDisabled] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,20 +50,9 @@ function PostEditForm2({postEdit, handleClose}) {
     payload["body"] = post.body;
     payload["title"] = post.title;
     if (post.body && post.title) {
-        setTimeout(() => {
         dispatch(updatePost(payload));
-      }, 500);
-      setTimeout(() => {
         setDisabled(true);
-        setPost({title:"",body:""})
-        setError("Succesfully updated");
-      }, 1000);
-      setTimeout(()=>{
-        window.location.reload();
-      },3000)
-    } else {
-      setError("Post is not updated");
-    }
+        }
   };  
   function handleChange(e) {
     setPost({ ...post, [e.target.name]: e.target.value });
@@ -120,7 +109,7 @@ function PostEditForm2({postEdit, handleClose}) {
                   }}
                 />
               </div>
-              <DialogActions dividers={scroll === "paper"}>
+              <DialogActions dividers={true ? true : undefined}>
                 <Box sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}>
                   {loading ? (
                     <LinearProgress

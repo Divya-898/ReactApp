@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
-function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handleDelete,deleteData,title,content}) {
+function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handleDelete,deleteData,title,content,modalKey}) {
       const [progress] = useState(0);
   const [buffer] = useState(10);
   return (
@@ -42,8 +42,8 @@ function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handle
                   className="message"
                   style={{ position: "relative", width: "100px" }}
                 >
-                  {error === "Succesfully Deleted" ? (
-                    <p style={{ color: "green", width: "150px" }}>{error}</p>
+                  {error === "Successfully Deleted" ? (
+                    <p style={{ color: "green", width: "200px" }}>{error}</p>
                   ) : (
                     <p style={{ color: "red" }}>{error}</p>
                   )}
@@ -59,6 +59,7 @@ function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handle
                 >
                   Cancel
                 </Button>
+                <div key={modalKey}>
                 <Button
                   variant="contained"
                   onClick={(e) => handleDelete(deleteData.id)}
@@ -66,6 +67,7 @@ function DeleteDialog({handleDeleteClose, handleDeleteOpen,loading, error,handle
                 >
                   Delete
                 </Button>
+                </div>
               </Typography>
             </DialogActions>
           </Dialog>

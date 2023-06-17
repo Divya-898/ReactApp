@@ -81,29 +81,28 @@ export const deleteAlbums = createAsyncThunk(
         name:"albums",
         initialState: {
             albums: [],
-            // edit:[],
         loading: false,
-        error: null,
+        error: "",
         },
         extraReducers: {
             [createAlbums.pending]:(state)=>{
                 state.loading = true;
             },
             [createAlbums.fulfilled]:(state, action)=>{
-                state.loading = false;
-                state.albums.push(action.payload)
+              state.loading = false;
+              state.albums.push(action.payload);
+              state.error = "Successfully Created" 
             },
             [createAlbums.rejected]:(state, action)=>{
                 state.loading = false;
-                state.albums = action.payload
+                state.albums = action.payload;
+                state.error = "Not Created"
             },
             [showAlbums.pending]:(state, action)=>{
                 state.loading = true;
             },
             [showAlbums.fulfilled]:(state, action)=>{
-                console.log(action)
                 state.loading = false;
-                // var data = { ...state};
                 state.albums = action.payload
             },
             [showAlbums.rejected]: (state, action) => {
@@ -119,10 +118,12 @@ export const deleteAlbums = createAsyncThunk(
                 state.albums=state.albums.map((ele)=>
                 (ele.id === action.payload.id ? action.payload : ele)  
                 )   
+                state.error = "Successfully Updated"
             },
             [updateAlbums.rejected]:(state, action)=>{
                 state.loading = false;
                 state.albums = action.payload
+                state.error = "Not Updated"
             },
             [deleteAlbums.pending]:(state, action)=>{
               state.loading = true;
@@ -130,11 +131,12 @@ export const deleteAlbums = createAsyncThunk(
             [deleteAlbums.fulfilled]: (state, action) => {
               state.loading = false;
               state.albums =  state.albums.filter((ele)=>ele.id !== action.payload);
-             console.log(state.albums)
+              state.error = "Succesfully Deleted"
             },
             [deleteAlbums.rejected]: (state, action) => {
               state.loading = false;
-              state.error = action.payload;
+              state.error = "Not Deleted"
+                
             },
         }
     })

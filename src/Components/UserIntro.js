@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate} from "react-router-dom";
 import UserEdit from "./UserEdit";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 import { useState } from "react";
 function UserIntro({ user }) {
   const navigate = useNavigate()

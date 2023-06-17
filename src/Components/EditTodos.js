@@ -20,7 +20,7 @@ import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo,updateTodo, } from "../mainRedux/features/TodoSlice";
 import { useForm } from "react-hook-form";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 const StyledTextarea = styled(TextareaAutosize)(
   ({ theme }) => `
   width: 320px;

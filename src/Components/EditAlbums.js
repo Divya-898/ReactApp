@@ -24,19 +24,15 @@ const StyledTextarea = styled(TextareaAutosize)(
   );
 function EditAlbums({albumEdit,handleClose}) {
     const navigate = useNavigate();
-    const {loading } = useSelector((state) => state.userPosts);
+    const {loading,error } = useSelector((state) => state.userAlbums);
     const dispatch = useDispatch();
     const { userId } = useParams();
-    const [open, setOpen] = React.useState(false);
     const [openBox, setOpenBox] = React.useState(false);
     const [scroll, setScroll] = React.useState("paper");
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
-    const [error, setError] = useState("");
     const [album, setAlbum] = useState(albumEdit);
     const [disabled, setDisabled] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const menuOpen = Boolean(anchorEl);
     function handleChange(e) {
         setAlbum({ ...album, [e.target.name]: e.target.value });
       }
@@ -49,20 +45,8 @@ function EditAlbums({albumEdit,handleClose}) {
         payload["completed"] = album.completed;
         payload["id"]=albumEdit.id
         if (album.title) {
-          setTimeout(() => {
             dispatch(updateAlbums(payload));
-          }, 500);
-          setTimeout(() => {
-            setDisabled(true);
-            setAlbum({title:"",})
-            setError("Succesfully updated");
-          }, 1000);
-          setTimeout(()=>{
-            window.location.reload();
-          },3000)
-        }
-        else{
-          setError("albums is not updated")
+             setDisabled(true);
         }
         
       };

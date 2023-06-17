@@ -142,12 +142,49 @@ padding: 15px;
   margin-right: 40px;
 }
 .mainWrapper{
-  max-width: inherit; 
-  background-color:  #f0f2f5
+  display: flex;
+   width: 999px
+}
+.editHandler{
+  position: relative;
+  top: 10px;
+  left:10px
+  }
+  .editCard{
+    max-width: 554;
+    margin-bottom: 15px;
+    margin-left:40px;
+    background-color: #ffffff;
+    border-radius: 10px,
+  }
+.userCard{
+  width:550px;
+  margin: 0px 40px 10px;
+  display:flex;
+ border-radius: 10px;
 }
 
+.todoWrapper{
+  display: flex;
+}
+.todoTitle{ padding: 10px; width: 390px;}
+.todoEdit{margin-left: 20px;}
+.todoWrapper Button:hover{
+background-color:#FFF;
+}
 
-
+.bottomDivider{
+  width: 610px;
+                right: 30px;
+                position: relative;
+                top: 20px
+}
+.itemTitle{
+  box-shadow:none;
+                          text-align: start;
+                          width: 250px;
+                          padding: 10px 0px 0px 20px;
+}
   .css-6hp17o-MuiList-root-MuiMenu-list {
      list-style: none;
      margin: 0;

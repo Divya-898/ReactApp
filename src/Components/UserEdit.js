@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   DialogActions,
-  DialogContent,
   Divider,
   InputLabel,
   LinearProgress,
@@ -16,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 function UserEdit({ user, handleClose }) {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.userIntro);
+  const { loading,error } = useSelector((state) => state.userIntro);
   const cityref = useRef("");
   const streetref = useRef("");
   const emailref = useRef("");
@@ -33,7 +32,6 @@ function UserEdit({ user, handleClose }) {
   const [values, setValue] = useState(user);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(false);
 
   const handleSubmit = (e) => {
@@ -56,16 +54,10 @@ function UserEdit({ user, handleClose }) {
       bs: bsref.current.value,
       name: comNameref.current.value,
     };
-    if (values) {
-      setTimeout(() => {
+    if (values) {    
         dispatch(updateUser(payload));
-      }, 500);
-      setTimeout(() => {
-        setError("Succesfully created");
-      }, 1000);
-    } else {
-      setError("User is not Updated");
-    }
+       setDisabled(true)
+    } 
   };
   function handleChange(e) {
     setValue({ ...values, [e.target.name]: e.target.value });
@@ -172,9 +164,6 @@ function UserEdit({ user, handleClose }) {
             >
               Suite
             </InputLabel>
-            {/* <input type="text" name="body"
-              value={values.body}
-              onChange={e => setValue(e.target.value)}/> */}
             <div style={{ marginLeft: "60px" }}>
               <TextField
                 disabled={disabled}

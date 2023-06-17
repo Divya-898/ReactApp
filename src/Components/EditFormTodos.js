@@ -23,37 +23,25 @@ const StyledTextarea = styled(TextareaAutosize)(
     border-radius: 4px
   `
 );
-function EditFormTodos({ handleClose, scroll, editTodo }) {
+function EditFormTodos({ handleClose, editTodo, }) {
   const { userId } = useParams();
   const [disabled, setDisabled] = useState(false);
   const [todos, setTodos] = useState(editTodo);
-  const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.app);
+  const { loading,error } = useSelector((state) => state.app);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const handleSubmit = (e, id) => {
     e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
-    payload["title"] = editTodo.title;
-    payload["completed"] = editTodo.completed;
+    payload["title"] = todos.title;
+    payload["completed"] =todos.completed;
     payload["id"] = id;
-    console.log(payload);
-    if (editTodo.title && editTodo.completed) {
-      setTimeout(() => {
+    if (todos.title && todos.completed) {
         dispatch(updateTodo(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        setError("Succesfully updated");
-      }, 1000);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } else {
-      setError("Todo is not updated");
-    }
+          setDisabled(true);
+    } 
   };
   function handleChange(e) {
     setTodos({ ...todos, [e.target.name]: e.target.value });
@@ -109,7 +97,7 @@ function EditFormTodos({ handleClose, scroll, editTodo }) {
             }}
           />
         </div>
-        <DialogActions dividers={scroll === "paper"}>
+        <DialogActions dividers={true}>
           <Box sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}>
             {loading ? (
               <LinearProgress

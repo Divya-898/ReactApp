@@ -44,18 +44,8 @@ function EditFormComments({ commentEdit, handleClose }) {
     payload["email"] = comment.email;
     payload["id"] = commentEdit.id;
     if (comment.name && comment.body && comment.email) {
-      setTimeout(() => {
-        dispatch(updateComment(payload));
-      }, 500);
-      setTimeout(() => {
+      dispatch(updateComment)
         setDisabled(true);
-        setError("Succesfully updated");
-      }, 1000);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } else {
-      setError("Comment is not updated");
     }
   };
   function handleChange(e) {

@@ -89,13 +89,14 @@ const commentSlice = createSlice({
       state.loading = true;
     },
     [createComment.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.userComments.push(action.payload);
+      state.error = "Successfully Created"
     },
     [createComment.rejected]: (state, action) => {
       state.loading = false;
       state.userComments = action.payload;
+      state.error = "Not Created"
     },
     [showComments.pending]: (state, action) => {
       state.loading = true;
@@ -103,6 +104,7 @@ const commentSlice = createSlice({
     [showComments.fulfilled]: (state, action) => {
       state.loading = false;
       state.userComments = action.payload;
+      
     },
     [showComments.rejected]: (state, action) => {
       state.loading = false;
@@ -117,10 +119,12 @@ const commentSlice = createSlice({
       state.userComments = state.userComments.map((ele) =>
         ele.id === action.payload.id ? action.payload : ele
       );
+      state.error = "Successfully Updated"
     },
     [updateComment.rejected]: (state, action) => {
       state.loading = false;
       state.userComments = action.payload;
+      state.error = "Not Updated"
     },
     [deleteComment.fulfilled]: (state, action) => {
       console.log(action);
@@ -128,10 +132,12 @@ const commentSlice = createSlice({
       state.userComments = state.userComments.filter(
         (ele) => ele.id !== action.payload
       );
+      state.error = "Successfully Deleted"
     },
     [deleteComment.rejected]: (state, action) => {
       state.loading = true;
       state.error = action.payload;
+      state.error = "Not Deleted"
     },
   },
 });

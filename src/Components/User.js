@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { showUser } from "../mainRedux/features/UserSlice";
 import { showPhotos } from "../mainRedux/features/PhotoSlice";
 import { showAlbums } from "../mainRedux/features/AlbumSlice";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 import PostCreateForm from "./PostCreateForm";
 import PostEditForm2 from "./PostEditForm2";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -48,10 +48,9 @@ function User() {
   const [commonList, setCommonList] = useState("");
   const [common, setCommonPh] = useState("");
   const [com, setCom] = useState();
-  const { loading } = useSelector((state) => state.userPosts);
+  const { error,loading, userPosts } = useSelector((state) => state.userPosts);
   const [expanded, setExpanded] = useState(false);
-  const [error, setError] = useState("");
-  const { userPosts } = useSelector((state) => state.userPosts);
+  // const [error, setError] = useState("");
   const { photos } = useSelector((state) => state.userPhotos);
   const { albums } = useSelector((state) => state.userAlbums);
   const dispatch = useDispatch();
@@ -67,7 +66,8 @@ function User() {
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
-    navigate(-1)
+    navigate(-1); 
+    window.location.reload();
   };
 
   const handleOpenEdit = (data) => {
@@ -77,6 +77,7 @@ function User() {
   const handleCloseEdit = () => {
     setOpenEdit(false);
     navigate(-1);
+    window.location.reload();
   };
   const handleClickOpen = () => () => {
     setOpen(true);
@@ -84,6 +85,7 @@ function User() {
   const handleClose = () => {
     setOpen(false);
     navigate(-1);
+    window.location.reload();
   };
 
   //call edit post
@@ -157,14 +159,7 @@ function User() {
 
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(() => {
         dispatch(deletePost(id));
-      }, 2000);
-      setTimeout(() => {
-        setError("Succesfully Deleted");
-      }, 2000);
-    } else {
-      setError("Post is not deleted");
     }
   };
 
@@ -174,14 +169,14 @@ function User() {
         <DialogModal
           open={openEdit}
           handleClose={handleCloseEdit}
-          temp={edit}
+          formData={edit}
           name="Update Post"
         />
       ) : (
         <DialogModal
           open={open}
           handleClose={handleClose}
-          temp={temp}
+          formData={temp}
           name="Create Post"
         />
       )}
@@ -207,7 +202,7 @@ function User() {
           <Container
             style={{ maxWidth: "inherit", backgroundColor: "#f0f2f5" }}
           >
-            <Container style={{ display: "flex", width: "999px" }}>
+            <Container className="mainWrapper"style={{ display: "flex", width: "999px" }}>
               <Container className="userAddress">
                 {user && user.address && user.company ? (
                   <UserIntro user={user}></UserIntro>
@@ -216,21 +211,18 @@ function User() {
                 )}
                 <UserAlbums commonList={commonList}></UserAlbums>
                 <UserTodos></UserTodos>
-                <UserPhoto
+                {/* <UserPhoto
                   photos={photos}
                   albums={albums}
                   sx={{ borderRadius: "0px" }}
-                ></UserPhoto>
+                ></UserPhoto> */}
               </Container>
 
               <div className="cardWrapper">
-                <Card
-                  sx={{
-                    width: "550px",
-                    margin: "0px 40px 10px",
-                    display: "flex",
-                    borderRadius: "10px",
-                  }}
+                <Card className="userCard"
+                  // sx={{
+                    
+                  // }}
                 >
                   <CardHeader
                     avatar={
@@ -256,26 +248,14 @@ function User() {
                 </Card>
                 {userPosts &&
                   userPosts.map((items) => (
-                    <Card
-                      sx={{
-                        maxWidth: 554,
-                        marginBottom: "15px",
-                        marginLeft: "40px",
-                        backgroundColor: "#ffffff",
-                        borderRadius: "10px",
-                      }}
+                    <Card className="editCard"
                       key={items.id}
                     >
-                      <div
-                        style={{
-                          position: "relative",
-                          top: "10px",
-                          left: "10px",
-                        }}
+                      <div className="editHandler"
                       >
                         <div>
                           <Link to={`post/${items.id}`}>
-                            <Button
+                            <Button 
                               onClick={() => handleOpenEdit(items)}
                               sx={{ float: "right", padding: "0" }}
                             >

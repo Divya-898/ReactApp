@@ -24,14 +24,13 @@ const StyledTextarea = styled(TextareaAutosize)(
     border-radius: 4px
   `
 );
-function CreateFormTodos({ handleClose }) {
+function CreateFormTodos({ handleClose,openBox,setOpenBox }) {
   const { register, reset } = useForm();
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.app);
+  const { loading,error } = useSelector((state) => state.app);
   const [disabled, setDisabled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
-  const [error, setError] = useState("");
   const [formData, setformData] = useState({
     title: "", // required
     completed: "", // required
@@ -48,16 +47,10 @@ function CreateFormTodos({ handleClose }) {
     payload["title"] = formData.title;
     payload["completed"] = formData.completed;
     if (formData.title && formData.completed) {
-      setTimeout(() => {
         dispatch(createTodo(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        setError("Succesfully created");
-      }, 1000);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+        setDisabled(true); 
+        // setOpenBox(false);
+        // setOpenBox(true);
     }
   };
   return (
@@ -128,7 +121,7 @@ function CreateFormTodos({ handleClose }) {
                 color: "red",
               }}
             >
-              {error === "Succesfully created" ? (
+              {error === "Successfully Created" ? (
                 <p style={{ color: "green" }}>{error}</p>
               ) : (
                 <p style={{ color: "red" }}>{error}</p>

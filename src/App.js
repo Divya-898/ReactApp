@@ -3,8 +3,9 @@ import './App.css';
 import UserPost from './Components/UserPost';
 import User from './Components/User';
 import { Route, Routes,useLocation } from 'react-router-dom';
-import DialogModal from './Components/SucDialog';
+
 import DeleteDialog from './Components/DeleteDialog';
+import DialogModal from './Components/DialogModal';
 function App() {
   const location = useLocation();
   const background = location.state && location.state.background;

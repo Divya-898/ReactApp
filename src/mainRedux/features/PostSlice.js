@@ -61,7 +61,7 @@ export const updatePost = createAsyncThunk(
 //delete todoos
 export const deletePost = createAsyncThunk(
   "deletePost",
-  async (id, { rejectWithValue }) => {
+  async (id,) => {
     const response = await fetch(`http://localhost:3500/posts/${id}`, {
       method: "DELETE",
     });
@@ -71,7 +71,8 @@ export const deletePost = createAsyncThunk(
       console.log(result);
       return id;
     } catch (error) {
-      return rejectWithValue(error);
+      console.log(error.message)
+      return(error);
     }
   }
 );
@@ -81,27 +82,32 @@ const postSlice = createSlice({
   initialState: {
     userPosts: [],
     // edit:[],
+    data:[],
     loading: false,
-    error: null,
+    error: "",
   },
   extraReducers: {
     [createPost.pending]: (state) => {
       state.loading = true;
     },
     [createPost.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
+      state.data=action.payload;
+      state.error= "Succesfully created";
       state.userPosts.push(action.payload);
     },
     [createPost.rejected]: (state, action) => {
       state.loading = false;
       state.userPosts = action.payload;
+      state.error = "Not created";
     },
     [showPost.pending]: (state, action) => {
       state.loading = true;
     },
     [showPost.fulfilled]: (state, action) => {
       state.loading = false;
+      state.data=action.payload;
+      state.error=null;
       state.userPosts = action.payload;
     },
     [showPost.rejected]: (state, action) => {
@@ -114,6 +120,7 @@ const postSlice = createSlice({
     },
     [updatePost.fulfilled]: (state, action) => {
       state.loading = false;
+      state.error= "Succesfully updated";
       state.userPosts = state.userPosts.map((ele) =>
         ele.id === action.payload.id ? action.payload : ele
       );
@@ -121,20 +128,25 @@ const postSlice = createSlice({
     [updatePost.rejected]: (state, action) => {
       state.loading = false;
       state.userPosts = action.payload;
+      state.error = "Not updated";
     },
     [deletePost.pending]: (state) => {
       state.loading = true;
     },
     [deletePost.fulfilled]: (state, action) => {
-      console.log(action);
-      state.loading = false;
+      console.log(action)
+      // state.loading = true;
       state.userPosts = state.userPosts.filter(
         (ele) => ele.id !== action.payload
       );
+      // state.data=action.payload;
+       state.error="Successfully Deleted";
     },
     [deletePost.rejected]: (state, action) => {
-      state.loading = true;
-      state.error = action.payload;
+      console.log(action)
+      state.loading = false;
+      // state.data=null;
+       state.error = "not submitted"
     },
   },
 });

@@ -16,12 +16,11 @@ const StyledTextarea = styled(TextareaAutosize)(
   `
   );
 function PhotoEdit({photoEdit,handleClose}) {
-    const {loading } = useSelector((state) => state.userPosts);
+    const {loading,error } = useSelector((state) => state.userPosts);
     const dispatch = useDispatch();
     const [scroll, setScroll] = React.useState("paper");
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
-    const [error, setError] = useState("");
     const [photo, setPhoto] = useState(photoEdit);
     const [disabled, setDisabled] = useState(false);
    
@@ -34,19 +33,8 @@ function PhotoEdit({photoEdit,handleClose}) {
         payload["thumbnailUrl"] = photo.thumbnailUrl;
        payload["title"]=photo.title
         if (photo.thumbnailUrl) {
-          setTimeout(() => {
             dispatch(updatePhotos(payload));
-          }, 500);
-          setTimeout(() => {
-            setDisabled(true);
-            setPhoto({title:"",thumbnailUrl:"",url:""})
-            setError("Succesfully updated");
-          }, 1000);
-          setTimeout(()=>{
-            window.location.reload();
-          },3000)
-        } else {
-          setError("Photo is not updated");
+            setDisabled(true);   
         }
         
       };

@@ -1,24 +1,14 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  Divider,
   ImageList,
   ImageListItemBar,
-  LinearProgress,
 } from "@mui/material";
 import ImageListItem from "@mui/material/ImageListItem";
-import { styled } from "@mui/material/styles";
-
-import { Button, TextField } from "@mui/material";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-
-import DialogTitle from "@mui/material/DialogTitle";
+import { Button} from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import {
@@ -26,41 +16,18 @@ import {
   trackWindowScroll,
 } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-
-import Select from "@mui/material/Select";
-
-import Edit from "./Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { createPhotos, deletePhotos } from "../mainRedux/features/PhotoSlice";
-import { useForm } from "react-hook-form";
+import {deletePhotos } from "../mainRedux/features/PhotoSlice";
 import { Link, useNavigate } from "react-router-dom";
 import CreatePhotos from "./CreatePhotos";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 import PhotoEdit from "./PhotoEdit";
 import DeleteDialog from "./DeleteDialog";
 function UserPhoto({ photos, albums }) {
   const navigate = useNavigate();
-  const { register, reset } = useForm();
   const dispatch = useDispatch();
-  const [photoData, setPhotoData] = useState({
-    thumbnailUrl: "", // required
-    url: "",
-    title: "", // required
-  });
-  const { loading } = useSelector((state) => state.userPhotos);
+  const { loading,error } = useSelector((state) => state.userPhotos);
   const [open, setOpen] = useState(false);
-  const [scroll, setScroll] = useState("paper");
-
-  const [error, setError] = useState("");
-
-  const [albumTitle, setAlbumTitle] = useState("");
-  // const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [buffer, setBuffer] = useState(10);
-  const [disabled, setDisabled] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [photoEdit, setPhotoEdit] = useState();
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -71,6 +38,8 @@ function UserPhoto({ photos, albums }) {
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
+    navigate(-1);
+    window.location.reload();
   };
 
   const handleOpenEdit = (data) => {
@@ -79,11 +48,14 @@ function UserPhoto({ photos, albums }) {
   };
   const handleCloseEdit = (data) => {
     setOpenEdit(false);
+    navigate(-1);
+    window.location.reload();
   };
 
   const handleClose = () => {
     setOpen(false);
     navigate(-1);
+    window.location.reload();
   };
   const handleClickOpen = () => () => {
     setOpen(true);
@@ -91,15 +63,7 @@ function UserPhoto({ photos, albums }) {
 
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(() => {
         dispatch(deletePhotos(id));
-      }, 2000);
-
-      setTimeout(() => {
-        setError("Succesfully Deleted");
-      }, 2000);
-    } else {
-      setError("Photo is not deleted");
     }
   };
 
@@ -119,14 +83,14 @@ function UserPhoto({ photos, albums }) {
         <DialogModal
           open={openEdit}
           handleClose={handleCloseEdit}
-          temp={edit}
+          formData={edit}
           name="Update Photos"
         />
       ) : (
         <DialogModal
           open={open}
           handleClose={handleClose}
-          temp={create}
+          formData={create}
           name="Create Photo"
         />
       )}

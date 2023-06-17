@@ -34,8 +34,7 @@ function PostCreateForm({ handleClose }) {
     body: "", // required
   });
   const [disabled, setDisabled] = useState(false);
-  const { loading } = useSelector((state) => state.userPosts);
-  const [error, setError] = useState("");
+  const { loading,error } = useSelector((state) => state.userPosts);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const dispatch = useDispatch();
@@ -43,20 +42,11 @@ function PostCreateForm({ handleClose }) {
     e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
-
     payload["title"] = postData.title;
     payload["body"] = postData.body;
     if (postData.body && postData.title) {
-      setTimeout(() => {
         dispatch(createPost(payload));
-      }, 500);
-      setTimeout(() => {
         setDisabled(true);
-        setError("Succesfully created");
-      }, 1500);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
     }
   };
   function handleTodosChange(e) {
@@ -100,15 +90,8 @@ function PostCreateForm({ handleClose }) {
               onChange={(e) => handleTodosChange(e)}
             />
           </div>
-          <div>
-            <Divider
-              sx={{
-                width: "610px",
-                right: "30px",
-                position: "relative",
-                top: "20px",
-              }}
-            />
+          <div className="bottomDivider">
+            <Divider/>
           </div>
           <DialogActions>
             <Box sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}>

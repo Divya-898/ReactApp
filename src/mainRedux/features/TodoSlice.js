@@ -74,9 +74,9 @@ export const deleteTodo = createAsyncThunk(
         name:"todo",
         initialState: {
             todos: [],
-            edit:[],
+            // edit:[],
         loading: false,
-        error: null,
+        error: "",
         },
         extraReducers: {
             [createTodo.pending]:(state)=>{
@@ -84,11 +84,13 @@ export const deleteTodo = createAsyncThunk(
             },
             [createTodo.fulfilled]:(state, action)=>{
                 state.loading = false;
-                state.todos.push(action.payload)
+                state.todos.push(action.payload);
+                state.error = "Successfully Created" 
             },
             [createTodo.rejected]:(state, action)=>{
                 state.loading = false;
-                state.todos = action.payload
+                state.todos = action.payload;
+                state.error = "Not Created" 
             },
             [showTodo.pending]:(state, action)=>{
                 state.loading = true;
@@ -106,42 +108,31 @@ export const deleteTodo = createAsyncThunk(
                 state.loading = true;
             },
             [updateTodo.fulfilled]:(state, action)=>{
+              console.log(action)
                 state.loading = false;
                 state.todos=state.todos.map((ele)=>
                 (ele.id === action.payload.id ? action.payload : ele)  
-                )   
+                )  
+                state.error = "Successfully Updated" 
             },
             [updateTodo.rejected]:(state, action)=>{
                 state.loading = false;
-                state.todos = action.payload
+                state.todos = action.payload;
+                state.error = "Not Updated" 
             },
             [deleteTodo.pending]:(state)=>{
               state.loading = true;
           },
             [deleteTodo.fulfilled]: (state, action) => {
-              console.log(action)
               state.loading = false;
               state.todos =  state.todos.filter((ele)=>ele.id !== action.payload);
-             console.log(state.todos)
-              // const{id} = action.payload
-              // //state.users = action.payload;
-              // console.log(id);
-              // if(id){
-              // state.todos = state.todos.filter((ele)=>ele.id !== id);
-              // console.log(state.users)
-              // }
+              state.error = "Successfully Deleted" 
             },
             [deleteTodo.rejected]: (state, action) => {
               state.loading = false;
-              state.error = action.payload;
+              state.error = "Not Deleted" 
             },
         }
     })
-    //   try {
-    //     const result = await response.json();
-    //     console.log(result);
-    //     return result;
-    //   } catch (error) {
-    //     return rejectWithValue(error);
-    //   }
+   
     export default todoSlice.reducer;

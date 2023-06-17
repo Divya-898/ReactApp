@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createComment,
@@ -17,17 +17,17 @@ import {
 import UserName from "./UserName";
 import { useForm } from "react-hook-form";
 import EditFormComments from "./EditFormComments";
-import DialogModal from "./SucDialog";
+import DialogModal from "./DialogModal";
 import DeleteDialog from "./DeleteDialog";
 function CommentPost({ postId, user }) {
+  const navigate = useNavigate();
   const { register, reset } = useForm();
-  const { userComments, loading } = useSelector((state) => state.userComments);
+  const { userComments, loading, error } = useSelector((state) => state.userComments);
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(false);
   const [comment, setComment] = useState({ body: "" });
   const [progress, setProgress] = React.useState(0);
   const [buffer, setBuffer] = React.useState(10);
-  const [error, setError] = useState("");
   const [openEdit, setOpenEdit] = React.useState(false);
   const [commentEdit, setCommentEdit] = useState();
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -38,6 +38,8 @@ function CommentPost({ postId, user }) {
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
+    navigate(-1);
+    window.location.reload();
   };
 
   const handleOpenEdit = (data) => {
@@ -46,6 +48,8 @@ function CommentPost({ postId, user }) {
   };
   const handleCloseEdit = (data) => {
     setOpenEdit(false);
+    navigate(-1);
+    window.location.reload();
   };
   const edit = (
     <EditFormComments commentEdit={commentEdit} handleClose={handleCloseEdit} />
@@ -67,19 +71,8 @@ function CommentPost({ postId, user }) {
     payload["email"] = user.email;
     payload["body"] = comment.body;
     if (comment.body) {
-      setTimeout(() => {
         dispatch(createComment(payload));
-      }, 500);
-      setTimeout(() => {
-        setDisabled(true);
-        setComment("");
-        setError("Succesfully created");
-      }, 1000);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-    } else {
-      setError("Comment is not created");
+        setDisabled(true)
     }
   };
 
@@ -89,15 +82,9 @@ function CommentPost({ postId, user }) {
 
   const handleDelete = (id) => {
     if (id) {
-      setTimeout(() => {
-        dispatch(deleteComment(id));
-      }, 2000);
-      setTimeout(() => {
-        setError("Succesfully Deleted");
-      }, 2000);
-    } else {
-      setError("Comment is not deleted");
-    }
+        dispatch(deleteComment(id));   
+        setDisabled(true)
+    } 
   };
   return (
     <>
@@ -105,7 +92,7 @@ function CommentPost({ postId, user }) {
         <DialogModal
           open={openEdit}
           handleClose={handleCloseEdit}
-          temp={edit}
+          formData={edit}
           name="Update Post"
         />
       ) : (

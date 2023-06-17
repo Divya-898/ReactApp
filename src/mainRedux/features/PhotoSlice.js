@@ -89,13 +89,14 @@ const photoSlice = createSlice({
       state.loading = true;
     },
     [createPhotos.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.photos.push(action.payload);
+      state.error = "Successfully Created"
     },
     [createPhotos.rejected]: (state, action) => {
       state.loading = false;
       state.photos = action.payload;
+      state.error = "Not Created"
     },
     [showPhotos.pending]: (state, action) => {
       state.loading = true;
@@ -117,24 +118,27 @@ const photoSlice = createSlice({
       state.photos = state.photos.map((ele) =>
         ele.id === action.payload.id ? action.payload : ele
       );
+      state.error = "Successfully Updated"
     },
     [updatePhotos.rejected]: (state, action) => {
       state.loading = false;
       state.photos = action.payload;
+      state.error ="Not Updated"
     },
     [deletePhotos.pending]: (state) => {
       state.loading = true;
     },
     [deletePhotos.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.photos = state.photos.filter(
         (ele) => ele.id !== action.payload
       );
+      state.error = "Successfully Deleted";
     },
     [deletePhotos.rejected]: (state, action) => {
       state.loading = true;
-      state.error = action.payload;
+      state.error = "Not Deleted";
+
     },
   },
 });

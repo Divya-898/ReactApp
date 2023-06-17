@@ -1,8 +1,7 @@
-import { Box, Button, DialogActions, DialogContent, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
+import { Box, Button, DialogActions, Divider, InputLabel, LinearProgress, TextareaAutosize } from '@mui/material'
 import React, { useState } from 'react'
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../mainRedux/features/PostSlice';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { createAlbums } from '../mainRedux/features/AlbumSlice';
@@ -25,9 +24,8 @@ function CreateAlbum({handleClose}) {
         title: "", // required // required
       }); 
       const [disabled, setDisabled] = useState(false);
-      const { loading } = useSelector((state) => state.userPosts);
+      const { loading,error } = useSelector((state) => state.userAlbums);
       const [scroll, setScroll] = React.useState("paper");
-      const [error, setError] = useState("");
       const [progress, setProgress] = useState(0);
       const [buffer, setBuffer] = useState(10);
       const dispatch = useDispatch();
@@ -41,16 +39,9 @@ function CreateAlbum({handleClose}) {
         payload["userId"] = userId;
         payload["title"] = album.title;
         if (album.title) {
-          setTimeout(() => {
             dispatch(createAlbums(payload));
-          }, 500);
-          setTimeout(() => {
             setDisabled(true);
-            setError("Succesfully created");
-          }, 1000);
-        } else {
-          setError("Album is not Created");
-        }
+        } 
       };
   return (
     <div>
@@ -106,7 +97,7 @@ function CreateAlbum({handleClose}) {
                           color: "red",
                         }}
                       >
-                        {error === "Succesfully created" ? (
+                        {error === "Successfully Created" ? (
                           <p style={{ color: "green" }}>{error}</p>
                         ) : (
                           <p style={{ color: "red" }}>{error}</p>

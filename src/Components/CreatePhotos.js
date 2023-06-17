@@ -29,9 +29,8 @@ function CreatePhotos({handleClose,albums}) {
         title: "", // required
       }); 
       const [disabled, setDisabled] = useState(false);
-      const { loading } = useSelector((state) => state.userPosts);
+      const { loading,error } = useSelector((state) => state.userPosts);
       const [scroll, setScroll] = React.useState("paper");
-      const [error, setError] = useState("");
       const [progress, setProgress] = useState(0);
       const [buffer, setBuffer] = useState(10);
       const dispatch = useDispatch();
@@ -45,18 +44,10 @@ function CreatePhotos({handleClose,albums}) {
         payload["thumbnailUrl"] = photoData.thumbnailUrl;
         payload["url"] = photoData.url;
         payload["title"] = photoData.title;
-    
         if (photoData.title && photoData.thumbnailUrl) {
-          setTimeout(() => {
             dispatch(createPhotos(payload));
-          }, 500);
-          setTimeout(() => {
-            setDisabled(true);
-            setError("Succesfully created");
-          }, 1000);
-        } else {
-          setError("Photo is not Created");
-        }
+            disabled(true);
+         }
       };
       function handleTodosChange(e) {
         setPhotoData({ ...photoData, [e.target.name]: e.target.value });
@@ -80,6 +71,7 @@ function CreatePhotos({handleClose,albums}) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="title"
+                      disabled={disabled}
                       {...register("title")}
                       onChange={(e) => handleTodosChange(e)}
                     />{" "}
@@ -100,6 +92,7 @@ function CreatePhotos({handleClose,albums}) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="url"
+                      disabled={disabled}
                       {...register("url")}
                       onChange={(e) => handleTodosChange(e)}
                     />{" "}
@@ -121,6 +114,7 @@ function CreatePhotos({handleClose,albums}) {
                       InputProps={{ sx: { height: 25 } }}
                       type="text"
                       name="thumbnailUrl"
+                      disabled={disabled}
                       {...register("thumbnailUrl")}
                       onChange={(e) => handleTodosChange(e)}
                     />
