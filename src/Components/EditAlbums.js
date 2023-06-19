@@ -23,11 +23,9 @@ const StyledTextarea = styled(TextareaAutosize)(
   `
   );
 function EditAlbums({albumEdit,handleClose}) {
-    const navigate = useNavigate();
     const {loading,error } = useSelector((state) => state.userAlbums);
     const dispatch = useDispatch();
     const { userId } = useParams();
-    const [openBox, setOpenBox] = React.useState(false);
     const [scroll, setScroll] = React.useState("paper");
     const [progress, setProgress] = useState(0);
     const [buffer, setBuffer] = useState(10);
@@ -89,7 +87,7 @@ function EditAlbums({albumEdit,handleClose}) {
                                 ""
                               )}
                               <div className="message" style={{position:"relative",left:"80px"}}>
-                              {error==="Succesfully updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                              {error==="Successfully Updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
                             <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>

@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import UserName from "./UserName";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Container } from "@mui/material";
 import CommentPost from "./Comments";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -115,6 +115,7 @@ function User() {
     str += sortStr;
   }
   useEffect(() => {
+    
     if (str) {
       setCommonPh(str);
     }
@@ -124,11 +125,21 @@ function User() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [str]);
   useEffect(() => {
-    if (userId) {
-      dispatch(showUser(userId));
-    }
-    dispatch(showAlbums(userId));
-  }, [dispatch, userId]);
+    //  let isCanceled = false;
+    // const controller = new AbortController();
+    //   const signal = controller.signalconst 
+    // const dispatchUser = 
+   if(userId) {
+    dispatch(showUser(userId))
+   }
+   
+    // dispatch(showAlbums(userId));
+    // return()=>{
+    //   isCanceled = true;
+     
+    //   //controller?.abort();
+    // }
+  }, [dispatch,userId]);
   useEffect(() => {
     dispatch(showPost(userId));
   }, []);
@@ -220,14 +231,11 @@ function User() {
 
               <div className="cardWrapper">
                 <Card className="userCard"
-                  // sx={{
-                    
-                  // }}
                 >
                   <CardHeader
                     avatar={
                       user ? (
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        <Avatar sx={{ bgcolor: red[500] }}>
                           {UserName(user.name)}
                         </Avatar>
                       ) : (

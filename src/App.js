@@ -7,34 +7,17 @@ import { Route, Routes,useLocation } from 'react-router-dom';
 import DeleteDialog from './Components/DeleteDialog';
 import DialogModal from './Components/DialogModal';
 function App() {
-  const location = useLocation();
-  const background = location.state && location.state.background;
+  const category = ['edit','todos','todos/:id','todos/:id/delete','post', 'post/:postId','post/:id/delete',
+          'album','album/:id','album/:id/delete','comment','comment/:id','comment/:id/delete','photo','photo/:id','photo/:id/delete'
+]
   return (
     <div className="App">
-   <Routes  location={background || location}> 
+   <Routes> 
      <Route path="/" exact element={<UserPost/>} />
     <Route path="/user/:userId"  element={<User/>}>
-    <Route path="edit" element={<DeleteDialog />} />
-    <Route path="todos" element={<DialogModal />} />
-    <Route path="todos/:id" element={<DialogModal />}>
-    <Route path="delete" element={<DeleteDialog />} />
-    </Route>
-    <Route path="post" element={<DialogModal />}/>
-    <Route path="post/:postId" element={<DialogModal />}>
-    <Route path="delete" element={<DeleteDialog />} />
-    </Route>
-    <Route path="album" element={<DialogModal />}/>
-    <Route path="album/:albumId" element={<DialogModal />}>
-    <Route path="delete" element={<DeleteDialog />} />
-    </Route>
-    <Route path="comment" element={<DialogModal />}/>
-    <Route path="comment/:commentId" element={<DialogModal />}>
-    <Route path="delete" element={<DeleteDialog />} />
-    </Route>
-    <Route path="photo" element={<DialogModal />}/>
-    <Route path="photo/:photoId" element={<DialogModal />}>
-    <Route path="delete" element={<DeleteDialog />} />
-    </Route>
+    {category.map((path, index) => (
+            <Route path={path} key={index} element={<DialogModal/>} />
+  ))}
     </Route>
     </Routes>
     </div>

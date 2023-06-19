@@ -135,17 +135,15 @@ const postSlice = createSlice({
     },
     [deletePost.fulfilled]: (state, action) => {
       console.log(action)
-      // state.loading = true;
+       state.loading = false;
       state.userPosts = state.userPosts.filter(
         (ele) => ele.id !== action.payload
       );
-      // state.data=action.payload;
        state.error="Successfully Deleted";
     },
     [deletePost.rejected]: (state, action) => {
       console.log(action)
       state.loading = false;
-      // state.data=null;
        state.error = "not submitted"
     },
   },

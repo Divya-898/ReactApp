@@ -337,7 +337,7 @@ function UserEdit({ user, handleClose }) {
                 className="message"
                 style={{ position: "relative", left: "80px" }}
               >
-                {error === "Succesfully created" ? (
+                {error === "Succesfully Updated" ? (
                   <p style={{ color: "green" }}>{error}</p>
                 ) : (
                   <p style={{ color: "red" }}>{error}</p>

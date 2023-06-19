@@ -23,7 +23,7 @@ const StyledTextarea = styled(TextareaAutosize)(
     border-radius: 4px
   `
 );
-function EditFormTodos({ handleClose, editTodo, }) {
+function EditFormTodos({ handleClose, editTodo, isOpen}) {
   const { userId } = useParams();
   const [disabled, setDisabled] = useState(false);
   const [todos, setTodos] = useState(editTodo);
@@ -36,7 +36,7 @@ function EditFormTodos({ handleClose, editTodo, }) {
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = todos.title;
-    payload["completed"] =todos.completed;
+    payload["completed"] =Boolean(todos.completed)
     payload["id"] = id;
     if (todos.title && todos.completed) {
         dispatch(updateTodo(payload));
@@ -97,7 +97,7 @@ function EditFormTodos({ handleClose, editTodo, }) {
             }}
           />
         </div>
-        <DialogActions dividers={true}>
+        <DialogActions dividers={isOpen}>
           <Box sx={{ width: "80%", margin: "-10px 0px 0px 70px" }}>
             {loading ? (
               <LinearProgress
@@ -112,7 +112,7 @@ function EditFormTodos({ handleClose, editTodo, }) {
               className="message"
               style={{ position: "relative", left: "80px" }}
             >
-              {error === "Succesfully updated" ? (
+              {error === "Successfully Updated" ? (
                 <p style={{ color: "green" }}>{error}</p>
               ) : (
                 <p style={{ color: "red" }}>{error}</p>

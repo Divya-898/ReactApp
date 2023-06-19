@@ -112,7 +112,7 @@ function PhotoEdit({photoEdit,handleClose}) {
                                 ""
                               )}
                               <div className="message" style={{position:"relative",left:"80px"}}>
-                              {error==="Succesfully updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
+                              {error==="Successfully Updated" ? <p style={{color:"green"}}>{error}</p> : <p style={{color:"red"}}>{error}</p>}
                             </div>
                             </Box>
                             <div style={{ margin: "40px 0px 0px 0px", display: "flex" }}>

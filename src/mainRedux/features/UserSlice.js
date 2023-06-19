@@ -1,9 +1,10 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-
+import axios from 'axios';  
 export const showUser = createAsyncThunk(
     "showUser",
-    async (id, { rejectWithValue }) => {
-        const response = await fetch(
+    async (id) => {
+    
+        const response = await axios.get(
           `http://localhost:3500/users/${id}`
         );   
         try {
@@ -11,7 +12,9 @@ export const showUser = createAsyncThunk(
           console.log(result);
           return result;
         } catch (error) {
-          return rejectWithValue(error);
+         
+          return(error);
+          
         }
       }
     );
@@ -68,10 +71,7 @@ export const updateUser = createAsyncThunk(
             [updateUser.fulfilled]:(state, action)=>{
                 state.loading = false;
                 state.user = action.payload;
-                state.error="Succesfully Updated";
-                // state.user=state.user.map((ele)=>
-                // (ele.id === action.payload.id ? action.payload : ele)  
-                // )   
+                state.error="Succesfully Updated";   
             },
             [updateUser.rejected]:(state, action)=>{
                 state.loading = false;
@@ -81,11 +81,5 @@ export const updateUser = createAsyncThunk(
             
         }
     })
-    //   try {
-    //     const result = await response.json();
-    //     console.log(result);
-    //     return result;
-    //   } catch (error) {
-    //     return rejectWithValue(error);
-    //   }
+
     export default userSlice.reducer;

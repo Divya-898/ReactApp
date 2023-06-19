@@ -39,18 +39,17 @@ function CreateFormTodos({ handleClose,openBox,setOpenBox }) {
   function handleChange(e) {
     setformData({ ...formData, [e.target.name]: e.target.value });
   }
+ 
   const { userId } = useParams();
   const handleSubmit = (e, userId) => {
     e.preventDefault();
     let payload = {};
     payload["userId"] = userId;
     payload["title"] = formData.title;
-    payload["completed"] = formData.completed;
+    payload["completed"] = Boolean(formData.completed)
     if (formData.title && formData.completed) {
         dispatch(createTodo(payload));
         setDisabled(true); 
-        // setOpenBox(false);
-        // setOpenBox(true);
     }
   };
   return (

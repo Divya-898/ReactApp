@@ -250,7 +250,7 @@ function CommentPost({ postId, user }) {
                   className="message"
                   style={{ position: "relative", left: "80px" }}
                 >
-                  {error === "Succesfully created" ? (
+                  {error === "Successfully Created" ? (
                     <p style={{ color: "green" }}>{error}</p>
                   ) : (
                     <p style={{ color: "red" }}>{error}</p>

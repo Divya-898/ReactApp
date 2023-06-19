@@ -100,7 +100,7 @@ function EditFormComments({ commentEdit, handleClose }) {
               className="message"
               style={{ position: "relative", left: "80px" }}
             >
-              {error === "Succesfully updated" ? (
+              {error === "Successfully Updated" ? (
                 <p style={{ color: "green" }}>{error}</p>
               ) : (
                 <p style={{ color: "red" }}>{error}</p>

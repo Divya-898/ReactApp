@@ -67,7 +67,7 @@ function UserIntro({ user }) {
             </Button>
             </Link>
           </div>
-          <DialogModal open={open}  handleClose={handleClose} name="User Update" temp={temp}/>
+          <DialogModal open={open}  handleClose={handleClose} name="User Update" formData={temp}/>
           {user ? (
             <Box
               sx={{

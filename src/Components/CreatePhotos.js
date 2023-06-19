@@ -21,7 +21,6 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 function CreatePhotos({handleClose,albums}) {
     const { register, reset } = useForm()
-    const {userId} = useParams();
     const [albumTitle, setAlbumTitle] = useState("");
     const [photoData, setPhotoData] = useState({
         thumbnailUrl: "", // required
@@ -170,7 +169,7 @@ function CreatePhotos({handleClose,albums}) {
                           color: "red",
                         }}
                       >
-                        {error === "Succesfully created" ? (
+                        {error === "Successfully Created" ? (
                           <p style={{ color: "green" }}>{error}</p>
                         ) : (
                           <p style={{ color: "red" }}>{error}</p>

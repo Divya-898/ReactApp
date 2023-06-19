@@ -131,7 +131,7 @@ export const deleteAlbums = createAsyncThunk(
             [deleteAlbums.fulfilled]: (state, action) => {
               state.loading = false;
               state.albums =  state.albums.filter((ele)=>ele.id !== action.payload);
-              state.error = "Succesfully Deleted"
+              state.error = "Successfully Deleted"
             },
             [deleteAlbums.rejected]: (state, action) => {
               state.loading = false;

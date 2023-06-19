@@ -93,8 +93,6 @@ const btnEdit={
     }
     return true;
   };
-
-
   const handleDelete = (id) => {
     if (id) {
         dispatch(deleteTodo(id));
@@ -144,7 +142,6 @@ const btnEdit={
               </div>
               <div></div>
               {todos.map((data1) => (
-                <>
                   <Grid container columnSpacing={{ sm: 1 }} key={data1.id}>
                     <Grid>
                       <Item  sx={itemTitle}
@@ -163,8 +160,8 @@ const btnEdit={
                           sx={{ "&:hover": { backgroundColor: "transparent" } }}
                           checked={
                             IsParsable(data1.completed)
-                              ? JSON.parse(data1.completed)
-                              : ""
+                              ? JSON.parse(data1.completed === true)
+                              : false
                           }
                           onChange={(e) => handleChange(e, data1.completed)}
                         />
@@ -215,8 +212,8 @@ const btnEdit={
                       </Item>
                     </Grid>
                   </Grid>
-                </>
-              ))}
+                
+))}
             </>
           ) : (
             ""
