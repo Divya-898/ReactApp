@@ -7,8 +7,13 @@ import {
   Step,
   StepLabel,
 } from "@mui/material";
-import {useForm, FormProvider, useFormContext, Controller} from 'react-hook-form'
-import {DevTool} from '@hookform/devtools'
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  Controller,
+} from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 function getSteps() {
   return [
     "Basic information",
@@ -17,15 +22,18 @@ function getSteps() {
     "Payment",
   ];
 }
-const BasicInformation = () =>{
-    const {control, formState:{errors},} = useFormContext();
-    return (
-        <>
-       <Controller
+const BasicInformation = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  return (
+    <>
+      <Controller
         control={control}
         name="firstName"
         rules={{
-          required:"first name is required",
+          required: "first name is required",
         }}
         render={({ field }) => (
           <TextField
@@ -45,8 +53,8 @@ const BasicInformation = () =>{
       <Controller
         control={control}
         name="lastName"
-         rules={{
-          required:"last name is required",
+        rules={{
+          required: "last name is required",
         }}
         render={({ field }) => (
           <TextField
@@ -67,7 +75,7 @@ const BasicInformation = () =>{
         control={control}
         name="nickName"
         rules={{
-          required:"nick name is required",
+          required: "nick name is required",
         }}
         render={({ field }) => (
           <TextField
@@ -83,22 +91,26 @@ const BasicInformation = () =>{
           />
         )}
       />
-        </>
-      );
-}
-const ContactInformation = () =>{
-  const {control, formState:{errors},} = useFormContext();
-    return (
-        <>
-         <Controller
+    </>
+  );
+};
+const ContactInformation = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  return (
+    <>
+      <Controller
         control={control}
         name="emailAddress"
         rules={{
-          required:"email is required",
+          required: "email is required",
           pattern: {
-            value : /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-            message:"please enter a valid email address"
-            }
+            value:
+              /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+            message: "please enter a valid email address",
+          },
         }}
         render={({ field }) => (
           <TextField
@@ -119,11 +131,11 @@ const ContactInformation = () =>{
         control={control}
         name="phoneNumber"
         rules={{
-          required:"phoneNumber is required",
-          pattern:{
-            value:/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/,
-            message:"Invalid phone number"
-          }
+          required: "phoneNumber is required",
+          pattern: {
+            value: /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/,
+            message: "Invalid phone number",
+          },
         }}
         render={({ field }) => (
           <TextField
@@ -143,7 +155,7 @@ const ContactInformation = () =>{
         control={control}
         name="alternatePhone"
         rules={{
-          required:"alternate number is required",
+          required: "alternate number is required",
         }}
         render={({ field }) => (
           <TextField
@@ -159,18 +171,21 @@ const ContactInformation = () =>{
           />
         )}
       />
-        </>
-      );
-}
-const PersonalInformation = () =>{
-  const {control, formState:{errors},} = useFormContext();
-    return (
-        <>
-          <Controller
+    </>
+  );
+};
+const PersonalInformation = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  return (
+    <>
+      <Controller
         control={control}
         name="address1"
         rules={{
-          required:"address1 is required",
+          required: "address1 is required",
         }}
         render={({ field }) => (
           <TextField
@@ -190,7 +205,7 @@ const PersonalInformation = () =>{
         control={control}
         name="address2"
         rules={{
-          required:"address2 is required",
+          required: "address2 is required",
         }}
         render={({ field }) => (
           <TextField
@@ -210,7 +225,7 @@ const PersonalInformation = () =>{
         control={control}
         name="country"
         rules={{
-          required:"country is required",
+          required: "country is required",
         }}
         render={({ field }) => (
           <TextField
@@ -226,18 +241,21 @@ const PersonalInformation = () =>{
           />
         )}
       />
-        </>
-      );
-}
-const PaymentInformation = () =>{
-  const {control, formState:{errors},} = useFormContext();
-    return (
-        <>
-          <Controller
+    </>
+  );
+};
+const PaymentInformation = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  return (
+    <>
+      <Controller
         control={control}
         name="cardNumber"
         rules={{
-          required:"cardNumber is required",
+          required: "cardNumber is required",
         }}
         render={({ field }) => (
           <TextField
@@ -257,7 +275,7 @@ const PaymentInformation = () =>{
         control={control}
         name="cardMonth"
         rules={{
-          required:"cardMonth is required",
+          required: "cardMonth is required",
         }}
         render={({ field }) => (
           <TextField
@@ -277,7 +295,7 @@ const PaymentInformation = () =>{
         control={control}
         name="cardYear"
         rules={{
-          required:"cardYear is required",
+          required: "cardYear is required",
         }}
         render={({ field }) => (
           <TextField
@@ -293,43 +311,44 @@ const PaymentInformation = () =>{
           />
         )}
       />
-        </>
-      );
-}
+    </>
+  );
+};
 function getStepContent(step) {
   switch (step) {
     case 0:
-    return <BasicInformation></BasicInformation> 
+      return <BasicInformation></BasicInformation>;
     case 1:
-        return <ContactInformation/>
-      
-    case 2: return <PersonalInformation/>
-      
-    case 3: return <PaymentInformation/>
-      
+      return <ContactInformation />;
+
+    case 2:
+      return <PersonalInformation />;
+
+    case 3:
+      return <PaymentInformation />;
+
     default:
       return "unknown step";
   }
 }
 let count = 0;
 const LinaerStepper = () => {
-  
-    const methods = useForm({
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            nickName: "",
-            emailAddress: "",
-            phoneNumber: "",
-            alternatePhone: "",
-            address1: "",
-            address2: "",
-            country: "",
-            cardNumber: "",
-            cardMonth: "",
-            cardYear: "",
-          }
-    });
+  const methods = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      nickName: "",
+      emailAddress: "",
+      phoneNumber: "",
+      alternatePhone: "",
+      address1: "",
+      address2: "",
+      country: "",
+      cardNumber: "",
+      cardMonth: "",
+      cardYear: "",
+    },
+  });
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
   const steps = getSteps();
@@ -342,7 +361,7 @@ const LinaerStepper = () => {
     return skippedSteps.includes(step);
   };
   const handleNext = (data) => {
-    console.log(data)
+    console.log(data);
     setActiveStep(activeStep + 1);
     setSkippedSteps(skippedSteps.filter((skipItem) => skipItem !== activeStep));
   };
@@ -358,11 +377,10 @@ const LinaerStepper = () => {
     setActiveStep(activeStep + 1);
   };
 
-  const isStepFailed = ()=>{
-    return Boolean(Object.keys(methods.formState.errors).length)
-    console.log(methods.formState.errors)
-  }
-count++;
+  const isStepFailed = () => {
+    return Boolean(Object.keys(methods.formState.errors).length);
+    console.log(methods.formState.errors);
+  };
   return (
     <div>
       <Stepper alternativeLabel activeStep={activeStep}>
@@ -380,8 +398,8 @@ count++;
               </Typography>
             );
           }
-          if(isStepFailed() && activeStep == index){
-            labelProps.error=true
+          if (isStepFailed() && activeStep == index) {
+            labelProps.error = true;
           }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
@@ -400,32 +418,27 @@ count++;
         </Typography>
       ) : (
         <>
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleNext)}>{getStepContent(activeStep)}
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-          >
-            back
-          </Button>
-          {isStepOptional(activeStep) && (
-            <Button sx={{marginRight:"10px"}}
-              variant="contained"
-              color="primary"
-              onClick={handleSkip}
-            >
-              skip
-            </Button>
-          )}
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-          >
-            {activeStep === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-          </form>
-          <DevTool control={methods.control}/>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(handleNext)}>
+              {getStepContent(activeStep)}
+              <Button disabled={activeStep === 0} onClick={handleBack}>
+                back
+              </Button>
+              {isStepOptional(activeStep) && (
+                <Button
+                  sx={{ marginRight: "10px" }}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSkip}
+                >
+                  skip
+                </Button>
+              )}
+              <Button variant="contained" color="primary" type="submit">
+                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              </Button>
+            </form>
+            <DevTool control={methods.control} />
           </FormProvider>
         </>
       )}
